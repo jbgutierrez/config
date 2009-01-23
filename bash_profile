@@ -7,7 +7,9 @@ alias gca='git commit -v -a'
 alias gb='git branch --color'
 alias gba='git branch -a --color'
 alias glog='git log --pretty=format:"%ar - %s"'
+alias gadd='git add -i'
 alias ls='ls -l -G'
+alias update_textmate_bundles='svn update ~/Library/Application\ Support/TextMate/Bundles'
 
 PS1='\u$'
 PATH=$PATH:$HOME/.gem/ruby/1.8/bin
