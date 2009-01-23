@@ -1,0 +1,6 @@
+#http://www.cygwin.com/faq/faq-nochunks.html#faq.using.unicode
+set meta-flag on 
+set convert-meta off 
+set output-meta on 
+set input-meta on
+set kanji-code sjis
