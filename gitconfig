@@ -1,0 +1,17 @@
+[user]
+	name = Javier Blanco
+	email = *
+[alias]
+	co = checkout
+[apply]
+	whitespace = nowarn
+[core]
+	editor = mate -w
+[color]
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+[github]
+	user = *
+	token = *
