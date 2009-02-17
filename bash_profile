@@ -13,9 +13,9 @@ alias glog='git log --pretty=format:"%ar - %an - %s"'
 parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
-RED="\[\033[0;31m\]"
-YELLOW="\[\033[0;33m\]"
-GREEN="\[\033[0;32m\]"
+RED="\[\033[0;31m\]" 
+YELLOW="\[\033[0;33m\]" 
+GREEN="\[\033[0;32m\]" 
 
 PS1="$RED\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$GREEN\$ "
 
@@ -29,6 +29,14 @@ test -r /sw/bin/init.sh && . /sw/bin/init.sh
 CLICOLOR=1
 LSCOLORS=ExFxCxDxBxegedabagacad
 export LSCOLORS CLICOLOR
+
+export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
+
+rakecomplete() {
+  COMPREPLY=($(compgen -W "`rake -s -T | awk '{{print $2}}'`" -- ${COMP_WORDS[COMP_CWORD]}))
+  return 0
+}
+complete -o default -o nospace -F rakecomplete rake
 
 # cygwin settings
 # alias ls='ls -F --color=tty --show-control-chars'
