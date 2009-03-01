@@ -16,8 +16,9 @@ parse_git_branch() {
 RED="\[\033[0;31m\]" 
 YELLOW="\[\033[0;33m\]" 
 GREEN="\[\033[0;32m\]" 
+LIGHT_GRAY="\[\033[0;37m\]"
 
-PS1="$RED\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$GREEN\$ "
+PS1="$RED\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$GREEN\$ $LIGHT_GRAY"
 
 alias less='less -r'
 alias ls='ls -l -G'
@@ -42,3 +43,5 @@ complete -o default -o nospace -F rakecomplete rake
 # alias ls='ls -F --color=tty --show-control-chars'
 # export LANG="es_ES"
 # export OUTPUT_CHARSET="es_ES"
+
+export EDITOR='/usr/bin/mate -w'
