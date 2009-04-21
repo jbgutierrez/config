@@ -7,6 +7,8 @@
 	whitespace = nowarn
 [core]
 	editor = mate -w
+[core]
+	excludesfile = ~/.gitignore
 [color]
 	status = auto
 	branch = auto
