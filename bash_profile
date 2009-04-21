@@ -1,13 +1,7 @@
-alias gst='git status'
-alias gl='git pull'
-alias gp='git push'
-alias gd='git diff | mate'
-alias gc='git commit -v'
-alias gca='git commit -v -a'
-alias gb='git branch --color'
-alias gba='git branch -a --color'
-alias gadd='git add -i'
-alias glog='git log --pretty=format:"%ar - %an - %s"'
+#aliases
+if [ -e "$HOME/.aliases" ]; then
+  source "$HOME/.aliases"
+fi
 
 # http://github.com/guides/put-your-git-branch-name-in-your-shell-prompt
 parse_git_branch() {
@@ -19,10 +13,6 @@ GREEN="\[\033[0;32m\]"
 LIGHT_GRAY="\[\033[0;37m\]"
 
 PS1="$RED\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$GREEN\$ $LIGHT_GRAY"
-
-alias less='less -r'
-alias ls='ls -l -G'
-alias update_textmate_bundles='svn update ~/Library/Application\ Support/TextMate/Bundles'
 
 PATH=$PATH:$HOME/.gem/ruby/1.8/bin
 

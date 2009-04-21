@@ -1,0 +1,18 @@
+alias gst='git status'
+alias gl='git pull'
+alias gp='git push'
+alias gd='git diff | mate'
+alias gc='git commit -v'
+alias gca='git commit -v -a'
+alias gb='git branch --color'
+alias gba='git branch -a --color'
+alias gadd='git add -i'
+alias glog='git log --pretty=format:"%ar - %an - %s"'
+
+alias less='less -r'
+alias ls='ls -l -G'
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+alias update_textmate_bundles='svn update ~/Library/Application\ Support/TextMate/Bundles'
