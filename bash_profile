@@ -1,8 +1,3 @@
-#aliases
-if [ -e "$HOME/.aliases" ]; then
-  source "$HOME/.aliases"
-fi
-
 # http://github.com/guides/put-your-git-branch-name-in-your-shell-prompt
 parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
@@ -35,3 +30,9 @@ complete -o default -o nospace -F rakecomplete rake
 # export OUTPUT_CHARSET="es_ES"
 
 export EDITOR='/usr/bin/mate -w'
+export PROJECTS_FOLDER=$HOME/Proyectos
+
+#aliases
+if [ -e "$HOME/.aliases" ]; then
+  source "$HOME/.aliases"
+fi

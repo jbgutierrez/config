@@ -8,6 +8,7 @@ alias gb='git branch --color'
 alias gba='git branch -a --color'
 alias gadd='git add -i'
 alias glog='git log --pretty=format:"%ar - %an - %s"'
+alias gamend='git commit -a --amend'
 
 alias less='less -r'
 alias ls='ls -l -G'
@@ -16,3 +17,13 @@ alias mv='mv -i'
 alias rm='rm -i'
 
 alias update_textmate_bundles='svn update ~/Library/Application\ Support/TextMate/Bundles'
+
+# Shortcuts to each project folder
+alias cdprojects="cd $PROJECTS_FOLDER"
+for path in $PROJECTS_FOLDER/*; do
+  if [ -d $path ]; then
+	  subfolder=`echo $path | sed 's/.*\///'`
+    alias "cd$subfolder"="cd $path"
+    alias "mate$subfolder"="mate $path"
+  fi
+done
