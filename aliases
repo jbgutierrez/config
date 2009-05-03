@@ -27,3 +27,6 @@ for path in $PROJECTS_FOLDER/*; do
     alias "mate$subfolder"="mate $path"
   fi
 done
+
+#puts you in a 1.9 sandbox
+alias ruby19="export PATH=/opt/ruby19/bin:$PATH"
