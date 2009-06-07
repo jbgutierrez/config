@@ -30,3 +30,8 @@ done
 
 #puts you in a 1.9 sandbox
 alias ruby19="export PATH=/opt/ruby19/bin:$PATH"
+
+#remember path position
+export REMEMBERME_PATH=$HOME
+alias rememberme='export REMEMBERME_PATH=$PWD'
+alias cdrememberme='cd $REMEMBERME_PATH'
