@@ -17,6 +17,7 @@ alias ls='ls -l -G'
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
+alias df='df -h'
 
 # Recursively Remove .DS_Store files in OS X
 alias rmdsstores='find . -name *.DS_Store -type f -exec rm {} \;'
