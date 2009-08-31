@@ -9,7 +9,7 @@ LIGHT_GRAY="\[\033[0;37m\]"
 
 PS1="$RED\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$GREEN\$ $LIGHT_GRAY"
 
-PATH=$PATH:$HOME/.gem/ruby/1.8/bin
+PATH=$PATH:$HOME/.gem/ruby/1.8/bin:/usr/local/mysql/bin
 
 test -r /sw/bin/init.sh && . /sw/bin/init.sh
 CLICOLOR=1

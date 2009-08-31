@@ -10,6 +10,7 @@ alias gba='git branch -a --color'
 alias gadd='git add -i'
 alias glog='git log --pretty=format:"%ar - %an - %s"'
 alias gamend='git commit -a --amend'
+alias gapply='git stash apply && git stash clear'
 
 # Bash commands
 alias less='less -r'
@@ -41,4 +42,4 @@ alias ruby19="export PATH=/opt/ruby19/bin:$PATH"
 # Remember path position
 export REMEMBERME_PATH=$HOME
 alias rememberme='export REMEMBERME_PATH=$PWD'
-alias cdrememberme='cd $REMEMBERME_PATH'
+alias cdrememberme='cd "$REMEMBERME_PATH"'
