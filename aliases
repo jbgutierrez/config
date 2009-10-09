@@ -1,4 +1,5 @@
 # GIT aliases
+alias gitk='gitk --all&'
 alias gst='git status'
 alias gl='git pull'
 alias gp='git push'
@@ -9,7 +10,7 @@ alias gb='git branch --color'
 alias gba='git branch -a --color'
 alias gadd='git add -i'
 alias glog='git log --pretty=format:"%ar - %an - %s"'
-alias gamend='git commit -a --amend'
+alias gamend='git commit -v --amend'
 alias gapply='git stash apply && git stash clear'
 
 # Bash commands
