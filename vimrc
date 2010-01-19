@@ -7,3 +7,4 @@
 :set shiftwidth=2
 :set hlsearch
 :set incsearch
+:set ignorecase 

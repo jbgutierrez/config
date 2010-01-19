@@ -120,3 +120,8 @@ RICompletionProc = proc{|input|
 Readline.basic_word_break_characters= " \t\n\\><=;|&"
 Readline.completion_proc = RICompletionProc
 
+class Object
+  def dump_history
+    Readline::HISTORY.entries.split("exit").last[0..-2].join("\n") 
+  end
+end
