@@ -1,8 +1,4 @@
-# print SQL to STDOUT
-if ENV.include?('RAILS_ENV') && !Object.const_defined?('RAILS_DEFAULT_LOGGER')
-  require 'logger'
-  RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
-end
+require 'rubygems'
 
 # Prompt behavior
 ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
@@ -11,41 +7,38 @@ ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
 require 'irb/ext/save-history'
 IRB.conf[:SAVE_HISTORY] = 100
 IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb-save-history"
-
-# Autocomplete
-# require 'irb/completion'
+IRB.conf[:AUTO_INDENT]=true
 
 #http://giantrobots.thoughtbot.com/2008/12/23/script-console-tips
-begin
-  require 'rubygems'
-  require 'wirble'
-  Wirble.init
-  Wirble.colorize
-rescue LoadError => err
-  warn "Couldn't load Wirble: #{err}"
+require 'wirble'
+Wirble.init
+Wirble.colorize
+
+# Autocomplete
+# require 'map_by_method'
+require 'what_methods'
+require 'pp'
+
+# print SQL to STDOUT
+if ENV.include?('RAILS_ENV') && !Object.const_defined?('RAILS_DEFAULT_LOGGER')
+  require 'logger'
+  RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
+  require 'hirb'
+  Hirb::View.enable
 end
 
-
-#Easily print methods local to an object's class
 class Object
+  
   def local_methods
     (methods - Object.instance_methods).sort
   end
-end
-
-alias q exit
-
-# http://eigenclass.org/hiki/irb+ri+completion
-require 'irb/completion'
-
-module Kernel
-  def r(arg)
-    puts `qri "#{arg}"`
+  
+  def dump_history
+    Readline::HISTORY.entries.split("exit").last[0..-2].join("\n") 
   end
-  private :r
-end
-
-class Object
+  
+  private
+  
   def puts_ri_documentation_for(obj, meth)
     case self
     when Module
@@ -67,7 +60,6 @@ class Object
     end
     false
   end
-  private :puts_ri_documentation_for
 
   def method_missing(meth, *args, &block)
     if md = /ri_(.*)/.match(meth.to_s)
@@ -86,42 +78,4 @@ class Object
   end
 end
 
-RICompletionProc = proc{|input|
-  bind = IRB.conf[:MAIN_CONTEXT].workspace.binding
-  case input
-  when /(\s*(.*)\.ri_)(.*)/
-    pre = $1
-    receiver = $2
-    meth = $3 ? /\A#{Regexp.quote($3)}/ : /./ #}
-    begin
-      candidates = eval("#{receiver}.methods", bind).map do |m|
-        case m
-        when /[A-Za-z_]/; m
-        else # needs escaping
-          %{"#{m}"}
-        end
-      end
-      candidates = candidates.grep(meth)
-      candidates.map{|s| pre + s }
-    rescue Exception
-      candidates = []
-    end
-  when /([A-Z]\w+)#(\w*)/ #}
-    klass = $1
-    meth = $2 ? /\A#{Regexp.quote($2)}/ : /./
-    candidates = eval("#{klass}.instance_methods(false)", bind)
-    candidates = candidates.grep(meth)
-    candidates.map{|s| "'" + klass + '#' + s + "'"}
-  else
-    IRB::InputCompletor::CompletionProc.call(input)
-  end
-}
-#Readline.basic_word_break_characters= " \t\n\"\\'`><=;|&{("
-Readline.basic_word_break_characters= " \t\n\\><=;|&"
-Readline.completion_proc = RICompletionProc
-
-class Object
-  def dump_history
-    Readline::HISTORY.entries.split("exit").last[0..-2].join("\n") 
-  end
-end
+alias q exit

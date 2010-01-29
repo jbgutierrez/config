@@ -36,3 +36,12 @@ export PROJECTS_FOLDER=$HOME/Proyectos
 if [ -e "$HOME/.aliases" ]; then
   source "$HOME/.aliases"
 fi
+
+# Adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+
+# Adding an appropriate MANPATH variable for use with MacPorts.
+export MANPATH=/opt/local/share/man:$MANPATH
+
+# svn upgrade
+export PATH=/opt/subversion/bin:$PATH
