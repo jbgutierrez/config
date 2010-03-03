@@ -1,10 +1,191 @@
-:syntax on
-:set cindent
-:set smartindent
-:set autoindent
-:set expandtab
-:set tabstop=2
-:set shiftwidth=2
-:set hlsearch
-:set incsearch
-:set ignorecase 
+"##
+"# General settings
+"##
+set nocompatible        " Use Vim defaults (much better!)
+set backspace=indent,eol,start " allow backspacing over everything in insert mode
+set virtualedit=all     "allows the cursor to freely roam anywhere it likes in command mode
+set viminfo='20,\"50    " read/write a .viminfo file, don't store more
+                        " than 50 lines of registers
+set history=50          " keep 50 lines of command line history
+set ruler               " show the cursor position all the time
+set number              " show line numbers
+set smarttab            " smart tabulatin and backspace
+set title               " show title
+set tabstop=2           "use spaces instead of tabs
+
+"identation
+set shiftwidth=2
+set autoindent
+set expandtab
+
+"searh options
+set hlsearch
+set incsearch           " find while typing
+set ignorecase 
+set showmatch
+
+" make search results appear in the middle of the screen
+nmap n nzz
+nmap N Nzz
+nmap * *zz
+nmap # #zz
+nmap g* g*zz
+nmap g# g#zz
+
+" Set lazydraws so that rendering is much faster during macros
+set lazyredraw
+
+" I like to know which mode I am in at times
+set showmode
+" set wildmode=longest:full
+" set wildmenu
+
+" Encoding and fileformat
+" set fileformat=dos
+" set enc=iso-8859-1
+" set spell spelllang=sp
+set enc=utf-8
+
+"##
+"# Coding settings
+"##
+syntax on             " Enable syntax highlighting
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins
+compiler ruby         " Enable compiler support for ruby
+au FileType ruby,eruby set omnifunc=rubycomplete#Complete
+au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+au FileType ruby,eruby let g:rubycomplete_rails = 1
+au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
+let g:xml_syntax_folding=1
+au FileType xml setlocal foldmethod=syntax
+" File types really do require explicit tabs, and not spaces
+autocmd FileType make     set noexpandtab
+autocmd FileType python   set noexpandtab
+
+"##
+"# UI settings
+"##
+"improve autocomplete menu color
+highlight Pmenu ctermbg=238 gui=bold
+"gui options
+set guifont=Monaco:h12.00
+set guioptions-=T
+set guioptions-=r
+set guioptions-=R
+set guioptions-=l
+set guioptions-=R
+colorscheme sunburst
+"accessing the system clipboard
+set clipboard=unnamed
+
+"##
+"# Key mappings
+"##
+let mapleader = ","
+" For moving around split windows"
+nmap <s-down>   <c-w>w
+nmap <s-up>     <c-w>W
+nmap <s-left>   <c-w>h
+nmap <s-right>  <c-w>l
+" Buffer Navigation"
+map <M-Left> 	:bprevious<CR>
+map <M-Right> :bnext<CR>
+map <M-Up>		:bfirst<CR>
+map <M-Down>	:blast<CR>
+" Textmate like projec navigation
+map <leader>t :FuzzyFiunderTextMate<CR>
+map <leader>b :FuzzyFinderBuffer<CR
+" " Delete empty lines
+" map <leader>d :v/\S/d<cr>
+" map <leader>d <esc>my:%s/\(^\n\{2,}\)/\r/g<cr>`y
+" Substitute current word
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+"	F2 - List methods
+map <F2> :TlistToggle<CR>
+" F3 - List project files
+map <F3> :execute 'NERDTreeToggle ' . getcwd()<CR>
+" F4 - highlighting on/off
+noremap <F4> :set hlsearch! hlsearch?<CR>
+" F5 - List buffers 
+map <F5> :ls<CR>:b
+" F6 - Toggle scratch buffer
+map <F6> :call ToggleScratch()<CR>
+" Toggle comment
+map <leader>c gcc
+
+"##
+"# Plugins settings
+"##
+" Minibuffer Explorer Settings
+let g:miniBufExplMapWindowNavVim = 1 
+let g:miniBufExplMapWindowNavArrows = 1 
+let g:miniBufExplMapCTabSwitchBufs = 1 
+let g:miniBufExplModSelTarget = 1 
+
+let Tlist_Show_Menu=1
+let Tlist_GainFocus_On_ToggleOpen=1
+let Tlist_Close_OnSelect=1
+let Tlist_Compact_Format=1"                                                                      
+
+let NERDChristmasTree = 1               " NERDTree with colors
+let NERDTreeHighlightCursorline = 1     " highlight cursorline
+let NERDTreeMapActivateNode='<CR>'      " set Enter/Return to activate a node
+
+" Set FuzzyFinder settings
+let g:fuzzy_ignore = "*.log"
+let g:fuzzy_matching_limit = 70
+let g:fuzzy_ceiling=20000               " file count limit to search
+ 
+" Add what to ignore in the fuzzy search
+let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif"
+let g:fuzzy_ignore = "*.ogg;*.OGG;*.ogv;*.OGV;*.mkv;*.MKV"
+let g:fuzzy_ignore = "*.mp3;*.mp3;*.mp4;*.MP4;*.avi;*.AVI;*.wma;*.WMA;*.wmv;*.WMV"
+let g:fuzzy_ignore = "*.flv;*.FLV;*.mov;*.MOV;*.pdf;*.PDF"
+let g:fuzzy_ignore = "*.zip;*.ZIP;*.tar;*.7z;*.gz;*.bz2"
+"##
+"# Custom functions
+"##
+"Pretty-formatting XML
+function! DoPrettyXML()
+  " save the filetype so we can restore it later
+  let l:origft = &ft
+  set ft=
+  " delete the xml header if it exists. This will
+  " permit us to surround the document with fake tags
+  " without creating invalid xml.
+  1s/<?xml .*?>//e
+  " insert fake tags around the entire document.
+  " This will permit us to pretty-format excerpts of
+  " XML that may contain multiple top-level elements.
+  0put ='<PrettyXML>'
+  $put ='</PrettyXML>'
+  silent %!xmllint --format -
+  " xmllint will insert an <?xml?> header. it's easy enough to delete
+  " if you don't want it.
+  " delete the fake tags
+  2d
+  $d
+  " restore the 'normal' indentation, which is one extra level
+  " too deep due to the extra tags we wrapped around the document.
+  silent %<
+  " back to home
+  1
+  " restore the filetype
+  exe "set ft=" . l:origft
+endfunction
+command! PrettyXML call DoPrettyXML()
+
+function! ToggleScratch()
+  if expand('%') == g:ScratchBufferName
+    quit
+  else
+    Sscratch
+  endif
+endfunction
+
+if has("statusline")
+ set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
+endif
