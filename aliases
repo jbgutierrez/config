@@ -41,9 +41,14 @@ for path in $PROJECTS_FOLDER/*; do
 done
 
 # Puts you in a 1.9 sandbox
-alias ruby19="export PATH=/opt/ruby19/bin:$PATH"
+# alias ruby19="export PATH=/opt/ruby19/bin:$PATH"
 
 # Remember path position
 export REMEMBERME_PATH=$HOME
 alias rememberme='export REMEMBERME_PATH=$PWD'
 alias cdrememberme='cd "$REMEMBERME_PATH"'
+
+# Instant web sharing via webrick
+alias webshare='ruby -e "require\"webrick\";w=WEBrick::HTTPServer.new(:Port=>8000,:DocumentRoot=>Dir::pwd);Signal.trap(2){w.shutdown};w.start"'
+
+alias g='gvim --remote-silent'

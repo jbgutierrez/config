@@ -9,7 +9,7 @@ LIGHT_GRAY="\[\033[0;37m\]"
 
 PS1="$RED\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$GREEN\$ $LIGHT_GRAY"
 
-PATH=$PATH:$HOME/.gem/ruby/1.8/bin:/usr/local/mysql/bin
+PATH=$PATH:/usr/local/mysql/bin:$HOME/.bin
 
 test -r /sw/bin/init.sh && . /sw/bin/init.sh
 CLICOLOR=1
@@ -45,3 +45,8 @@ export MANPATH=/opt/local/share/man:$MANPATH
 
 # svn upgrade
 export PATH=/opt/subversion/bin:$PATH
+
+# Ruvy version manager
+if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi
+
+test -r /sw/bin/init.sh && . /sw/bin/init.sh

@@ -61,6 +61,8 @@ au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 let g:xml_syntax_folding=1
 au FileType xml setlocal foldmethod=syntax
+" For Haml
+au! BufRead,BufNewFile *.haml setfiletype haml
 " File types really do require explicit tabs, and not spaces
 autocmd FileType make     set noexpandtab
 autocmd FileType python   set noexpandtab
@@ -95,26 +97,52 @@ map <M-Left> 	:bprevious<CR>
 map <M-Right> :bnext<CR>
 map <M-Up>		:bfirst<CR>
 map <M-Down>	:blast<CR>
-" Textmate like projec navigation
-map <leader>t :FuzzyFiunderTextMate<CR>
-map <leader>b :FuzzyFinderBuffer<CR
+" Run file in shell mode with ruby
+map <D-r> <Plug>RubyFileRun
+" Textmate like project navigation
+map <Leader>r :FuzzyFinderTextMate<CR>
+map <leader>b :FuzzyFinderBuffer<CR>
+map <leader>t :FuzzyFinderTag!<CR>
 " " Delete empty lines
 " map <leader>d :v/\S/d<cr>
 " map <leader>d <esc>my:%s/\(^\n\{2,}\)/\r/g<cr>`y
 " Substitute current word
-nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+map <Leader>s :%s/\<<C-r><C-w>\>/
 "	F2 - List methods
 map <F2> :TlistToggle<CR>
 " F3 - List project files
 map <F3> :execute 'NERDTreeToggle ' . getcwd()<CR>
 " F4 - highlighting on/off
-noremap <F4> :set hlsearch! hlsearch?<CR>
+map <F4> :set hlsearch! hlsearch?<CR>
 " F5 - List buffers 
 map <F5> :ls<CR>:b
 " F6 - Toggle scratch buffer
 map <F6> :call ToggleScratch()<CR>
 " Toggle comment
 map <leader>c gcc
+" Maps autocomplete to tab
+imap <Tab> <C-N>
+" Unmap Apple+S to remap to Esc, then :w<CR>
+macmenu &File.Save key=<nop>
+imap <D-s> <Esc>:w<CR>
+map <D-s> :w<CR>
+
+" " Leader shortcuts for Rails commands
+" map <Leader>m :Rmodel
+" map <Leader>c :Rcontroller
+" map <Leader>v :Rview
+" map <Leader>u :Runittest
+" map <Leader>f :Rfunctionaltest
+" map <Leader>tm :RTmodel
+" map <Leader>tc :RTcontroller
+" map <Leader>tv :RTview
+" map <Leader>tu :RTunittest
+" map <Leader>tf :RTfunctionaltest
+" map <Leader>sm :RSmodel
+" map <Leader>sc :RScontroller
+" map <Leader>sv :RSview
+" map <Leader>su :RSunittest
+" map <Leader>sf :RSfunctionaltest 
 
 "##
 "# Plugins settings
@@ -128,18 +156,21 @@ let g:miniBufExplModSelTarget = 1
 let Tlist_Show_Menu=1
 let Tlist_GainFocus_On_ToggleOpen=1
 let Tlist_Close_OnSelect=1
-let Tlist_Compact_Format=1"                                                                      
+let Tlist_Compact_Format=1                                                                      
 
 let NERDChristmasTree = 1               " NERDTree with colors
 let NERDTreeHighlightCursorline = 1     " highlight cursorline
 let NERDTreeMapActivateNode='<CR>'      " set Enter/Return to activate a node
 
 " Set FuzzyFinder settings
-let g:fuzzy_ignore = "*.log"
 let g:fuzzy_matching_limit = 70
-let g:fuzzy_ceiling=20000               " file count limit to search
+let g:fuzzy_enumerating_limit = 10
+let g:fuzzy_path_display = 'relative_path'
+let g:fuzzy_ceiling = 5000
  
 " Add what to ignore in the fuzzy search
+let g:fuzzy_ignore = "*.log"
+let g:fuzzy_ignore = "files/**;vendor/**;coverage/**;tmp/**,public/image/**"
 let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif"
 let g:fuzzy_ignore = "*.ogg;*.OGG;*.ogv;*.OGV;*.mkv;*.MKV"
 let g:fuzzy_ignore = "*.mp3;*.mp3;*.mp4;*.MP4;*.avi;*.AVI;*.wma;*.WMA;*.wmv;*.WMV"
