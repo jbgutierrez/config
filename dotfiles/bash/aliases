@@ -1,5 +1,3 @@
-#find . -exec grep -q "database.yml" '{}' \; -print
-
 # GIT aliases
 alias gitk='gitk --all'
 alias gitkreflog='gitk --all `git reflog | cut -c1-7`'

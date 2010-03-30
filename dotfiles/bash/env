@@ -1,0 +1,13 @@
+export EDITOR='/usr/bin/mate -w'
+export PROJECTS_FOLDER=$HOME/Proyectos
+
+# Adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+
+# Adding an appropriate MANPATH variable for use with MacPorts.
+export MANPATH=/opt/local/share/man:$MANPATH
+
+# svn upgrade
+export PATH=/opt/subversion/bin:$PATH
+
+export PATH=~/bin:$PATH:/usr/local/mysql/bin
