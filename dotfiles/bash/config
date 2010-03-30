@@ -7,7 +7,7 @@ YELLOW="\[\033[0;33m\]"
 GREEN="\[\033[0;32m\]" 
 LIGHT_GRAY="\[\033[0;37m\]"
 
-PS1="$RED\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$GREEN\$ $LIGHT_GRAY"
+PS1="$RED\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$GREEN\$ $LIGHT_GRAY \n→ "
 
 test -r /sw/bin/init.sh && . /sw/bin/init.sh
 CLICOLOR=1
