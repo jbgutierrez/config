@@ -17,5 +17,3 @@
 [github]
 	user = *
 	token = *
-[format]
-  pretty = %C(yellow)%h%Creset %s

@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 # Symlink this to ~/.autotest
-require 'autotest/redgreen'
+require 'autotest'
 
-AUTOTEST_PATH = File.dirname(File.symlink?(__FILE__) ? File.readlink(__FILE__) : File.expand_path(__FILE__)) + "/.autotest_files"
+AUTOTEST_PATH = "#{ENV['HOME']}/.autotest_files"
 
 module Autotest::Growl
   def self.growl title, msg, img, pri=0, stick=""

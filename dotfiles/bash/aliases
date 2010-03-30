@@ -8,19 +8,23 @@ alias tu='top -o cpu' # cpu
 alias tm='top -o vsize' # memory
 
 # GIT aliases
-alias gitk='gitk --all'
-alias gitkreflog='gitk --all `git reflog | cut -c1-7`'
+alias gk='gitk --all'
+alias gkr='gitk --all `git reflog | cut -c1-7`'
 alias gst='git status'
 alias gl='git pull'
 alias gp='git push'
 alias gd='git diff'
 alias gc='git commit -v'
 alias gca='git commit -v -a'
+alias ga='git commit -v --amend'
+alias gaa='git commit -v -a --amend'
 alias gb='git branch --color'
-alias gba='git branch -a --color'
+alias gbd='git branch -d'
+function gbc(){
+  git checkout -b $1 2> /dev/null || git checkout $1
+}
 alias gadd='git add -i'
 alias glog='git log --pretty=format:"%ar - %an - %s"'
-alias gamend='git commit -v --amend'
 alias gapply='git stash apply && git stash clear'
 # Git clone from GitHub
 function gclone() {
@@ -39,9 +43,9 @@ alias df='df -h'
 alias h='history'
 alias md='mkdir -p'
 function cdh(){
-  cd $HOME
-  cd "$1"
+  cd "$HOME/$1"
 }
+alias cls='clear'
 alias ..='cd ..'   # up one dir
 alias cd..='cd ..'   # up one dir
 alias cdl='cd -'  # goto last dir cd'ed from
@@ -103,6 +107,6 @@ alias ss='./script/server'
 alias tl='tail -f log/*.log'
 
 # TDD / BDD
-alias aa='autotest'
+alias at='autotest'
 alias aaf='autotest -f' # Don't run all at start
-alias aas="./script/autospec"
+alias as="autospec"
