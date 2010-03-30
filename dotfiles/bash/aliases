@@ -77,14 +77,14 @@ alias clean='find . -name *.DS_Store -type f -exec rm {} \;'
 alias update_bundles='svn update ~/Library/Application\ Support/TextMate/Bundles'
 
 # Shortcuts to each project folder
-alias cdprojects="cd $PROJECTS_FOLDER"
-for path in $PROJECTS_FOLDER/*; do
-  if [ -d $path ]; then
-    subfolder=`echo $path | sed 's/.*\///'`
-    alias "cd$subfolder"="cd $path"
-    alias "e$subfolder"="gvim $path"
-  fi
-done
+# alias cdprojects="cd $PROJECTS_FOLDER"
+# for path in $PROJECTS_FOLDER/*; do
+#   if [ -d $path ]; then
+#     subfolder=`echo $path | /usr/bin/sed 's/.*\///'`
+#     alias "cd$subfolder"="cd $path"
+#     alias "e$subfolder"="gvim $path"
+#   fi
+# done
 
 # Ruby
 alias r="rake"
