@@ -1,5 +1,5 @@
 export EDITOR='/usr/bin/mate -w'
-export PROJECTS_FOLDER=$HOME/Proyectos
+export PROJECTS_FOLDER=$HOME/Projects
 
 # Adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH

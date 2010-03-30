@@ -1,10 +1,19 @@
+# Utility
+alias reload='source ~/bin/dotfiles/bash/aliases'
+alias ea='mate -w ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
+alias ee="mate ~/bin/dotfiles/bash/env"
+
+# Processes
+alias tu='top -o cpu' # cpu
+alias tm='top -o vsize' # memory
+
 # GIT aliases
 alias gitk='gitk --all'
 alias gitkreflog='gitk --all `git reflog | cut -c1-7`'
 alias gst='git status'
 alias gl='git pull'
 alias gp='git push'
-alias gd='git diff | mate'
+alias gd='git diff'
 alias gc='git commit -v'
 alias gca='git commit -v -a'
 alias gb='git branch --color'
@@ -13,20 +22,51 @@ alias gadd='git add -i'
 alias glog='git log --pretty=format:"%ar - %an - %s"'
 alias gamend='git commit -v --amend'
 alias gapply='git stash apply && git stash clear'
+# Git clone from GitHub
+function gclone() {
+  git clone git://github.com/$USER/$1.git
+}
 
 # Bash commands
 alias less='less -r'
-alias ls='ls -l -G'
+alias la='ls -lhGta'
+alias l='ls -lhGt'  # -l long listing, most recent first
+                    # -G color
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 alias df='df -h'
+alias h='history'
+alias md='mkdir -p'
+function cdh(){
+  cd $HOME
+  cd "$1"
+}
+alias ..='cd ..'   # up one dir
+alias cd..='cd ..'   # up one dir
+alias cdl='cd -'  # goto last dir cd'ed from
+alias cdd='cd -'  # goto last dir cd'ed from
+function take() { 
+  mkdir -p "$1"
+  cd "$1" 
+}
+alias q='exit'
+function killnamed () { 
+    ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill 
+}
+function zipr() {
+  zip -r $1.zip $1
+}
+
+# Finder
+alias o='open . &'
+alias ff='open -a Firefox'
 
 # Recursively Remove .DS_Store files in OS X
-alias rmdsstores='find . -name *.DS_Store -type f -exec rm {} \;'
+alias clean='find . -name *.DS_Store -type f -exec rm {} \;'
 
 # Update Textmate Bundles
-alias update_textmate_bundles='svn update ~/Library/Application\ Support/TextMate/Bundles'
+alias update_bundles='svn update ~/Library/Application\ Support/TextMate/Bundles'
 
 # Shortcuts to each project folder
 alias cdprojects="cd $PROJECTS_FOLDER"
@@ -34,10 +74,12 @@ for path in $PROJECTS_FOLDER/*; do
   if [ -d $path ]; then
 	  subfolder=`echo $path | sed 's/.*\///'`
     alias "cd$subfolder"="cd $path"
-    alias "mate$subfolder"="mate $path"
+    alias "e$subfolder"="mate $path"
   fi
 done
 
+# Ruby
+alias r="rake"
 # Puts you in a 1.9 sandbox
 # alias ruby19="export PATH=/opt/ruby19/bin:$PATH"
 
@@ -49,4 +91,18 @@ alias cdrememberme='cd "$REMEMBERME_PATH"'
 # Instant web sharing via webrick
 alias webshare='ruby -e "require\"webrick\";w=WEBrick::HTTPServer.new(:Port=>8000,:DocumentRoot=>Dir::pwd);Signal.trap(2){w.shutdown};w.start"'
 
+
+alias e='vim'
 alias g='gvim --remote-silent'
+
+# Rails
+alias sc='./script/console'
+alias sg='./script/generate'
+alias sp='./script/plugin'
+alias ss='./script/server'
+alias tl='tail -f log/*.log'
+
+# TDD / BDD
+alias aa='autotest'
+alias aaf='autotest -f' # Don't run all at start
+alias aas="./script/autospec"
