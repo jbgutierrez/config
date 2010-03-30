@@ -1,0 +1,5 @@
+== Installation
+
+  git clone git://github.com/jbgutierrez/config ~/bin
+  cd ~/bin
+  rake install
