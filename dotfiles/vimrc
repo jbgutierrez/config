@@ -38,7 +38,7 @@ set lazyredraw
 " I like to know which mode I am in at times
 set showmode
 " set wildmode=longest:full
-" set wildmenu
+set wildmenu
 
 " Encoding and fileformat
 " set fileformat=dos
@@ -144,14 +144,14 @@ map <D-s> :w<CR>
 " map <Leader>su :RSunittest
 " map <Leader>sf :RSfunctionaltest 
 
-"##
-"# Plugins settings
-"##
-" Minibuffer Explorer Settings
-let g:miniBufExplMapWindowNavVim = 1 
-let g:miniBufExplMapWindowNavArrows = 1 
-let g:miniBufExplMapCTabSwitchBufs = 1 
-let g:miniBufExplModSelTarget = 1 
+""##
+""# Plugins settings
+""##
+"" Minibuffer Explorer Settings
+"let g:miniBufExplMapWindowNavVim = 1 
+"let g:miniBufExplMapWindowNavArrows = 1 
+"let g:miniBufExplMapCTabSwitchBufs = 1 
+"let g:miniBufExplModSelTarget = 1 
 
 let Tlist_Show_Menu=1
 let Tlist_GainFocus_On_ToggleOpen=1
