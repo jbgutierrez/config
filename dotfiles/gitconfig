@@ -6,7 +6,7 @@
 [apply]
 	whitespace = nowarn
 [core]
-	editor = mate -w
+	editor = gvim -f
 [core]
 	excludesfile = ~/.gitignore
 [color]
