@@ -31,6 +31,10 @@ function gclone() {
   git clone git://github.com/$1/$2.git
 }
 
+#heroku helpers
+alias hp="git push heroku master"
+alias hl="heroku logs"
+
 # Bash commands
 alias less='less -r'
 alias la='ls -lhGta'
