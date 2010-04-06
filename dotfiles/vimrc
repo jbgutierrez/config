@@ -15,6 +15,7 @@ set lazyredraw          " Set lazydraws so that rendering is much faster during 
 set showmode            " I like to know which mode I am in at times
 set showcmd             " show the command being typed"
 set showmatch           " show matching brackets
+set nowrap              " don't wrap lines
 " set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
 set wildmenu            " turn on command line completion wild style"}}}
@@ -169,6 +170,8 @@ map <D-r> <Plug>RubyFileRun
 vmap D y'>p
 " Toggle comment
 map <leader>c gcc"}}}"}}}
+" replace selected text
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
 " Plugins settings"{{{
 " Minibuffer Explorer "{{{
