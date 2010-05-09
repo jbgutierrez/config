@@ -1,7 +1,7 @@
 # Utility
 alias reload='source ~/bin/dotfiles/bash/aliases'
 alias ea='gvim -f ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
-alias ee="gvim ~/bin/dotfiles/bash/env"
+alias ee='gvim ~/bin/dotfiles/bash/env'
 
 # Processes
 alias tu='top -o cpu' # cpu
@@ -16,6 +16,7 @@ alias gp='git push'
 alias gd='git diff'
 alias gc='git commit -v'
 alias gca='git commit -v -a'
+alias gcsvn='git svn dcommit'
 alias ga='git commit -v --amend'
 alias gaa='git commit -v -a --amend'
 alias gb='git branch --color'
@@ -26,6 +27,10 @@ function gbc(){
 alias gadd='git add -i'
 alias glog='git log --pretty=format:"%ar - %an - %s"'
 alias gapply='git stash apply && git stash clear'
+alias gresolve='git add -u && git rebase --continue'
+function garchive() {
+  git archive master | bzip2 >source-tree.tar.bz2 
+}
 # Git clone from GitHub
 function gclone() {
   git clone git://github.com/$1/$2.git
@@ -64,6 +69,10 @@ function killnamed () {
 }
 function zipr() {
   zip -r $1.zip $1
+}
+
+function zip2bzip(){
+  cat $1 | gunzip | bzip2 !#:1:s/gz/bz2
 }
 
 # Finder
@@ -111,3 +120,8 @@ alias tl='tail -f log/*.log'
 alias at='autotest'
 alias aaf='autotest -f' # Don't run all at start
 alias as="autospec"
+
+# Social activity
+function tweet(){
+  curl -u user:pass http://twitter.com/statuses/update.xml -d status="$*"
+}
