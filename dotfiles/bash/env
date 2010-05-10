@@ -11,3 +11,16 @@ export MANPATH=/opt/local/share/man:$MANPATH
 export PATH=/opt/subversion/bin:$PATH
 
 export PATH=~/bin:$PATH:/usr/local/mysql/bin
+
+# Cygwin customizations and walkarounds
+if [ $_YAP_CYGWIN ]; then
+  # cygwin settings
+  export LC_ALL="es_ES.ISO-8859-15"
+  export LANG="es_ES.ISO-8859-15"
+  export OUTPUT_CHARSET="ISO-8859-15"
+  export PATH=$PATH:"/cygdrive/c/Archivos de programa/TortoiseSVN/bin"
+  export PROJECTS_FOLDER='/cygdrive/d/Proyectos'
+  
+  # colorful shell
+  export LESS="-erX"
+fi

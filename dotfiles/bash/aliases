@@ -125,3 +125,26 @@ alias as="autospec"
 function tweet(){
   curl -u user:pass http://twitter.com/statuses/update.xml -d status="$*"
 }
+
+# Cygwin customizations and walkarounds
+if [ $_YAP_CYGWIN ]; then
+  # Shortcuts to each project folder
+  alias cdprojects="cd $PROJECTS_FOLDER"
+  for path in $PROJECTS_FOLDER/*; do
+    if [ -d $path ]; then
+      subfolder=`echo $path | sed 's/.*\///' | tr "[:upper:]" "[:lower:]"`
+      alias "cd$subfolder"="cd $path/Software/trunk"
+      alias "e$subfolder"="e $path/Software/trunk"
+      alias "u$subfolder"="cd $path/Software/trunk && git svn rebase && cd -"
+      alias "o$subfolder"='"/cygdrive/c/Archivos de programa/Microsoft Visual Studio 8/Common7/IDE/devenv.exe" "D:/Proyectos/$subfolder/Software/trunk/$ subfolder.sln"&'
+    fi
+  done
+
+  # Cygwin walkarounds
+  alias rake='C:/ruby/bin/rake'
+  alias gem='C:/ruby/bin/gem'
+  alias gvim='gvim.bat'
+  alias reload='cd && source bin/dotfiles/bash/aliases && cd -'
+  alias ea='cd && gvim -f bin/dotfiles/bash/aliases && reload && cd -' # Edit aliases
+  alias ee='cd && gvim bin/dotfiles/bash/env && cd -'
+fi
