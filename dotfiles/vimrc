@@ -1,5 +1,5 @@
-" General settings"{{{
-" general"{{{
+" General settings{{{
+" general{{{
 set nocompatible        " Use Vim defaults (much better!)
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set virtualedit=all     "allows the cursor to freely roam anywhere it likes in command mode
@@ -16,35 +16,40 @@ set showmode            " I like to know which mode I am in at times
 set showcmd             " show the command being typed"
 set showmatch           " show matching brackets
 set nowrap              " don't wrap lines
+set linebreak
+set nolist
+set hidden
+set listchars=tab:▸\ ,eol:¬ "use the same symbols as TextMate for tabstops and EOLs
+
 " set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
 set wildmenu            " turn on command line completion wild style"}}}
-" identation"{{{
-set tabstop=2           " use spaces instead of tabs
+" identation{{{
+set tabstop=2
+set softtabstop=2
 set shiftwidth=2
-set autoindent
+set autoindent            " use spaces instead of tabs
 set expandtab"}}}
-" search options"{{{
+" search options{{{
 set hlsearch
 set incsearch           " find while typing
 set ignorecase"}}}
-" make search results appear in the middle of the screen"{{{
+" make search results appear in the middle of the screen{{{
 nmap n nzz
 nmap N Nzz
 nmap * *zz
 nmap # #zz
 nmap g* g*zz
 nmap g# g#zz"}}}
-" encoding and fileformat"{{{
+" encoding and fileformat{{{
 " set fileformat=dos
 " set enc=iso-8859-1
 " set spell spelllang=sp
 
 set enc=utf-8"}}}
-" UI settings"{{{
+" UI settings{{{
 
 "improve autocomplete menu color
-highlight Pmenu ctermbg=238 gui=bold
 "gui options
 set guifont=Monaco:h12.00
 set guioptions-=T
@@ -53,96 +58,92 @@ set guioptions-=R
 set guioptions-=l
 set guioptions-=R
 colorscheme sunburst
+au! ColorScheme * hi Pmenu ctermbg=238 gui=bold
+au! ColorScheme * hi Folded guibg=#292421
+"Invisible character colors
 set cursorline " highlight current line
 set clipboard+=unnamed "accessing the system clipboard"}}}"}}}
 
-" Coding settings"{{{
-" General"{{{
+" Coding settings{{{
+" general{{{
 syntax on             " Enable syntax highlighting
 filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
 compiler ruby         " Enable compiler support for ruby
-set foldmethod=indent
-set foldlevel=20
+" au BufWritePre * :call <SID>StripTrailingWhitespaces()
 " Auto save folds
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview"}}}
-" folding"{{{
-function! SimpleFold_FoldText()
-  return getline(v:foldstart).' ... '
-endfunction
-set foldtext=SimpleFold_FoldText() " Custom fold text function"}}}
-" Javascript"{{{
-au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-au FileType javascript set foldmarker={,}
-au FileType javascript set foldmethod=marker"}}}
-" .vimrc"{{{
+" folding{{{
+set foldlevel=1
+set foldmethod=syntax
+set fillchars=fold:\ "
+set foldtext=MyFoldText() " Custom fold text function
+"}}}
+" javascript{{{
+au FileType javascript set foldlevel=1
+au FileType javascript set omnifunc=javascriptcomplete#CompleteJS"}}}
+" .vimrc{{{
 au BufWritePost .vimrc source % " When vimrc is edited, reload it
-au BufRead,BufWritePost .vimrc set foldlevel=1
-au BufRead,BufWritePost .vimrc hi clear Folded
 au BufRead,BufWritePost .vimrc set foldmethod=marker"}}}
-" Ruby"{{{
+" ruby{{{
 au FileType ruby,eruby set omnifunc=rubycomplete#Complete
 au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 au FileType ruby,eruby let g:rubycomplete_rails = 1
 au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1"}}}
-" XML"{{{
+" XML{{{
 au FileType html set omnifunc=htmlcomplete#CompleteTags
 au FileType xml set omnifunc=xmlcomplete#CompleteTags
 au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 let g:xml_syntax_folding=1
 au FileType xml setlocal foldmethod=syntax"}}}
-" Haml"{{{
+" haml{{{
 au! BufRead,BufNewFile *.haml setfiletype haml"}}}
-" CSS"{{{
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS"}}}
-" File types really do require explicit tabs, and not spaces"{{{
-autocmd FileType make     set noexpandtab
-autocmd FileType python   set noexpandtab"}}}"}}}
+" css{{{
+au FileType css set foldmethod=marker
+au FileType css set foldmarker={,}
+au FileType css set omnifunc=csscomplete#CompleteCSS"}}}
+" file types really do require explicit tabs, and not spaces{{{
+au FileType make   set noexpandtab
+au FileType python set noexpandtab"}}}"}}}
 
-" Key mappings"{{{
-" general"{{{
+" Key mappings{{{
+" general{{{
 let mapleader = ","
-"Redo
-map <s-u> :redo<CR>
-" " Maps autocomplete to tab
-" imap <Tab> <C-N>
-" fast editing of the .vimrc
-map <leader>e :e ~/.vimrc<cr>"}}}
-" moving around split windows""{{{
+map <s-u> :redo<CR>           " redo
+nmap <leader>l :set list!<CR> " shortcut to rapidly toggle `set list` (retab! if neccesary)
+" imap <Tab> <C-N>            " maps autocomplete to tab
+map <leader>e :e ~/.vimrc<cr> " fast editing of the .vimrc "}}}
+" moving around split windows"{{{
 nmap <s-down>   <c-w>w
 nmap <s-up>     <c-w>W
 nmap <s-left>   <c-w>h
 nmap <s-right>  <c-w>l"}}}
-" moving around buffers""{{{
-nnoremap <M-Left> 	:bprevious<CR>
-nnoremap <M-Right> :bnext<CR>
-nnoremap <M-Up>		:bfirst<CR>
-nnoremap <M-Down>	:blast<CR>"}}}
-" fuzzyFinder navigation"{{{
+" fuzzyFinder navigation{{{
 map <Leader>r :FuzzyFinderTextMate<CR>
 map <leader>b :FuzzyFinderBuffer<CR>
 map <leader>t :FuzzyFinderTag!<CR>"}}}
-" function keys"{{{
-nnoremap <F1> za                                        " F1 - Toggle current fold
-nnoremap <space> za                                     " space - Toggle current fold
-nnoremap <s-F1> zA                                      " F1 - Toggle current fold
-nnoremap <s-space> zA                                      " space - Toggle current fold
-map <F2> :TlistToggle<CR>                          " F2 - List methods
-map <F3> :execute 'NERDTreeToggle ' . getcwd()<CR> " F3 - List project files
-map <F4> :set hlsearch! hlsearch?<CR>              " F4 - highlighting on/off
-map <F5> :ls<CR>:b                                 " F5 - List buffers 
-map <F6> :call ToggleScratch()<CR>                 " F6 - Toggle scratch buffer
+" function keys{{{
+map <F2> :TlistToggle<CR>                               " F2 - List methods
+map <F3> :execute 'NERDTreeToggle ' . getcwd()<CR>      " F3 - List project files
+map <F4> :set hlsearch! hlsearch?<CR>                   " F4 - highlighting on/off
+map <F5> :ls<CR>:b                                      " F5 - List buffers
+map <F6> :call ToggleScratch()<CR>                      " F6 - Toggle scratch buffer
+nnoremap <silent> <F11>  :call  <SID>StripTrailingWhitespaces()<CR>
 map <F12> :%!tidy -q --tidy-mark 0 2>/dev/null<CR>"}}}
-" move text around"{{{
-nnoremap <A-j> :m+<CR>==
-nnoremap <A-k> :m-2<CR>==
-inoremap <A-j> <Esc>:m+<CR>==gi
-inoremap <A-k> <Esc>:m-2<CR>==gi
-vnoremap <A-j> :m'>+<CR>gv=gv
-vnoremap <A-k> :m-2<CR>gv=gv"}}}
-" shortcuts for Rails commands"{{{
+" move text around{{{
+nmap <S-Tab> <<
+nmap <Tab> >>
+vmap <S-Tab> <gv
+vmap <Tab> >gv
+nmap <C-j> :m+<CR>==
+nmap <C-k> :m-2<CR>==
+imap <C-j> <Esc>:m+<CR>==gi
+imap <C-k> <Esc>:m-2<CR>==gi
+vmap <C-j> :m'>+<CR>gv=gv
+vmap <C-k> :m-2<CR>gv=gv"}}}
+" shortcuts for Rails commands{{{
 " map <Leader>m :Rmodel
 " map <Leader>c :Rcontroller
 " map <Leader>v :Rview
@@ -158,43 +159,45 @@ vnoremap <A-k> :m-2<CR>gv=gv"}}}
 " map <Leader>sv :RSview
 " map <Leader>su :RSunittest
 " map <Leader>sf :RSfunctionaltest"}}}
-" coding utilities"{{{
-" Substitute current word
-map <Leader>s :%s/\<<C-r><C-w>\>/
-" Run file in shell mode with ruby
-map <D-r> <Plug>RubyFileRun
-" " Delete empty lines
-" map <leader>d :v/\S/d<cr>
-" map <leader>d <esc>my:%s/\(^\n\{2,}\)/\r/g<cr>`y
-" Visual mode: D
-vmap D y'>p
-" Toggle comment
-map <leader>c gcc"}}}"}}}
-" replace selected text
-vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+" folding{{{
+nnoremap <space> za    " space - Toggle current fold
+nnoremap <s-space> zA  " space - Toggle current fold"}}}
+" coding utilities{{{
+map <D-r> <Plug>RubyFileRun                        " run file in shell mode with ruby
+" map <leader>d :v/\S/d<cr>                        " delete empty lines
+" map <leader>d <esc>my:%s/\(^\n\{2,}\)/\r/g<cr>`y " delete empty lines
+vmap D y'>p                                        " visual mode: D
+map <leader>c gcc                                  " toggle comment "}}}
+" change colors{{{
+map <leader><F3> :NEXTCOLOR<cr>
+map <leader><F2> :PREVCOLOR<cr>"}}}
+" replace selected text{{{
+nnoremap <C-r> yiw:%s/<C-r>"//gc<left><left><left>
+vnoremap <C-r> y:%s/<C-r>"//gc<left><left><left>
+nnoremap S diw"0P
+vnoremap S "_d"0P"}}}"}}}
 
-" Plugins settings"{{{
-" Minibuffer Explorer "{{{
-let g:miniBufExplMapWindowNavVim = 1 
-let g:miniBufExplMapWindowNavArrows = 1 
-let g:miniBufExplMapCTabSwitchBufs = 1 
-let g:miniBufExplModSelTarget = 1 "}}}
-" Tag List"{{{
+" Plugins settings{{{
+" MiniBufExp{{{
+" let g:miniBufExplMapWindowNavArrows = 1
+" let g:miniBufExplMapCTabSwitchBufs = 1
+" let g:miniBufExplModSelTarget = 1 "}}}
+" Tag List{{{
 let Tlist_Show_Menu=1
 let Tlist_GainFocus_On_ToggleOpen=1
 let Tlist_Close_OnSelect=1
 let Tlist_Compact_Format=1"}}}
-" NERDTree"{{{
-let NERDChristmasTree = 1               " NERDTree with colors
-let NERDTreeHighlightCursorline = 1     " highlight cursorline
-let NERDTreeMapActivateNode='<CR>'      " set Enter/Return to activate a node"}}}
-" FuzzyFinder"{{{
+" NERDTree{{{
+" let NERDChristmasTree = 1               " NERDTree with colors
+" let NERDTreeHighlightCursorline = 1     " highlight cursorline
+" let NERDTreeMapActivateNode='<CR>'      " set Enter/Return to activate a node"}}}
+" FuzzyFinder{{{
 " Set FuzzyFinder settings
 let g:fuzzy_matching_limit = 70
 let g:fuzzy_enumerating_limit = 10
 let g:fuzzy_path_display = 'relative_path'
 let g:fuzzy_ceiling = 5000
- 
+
 " Add what to ignore in the fuzzy search
 let g:fuzzy_ignore = "*.log"
 let g:fuzzy_ignore = "files/**;vendor/**;coverage/**;tmp/**,public/image/**"
@@ -204,8 +207,8 @@ let g:fuzzy_ignore = "*.mp3;*.mp3;*.mp4;*.MP4;*.avi;*.AVI;*.wma;*.WMA;*.wmv;*.WM
 let g:fuzzy_ignore = "*.flv;*.FLV;*.mov;*.MOV;*.pdf;*.PDF"
 let g:fuzzy_ignore = "*.zip;*.ZIP;*.tar;*.7z;*.gz;*.bz2""}}}"}}}
 
-" Custom functions"{{{
-" Pretty-formatting XML"{{{
+" Custom functions{{{
+" Pretty-formatting XML{{{
 function! DoPrettyXML()
   " save the filetype so we can restore it later
   let l:origft = &ft
@@ -234,11 +237,30 @@ function! DoPrettyXML()
   exe "set ft=" . l:origft
 endfunction
 command! PrettyXML call DoPrettyXML()"}}}
-" ToogleScratch"{{{
+" ToogleScratch{{{
 function! ToggleScratch()
   if expand('%') == g:ScratchBufferName
     quit
   else
     Sscratch
   endif
+endfunction"}}}
+" StripTrailingWhitespaces{{{
+function! <SID>StripTrailingWhitespaces()
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  %s/\s\+$//e
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction"}}}
+" Custom Folding{{{
+function! MyFoldText()
+  let line = getline(v:foldstart)
+  let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
+  let number = v:foldend - v:foldstart + 1
+  return sub . ' ... (' . number . ' lines)'
 endfunction"}}}"}}}
