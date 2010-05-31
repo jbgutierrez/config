@@ -143,41 +143,45 @@ imap <C-j> <Esc>:m+<CR>==gi
 imap <C-k> <Esc>:m-2<CR>==gi
 vmap <C-j> :m'>+<CR>gv=gv
 vmap <C-k> :m-2<CR>gv=gv"}}}
-" shortcuts for Rails commands{{{
-" map <Leader>m :Rmodel
-" map <Leader>c :Rcontroller
-" map <Leader>v :Rview
-" map <Leader>u :Runittest
-" map <Leader>f :Rfunctionaltest
-" map <Leader>tm :RTmodel
-" map <Leader>tc :RTcontroller
-" map <Leader>tv :RTview
-" map <Leader>tu :RTunittest
-" map <Leader>tf :RTfunctionaltest
-" map <Leader>sm :RSmodel
-" map <Leader>sc :RScontroller
-" map <Leader>sv :RSview
-" map <Leader>su :RSunittest
-" map <Leader>sf :RSfunctionaltest"}}}
+" shortcuts for rails commands{{{
+" map <leader>m :rmodel
+" map <leader>c :rcontroller
+" map <leader>v :rview
+" map <leader>u :runittest
+" map <leader>f :rfunctionaltest
+" map <leader>tm :rtmodel
+" map <leader>tc :rtcontroller
+" map <leader>tv :rtview
+" map <leader>tu :rtunittest
+" map <leader>tf :rtfunctionaltest
+" map <leader>sm :rsmodel
+" map <leader>sc :rscontroller
+" map <leader>sv :rsview
+" map <leader>su :rsunittest
+" map <leader>sf :rsfunctionaltest"}}}
 " folding{{{
-nnoremap <space> za    " space - Toggle current fold
-nnoremap <s-space> zA  " space - Toggle current fold"}}}
+nnoremap <space> za    " space - toggle current fold
+nnoremap <s-space> za  " space - toggle current fold"}}}
 " coding utilities{{{
-map <D-r> <Plug>RubyFileRun                        " run file in shell mode with ruby
-" map <leader>d :v/\S/d<cr>                        " delete empty lines
+map <d-r> <plug>rubyfilerun                        " run file in shell mode with ruby
+" map <leader>d :v/\s/d<cr>                        " delete empty lines
 " map <leader>d <esc>my:%s/\(^\n\{2,}\)/\r/g<cr>`y " delete empty lines
-vmap D y'>p                                        " visual mode: D
+vmap d y'>p                                        " visual mode: d
 map <leader>c gcc                                  " toggle comment "}}}
 " change colors{{{
-map <leader><F3> :NEXTCOLOR<cr>
-map <leader><F2> :PREVCOLOR<cr>"}}}
+map <leader><f3> :nextcolor<cr>
+map <leader><f2> :prevcolor<cr>"}}}
 " replace selected text{{{
-nnoremap <C-r> yiw:%s/<C-r>"//gc<left><left><left>
-vnoremap <C-r> y:%s/<C-r>"//gc<left><left><left>
-nnoremap S diw"0P
-vnoremap S "_d"0P"}}}"}}}
+nnoremap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
+vnoremap <c-r> y:%s/<c-r>"//gc<left><left><left>
+nnoremap s diw"0p
+vnoremap s "_d"0p"}}}"}}}
 
-" Plugins settings{{{
+" plugins settings{{{
+" Load pathogen managed plugins"{{{
+call pathogen#runtime_append_all_bundles()"}}}
+" snipmate setup"{{{
+source ~/.vim/snippets/support_functions.vim"}}}
 " MiniBufExp{{{
 " let g:miniBufExplMapWindowNavArrows = 1
 " let g:miniBufExplMapCTabSwitchBufs = 1

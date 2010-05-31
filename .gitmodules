@@ -1,0 +1,24 @@
+[submodule "dotfiles/vim/snippets"]
+	path = dotfiles/vim/snippets
+	url = http://github.com/scrooloose/snipmate-snippets.git
+[submodule "dotfiles/vim/bundle/vim-surround"]
+	path = dotfiles/vim/bundle/vim-surround
+	url = http://github.com/tpope/vim-surround.git
+[submodule "dotfiles/vim/bundle/vim-rails"]
+	path = dotfiles/vim/bundle/vim-rails
+	url = http://github.com/tpope/vim-rails.git
+[submodule "dotfiles/vim/bundle/vim-haml"]
+	path = dotfiles/vim/bundle/vim-haml
+	url = http://github.com/tpope/vim-haml.git
+[submodule "dotfiles/vim/bundle/vim-ruby"]
+	path = dotfiles/vim/bundle/vim-ruby
+	url = http://github.com/vim-ruby/vim-ruby.git
+[submodule "dotfiles/vim/bundle/vim-ragtag"]
+	path = dotfiles/vim/bundle/vim-ragtag
+	url = http://github.com/tpope/vim-ragtag.git
+[submodule "dotfiles/vim/bundle/vim-vividchalk"]
+	path = dotfiles/vim/bundle/vim-vividchalk
+	url = http://github.com/tpope/vim-vividchalk.git
+[submodule "dotfiles/vim/bundle/snipmate"]
+	path = dotfiles/vim/bundle/snipmate
+	url = git@github.com:jbgutierrez/snipmate.vim.git
