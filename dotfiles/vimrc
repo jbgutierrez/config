@@ -71,7 +71,7 @@ filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
 compiler ruby         " Enable compiler support for ruby
-" au BufWritePre * :call <SID>StripTrailingWhitespaces()
+" au BufWritePre * :call <SID>DeleteUselessWhitespacesAndBlankLines()
 " Auto save folds
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview"}}}
@@ -130,7 +130,7 @@ map <F3> :execute 'NERDTreeToggle ' . getcwd()<CR>      " F3 - List project file
 map <F4> :set hlsearch! hlsearch?<CR>                   " F4 - highlighting on/off
 map <F5> :ls<CR>:b                                      " F5 - List buffers
 map <F6> :call ToggleScratch()<CR>                      " F6 - Toggle scratch buffer
-nnoremap <silent> <F11>  :call  <SID>StripTrailingWhitespaces()<CR>
+nnoremap <silent> <F11>  :call  <SID>DeleteUselessWhitespacesAndBlankLines()<CR>
 map <F12> :%!tidy -q --tidy-mark 0 2>/dev/null<CR>"}}}
 " move text around{{{
 nmap <S-Tab> <<
@@ -166,7 +166,6 @@ nnoremap <s-space> za  " space - toggle current fold"}}}
 map <d-r> <plug>rubyfilerun                        " run file in shell mode with ruby
 " map <leader>d :v/\s/d<cr>                        " delete empty lines
 " map <leader>d <esc>my:%s/\(^\n\{2,}\)/\r/g<cr>`y " delete empty lines
-vmap d y'>p                                        " visual mode: d
 map <leader>c gcc                                  " toggle comment "}}}
 " change colors{{{
 map <leader><f3> :nextcolor<cr>
@@ -249,14 +248,15 @@ function! ToggleScratch()
     Sscratch
   endif
 endfunction"}}}
-" StripTrailingWhitespaces{{{
-function! <SID>StripTrailingWhitespaces()
+" DeleteUselessWhitespacesAndBlankLines{{{
+function! <SID>DeleteUselessWhitespacesAndBlankLines()
   " Preparation: save last search, and cursor position.
   let _s=@/
   let l = line(".")
   let c = col(".")
   " Do the business:
   %s/\s\+$//e
+  :g/^$/.,/./-j 
   " Clean up: restore previous search history, and cursor position
   let @/=_s
   call cursor(l, c)
