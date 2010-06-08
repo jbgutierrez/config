@@ -2,10 +2,9 @@
 alias reload='source ~/bin/dotfiles/bash/aliases'
 alias ea='gvim -f ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
 alias ee='gvim ~/bin/dotfiles/bash/env'
-
-# Processes
-alias tu='top -o cpu' # cpu
-alias tm='top -o vsize' # memory
+function topcommands() {
+  history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
+}
 
 # GIT aliases
 alias gk='gitk --all'
@@ -21,7 +20,7 @@ alias ga='git commit -v --amend'
 alias gaa='git commit -v -a --amend'
 alias gb='git branch --color'
 alias gbd='git branch -d'
-function gbc(){
+function gbc() {
   git checkout -b $1 2> /dev/null || git checkout $1
 }
 alias gadd='git add -i'
@@ -29,18 +28,38 @@ alias glog='git log --pretty=format:"%ar - %an - %s"'
 alias gapply='git stash apply && git stash clear'
 alias gresolve='git add -u && git rebase --continue'
 function garchive() {
-  git archive master | bzip2 >source-tree.tar.bz2 
+  git archive master | bzip2 >source-tree.tar.bz2
 }
 # Git clone from GitHub
 function gclone() {
   git clone git://github.com/$1/$2.git
 }
 
+# Vim
+alias g='gvim --remote-silent'
+
+# Ruby
+alias r="rake"
+# Puts you in a 1.9 sandbox
+# alias ruby19="export PATH=/opt/ruby19/bin:$PATH"
+
+# Rails
+alias sc='./script/console'
+alias sg='./script/generate'
+alias sp='./script/plugin'
+alias ss='./script/server'
+alias tl='tail -f log/*.log'
+
+# TDD / BDD
+alias at='autotest'
+alias aaf='autotest -f' # Don't run all at start
+alias as="autospec"
+
 #heroku helpers
 alias hp="git push heroku master"
 alias hl="heroku logs"
 
-# Bash commands
+# Bash shortcuts
 alias less='less -r'
 alias la='ls -lhGta'
 alias l='ls -lhGt'  # -l long listing, most recent first
@@ -59,20 +78,45 @@ alias ..='cd ..'   # up one dir
 alias cd..='cd ..'   # up one dir
 alias cdl='cd -'  # goto last dir cd'ed from
 alias cdd='cd -'  # goto last dir cd'ed from
-function take() { 
+function take() {
   mkdir -p "$1"
-  cd "$1" 
+  cd "$1"
 }
 alias q='exit'
-function killnamed () { 
-  ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill 
+
+# Shortcuts to each project folder
+# alias cdprojects="cd $PROJECTS_FOLDER"
+# for path in $PROJECTS_FOLDER/*; do
+#   if [ -d $path ]; then
+#     subfolder=`echo $path | /usr/bin/sed 's/.*\///'`
+#     alias "cd$subfolder"="cd $path"
+#     alias "e$subfolder"="gvim $path"
+#   fi
+# done
+
+# Remember path position
+export REMEMBERME_PATH=$HOME
+alias rememberme='export REMEMBERME_PATH=$PWD'
+alias cdrememberme='cd "$REMEMBERME_PATH"'
+
+# List folders size
+function dufolders() {
+  du -h --max-depth=1
 }
+
+# File compression
 function zipr() {
   zip -r $1.zip $1
 }
-
-function zip2bzip(){
+function zip2bzip() {
   cat $1 | gunzip | bzip2 !#:1:s/gz/bz2
+}
+
+# Processes
+alias tu='top -o cpu' # cpu
+alias tm='top -o vsize' # memory
+function killnamed () {
+  ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill
 }
 
 # Finder
@@ -85,45 +129,37 @@ alias clean='find . -name *.DS_Store -type f -exec rm {} \;'
 # Update Text Bundles
 alias update_bundles='svn update ~/Library/Application\ Support/TextMate/Bundles'
 
-# Shortcuts to each project folder
-# alias cdprojects="cd $PROJECTS_FOLDER"
-# for path in $PROJECTS_FOLDER/*; do
-#   if [ -d $path ]; then
-#     subfolder=`echo $path | /usr/bin/sed 's/.*\///'`
-#     alias "cd$subfolder"="cd $path"
-#     alias "e$subfolder"="gvim $path"
-#   fi
-# done
-
-# Ruby
-alias r="rake"
-# Puts you in a 1.9 sandbox
-# alias ruby19="export PATH=/opt/ruby19/bin:$PATH"
-
-# Remember path position
-export REMEMBERME_PATH=$HOME
-alias rememberme='export REMEMBERME_PATH=$PWD'
-alias cdrememberme='cd "$REMEMBERME_PATH"'
-
 # Instant web sharing via webrick
 alias webshare='ruby -e "require\"webrick\";w=WEBrick::HTTPServer.new(:Port=>8000,:DocumentRoot=>Dir::pwd);Signal.trap(2){w.shutdown};w.start"'
-alias g='gvim --remote-silent'
-
-# Rails
-alias sc='./script/console'
-alias sg='./script/generate'
-alias sp='./script/plugin'
-alias ss='./script/server'
-alias tl='tail -f log/*.log'
-
-# TDD / BDD
-alias at='autotest'
-alias aaf='autotest -f' # Don't run all at start
-alias as="autospec"
 
 # Social activity
-function tweet(){
+function tweet() {
   curl -u user:pass http://twitter.com/statuses/update.xml -d status="$*"
+}
+
+# Top man pages
+function topmanpages() {
+  echo "man 1 intro - a tutorial that gets you started with Linux if you have never used it.
+man 2 syscalls - lists all Linux system calls by kernel version.
+man 1 select_tut - select() system call tutorial.
+man 3 string - lists all <string.h> string manipulation functions.
+man 3 stdio - lists and describes all <stdio.h> standard input/output library functions.
+man 3 errno - lists and describes all errno error numbers.
+man 4 console_codes - Linux console escape and control sequences.
+man 4 full - /dev/full - a device that simulates a full device.
+man 5 proc - lots of info about the /proc filesystem.
+man 5 filesystems - lists various Linux filesystems.
+man 7 bootparam - a tutorial and reference of Linux kernel boot parameters.
+man 7 charsets - a Linux programmer's view of character sets and internationalization.
+man 7 glob - how pathname globbing works.
+man 7 hier - description of the Linux file system hierarchy.
+man 7 operator - C language operator precedence and associativity table.
+man 7 regex - basic and extended regular expression overview.
+man 7 suffixes - lists common Linux file suffixes and the associated file types.
+man 7 time - overview of time and timers.
+man 7 units - kilo, kibi, mega, mebi, giga, gibi, ... - decimal (SI) and binary system of units.
+man 7 utf8 - description of UTF-8 encoding.
+man 7 url - description of URIs, URLs and URNs."
 }
 
 # Cygwin customizations and walkarounds
