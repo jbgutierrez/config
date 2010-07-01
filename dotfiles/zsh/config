@@ -1,20 +1,52 @@
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+autoload -U colors; colors
+setopt prompt_subst
+# set some colors
+for COLOR in RED GREEN YELLOW MAGENTA; do
+  eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'        
+  eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
+done
+PR_RESET="%{${reset_color}%}";  
+
+refresh_git_status() {
+  unstaged=FALSE staged=FALSE stashed=FALSE
+  if [[ $(git diff --cached --name-status 2>/dev/null ) != "" ]]; then
+    staged=TRUE
+  fi
+  if [[ $(git diff --name-status 2>/dev/null ) != "" ]]; then
+    unstaged=TRUE
+  fi
+  if [[ $(git stash list) != "" ]]; then
+    stashed=TRUE
+  fi
 }
 
-autoload -U colors
-colors
-setopt prompt_subst
+git_info() {
+  branch_name=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+  if [[ ${branch_name} != "" ]]; then
+    refresh_git_status
+    status_color=${PR_GREEN}
+    if ${staged}; then
+      status_color=${PR_YELLOW}
+      if ${unstaged}; then
+        branch_name+=${PR_RED}' + unstaged data'
+      fi
+    elif ${unstaged}; then
+      status_color=${PR_RED}
+    fi
+    if ${stashed}; then
+      branch_name+=${PR_RED}' + stashed commit'
+    fi
+    echo "${status_color}[${branch_name}${status_color}] "
+  fi
+}
 
-local red="%{"$'\e[0;31m'"%}"
-local yellow="%{"$'\e[0;33m'"%}"
-local green="%{"$'\e[0;32m'"%}"
-local light_gray="%{"$'\e[0;37m'"%}"
-PROMPT='%{$red$(date +%H:%M) %~ %}%{$yellow$(parse_git_branch)$green%}\$ %{$light_gray%}
+git_log() {
+  git log --pretty=format:"%h - %ar : %s" -n 1 2> /dev/null
+}
+
+PROMPT='${PR_MAGENTA}$(date +%H:%M) %~ $(git_info)${PR_RESET}
 → '
-
-# Set RPROMPT to have info show up on the right, too.
-
+RPROMPT='%U${PR_WHITE}$(git_log)%u${PR_RESET}'
 #############################
 # Other Options
 

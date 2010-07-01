@@ -1,15 +1,50 @@
-# http://github.com/guides/put-your-git-branch-name-in-your-shell-prompt
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+PR_RED='\e[0;31m'
+PR_YELLOW='\e[0;33m'
+PR_GREEN='\e[1;32m'
+PR_MAGENTA='\e[0;35m'
+PR_WHITE='\e[4;37m'
+PR_RESET='\e[0m'
+
+refresh_git_status() {
+  unstaged=FALSE staged=FALSE stashed=FALSE
+  if [[ $(git diff --cached --name-status 2>/dev/null ) != "" ]]; then
+    staged=TRUE
+  fi
+  if [[ $(git diff --name-status 2>/dev/null ) != "" ]]; then
+    unstaged=TRUE
+  fi
+  if [[ $(git stash list) != "" ]]; then
+    stashed=TRUE
+  fi
 }
-RED="\[\033[0;31m\]" 
-YELLOW="\[\033[0;33m\]" 
-GREEN="\[\033[0;32m\]" 
-LIGHT_GRAY="\[\033[0;37m\]"
 
-PS1="$RED\$(date +%H:%M) \w$YELLOW \$(parse_git_branch)$GREEN\$ $LIGHT_GRAY \n→ "
+git_info() {
+  branch_name=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+  if [[ ${branch_name} != "" ]]; then
+    refresh_git_status
+    status_color=$PR_GREEN
+    if ${staged}; then
+      status_color=$PR_YELLOW
+      if ${unstaged}; then
+        branch_name+=$PR_RED' + unstaged data'
+      fi
+    elif ${unstaged}; then
+      status_color=$PR_RED
+    fi
+    if ${stashed}; then
+      branch_name+=$PR_RED' + stashed commit'
+    fi
+    echo -ne "$status_color[$branch_name$status_color] "
+  fi
+}
 
-test -r /sw/bin/init.sh && . /sw/bin/init.sh
+git_log() {
+  git log --pretty=format:"%h - %ar : %s" -n 1 2> /dev/null
+}
+
+PS1="$PR_MAGENTA$(date +%H:%M) \w \$(git_info) $PR_WHITE\$(git_log)$PR_RESET
+→ "
+
 CLICOLOR=1
 LSCOLORS=ExFxCxDxBxegedabagacad
 export LSCOLORS CLICOLOR
@@ -29,5 +64,3 @@ complete -o default -o nospace -F rakecomplete rake
 
 # Ruvy version manager
 if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi
-
-test -r /sw/bin/init.sh && . /sw/bin/init.sh

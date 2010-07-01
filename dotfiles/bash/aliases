@@ -162,6 +162,10 @@ man 7 utf8 - description of UTF-8 encoding.
 man 7 url - description of URIs, URLs and URNs."
 }
 
+# RVM settings
+# => $ bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
+[[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
+
 # Cygwin customizations and walkarounds
 if [ $_YAP_CYGWIN ]; then
   # Shortcuts to each project folder
