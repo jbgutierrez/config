@@ -85,14 +85,14 @@ function take() {
 alias q='exit'
 
 # Shortcuts to each project folder
-# alias cdprojects="cd $PROJECTS_FOLDER"
-# for path in $PROJECTS_FOLDER/*; do
-#   if [ -d $path ]; then
-#     subfolder=`echo $path | /usr/bin/sed 's/.*\///'`
-#     alias "cd$subfolder"="cd $path"
-#     alias "e$subfolder"="gvim $path"
-#   fi
-# done
+alias cdprojects="cd $PROJECTS_FOLDER"
+for project_path in $PROJECTS_FOLDER/*; do
+  if [ -d $project_path ]; then
+    subfolder=`echo $project_path | /usr/bin/sed 's/.*\///'`
+    alias "cd$subfolder"="cd $project_path"
+    alias "e$subfolder"="gvim $project_path"
+  fi
+done
 
 # Remember path position
 export REMEMBERME_PATH=$HOME
