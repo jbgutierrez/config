@@ -1,5 +1,17 @@
-== Installation
+= Ficheros de configuración de Javier Blanco Gutiérrez
+Estos ficheros de configuración me permiten tener sincronizada la configuración de los entornos UNIX en los que trabajo (equipos de casa, oficina y servidores).
+
+== Características
+Atajos de teclado y configuraciones para:
+
+  * VIM y GIT
+  * Desarrollo en ruby
+  * Comandos de consola más usados
+  * Utilidades varias
+
+== Instalación
 
   git clone git://github.com/jbgutierrez/config ~/bin
   cd ~/bin
   rake install
+  chsh -s /bin/zsh (optional)
