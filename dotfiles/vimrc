@@ -171,10 +171,10 @@ map <leader>c gcc                                  " toggle comment "}}}
 map <leader><f3> :nextcolor<cr>
 map <leader><f2> :prevcolor<cr>"}}}
 " replace selected text{{{
-nnoremap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
-vnoremap <c-r> y:%s/<c-r>"//gc<left><left><left>
-nnoremap s diw"0p
-vnoremap s "_d"0p"}}}"}}}
+nmap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
+vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
+nmap s diw"0P
+vmap s "_d"0P"}}}"}}}
 
 " plugins settings{{{
 " Load pathogen managed plugins"{{{

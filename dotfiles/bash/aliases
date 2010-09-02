@@ -59,6 +59,20 @@ alias as="autospec"
 alias hp="git push heroku master"
 alias hl="heroku logs"
 
+# Django aliases
+alias dj='python manage.py'
+alias djsp='dj startproject'   # + project_name
+alias djss='dj runserver 3000'
+alias djsdb='dj syncdb'
+alias djrt='dj sqlclear'       # + ModelName
+alias djsa='dj startapp'       # + app_name
+alias djs='dj shell'
+
+#Google AppEngine
+alias gss='dev_appserver.py . -p 3000 -d' # --debug_imports -d'
+alias gcd='dev_appserver.py --clear_datastore .'
+alias gps='appcfg.py update .'
+
 # Bash shortcuts
 alias less='less -r'
 alias la='ls -lhGta'

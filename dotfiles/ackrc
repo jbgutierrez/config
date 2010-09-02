@@ -1,0 +1,12 @@
+# Always sort the files
+--sort-files
+
+# Always color, even if piping to a another program
+--color
+
+# Use "less -r" as my pager
+--pager=less -r
+
+# Custom extensions
+--type-set=haml=.haml
+--type-set=view=.ascx,.aspx,.Master  
