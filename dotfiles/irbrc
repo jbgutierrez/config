@@ -1,81 +1,136 @@
-require 'rubygems'
+# Utility Belt
+=begin
+
+  utility_belt cheatsheet:
+
+    edit_interactively(:gvim)     - Interactively edit IRB code in your preferred text editor
+    MacClipboard.read             - Read from OS X clipboard
+    history_to_vi                 - Write command history
+    h                             - Unix - style history
+    "string".grep_methods('join') - Grep classes and methods for strings
+    v/q                           - Verbosity controls for regular IRB and Rails console
+    x                             - exit
+
+=end
+
+libs =
+  [ 'rubygems'       ,
+    'wirble'         , # IRB tools, tricks, and techniques (requires 'pp', 'irb/completion' and 'rubygems')
+    'pp'             , # Pretty Print method
+    'ap'             , # Awesome Print (gem install awesome_print)
+    'irb/completion' , # Tab Completion
+    'utility_belt'   ,
+    'map_by_method'  , # Dr Nic's gems
+    'what_methods'   , # Dr Nic's gems
+    'net-http-spy'   , # Print information about any HTTP requests being made
+    'hirb'           ] # Pretty tables
+
+libs.each do |lib|
+  begin
+    require lib
+  rescue LoadError => err
+    $stderr.puts "Couldn't load #{lib}: #{err}"
+  end
+end
 
 # Prompt behavior
-ARGV.concat [ "--readline", "--prompt-mode", "simple" ]
+IRB.conf[:AUTO_INDENT] = true
+IRB.conf[:PROMPT_MODE] = :SIMPLE
 
-# History
+# Save History between irb sessions
 require 'irb/ext/save-history'
 IRB.conf[:SAVE_HISTORY] = 100
 IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb-save-history"
-IRB.conf[:AUTO_INDENT]=true
 
-#http://giantrobots.thoughtbot.com/2008/12/23/script-console-tips
-require 'wirble'
 Wirble.init
 Wirble.colorize
 
-# Autocomplete
-# require 'map_by_method'
-require 'what_methods'
-require 'pp'
-
-# print SQL to STDOUT
-if ENV.include?('RAILS_ENV') && !Object.const_defined?('RAILS_DEFAULT_LOGGER')
-  require 'logger'
-  RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
-  require 'hirb'
+# RAILS specific
+if ENV['RAILS_ENV']
+  rails_env = ENV['RAILS_ENV']
+  rails_root = File.basename(Dir.pwd)
+  prompt = "#{rails_root}[#{rails_env.sub('production', 'prod').sub('development', 'dev')}]"
+  IRB.conf[:PROMPT] ||= {}
+  
+  IRB.conf[:PROMPT][:RAILS] = {
+    :PROMPT_I => "#{prompt}>> ",
+    :PROMPT_S => "#{prompt}* ",
+    :PROMPT_C => "#{prompt}? ",
+    :RETURN => "=> %s\n"
+  }
+  
+  IRB.conf[:PROMPT_MODE] = :RAILS
+  
+  #Redirect log to STDOUT, which means the console itself
+  IRB.conf[:IRB_RC] = Proc.new do
+    logger = Logger.new(STDOUT)
+    ActiveRecord::Base.logger = logger
+    ActiveResource::Base.logger = logger
+    ActiveRecord::Base.instance_eval { alias :[] :find }
+  end
+  
+  def log_to(path)
+    ActiveRecord::Base.logger = Logger.new path
+    reload!
+  end
+  
   Hirb::View.enable
 end
 
+# CORE extensions
 class Object
   
+  #methods defined in the parent class of the object
   def local_methods
     (methods - Object.instance_methods).sort
   end
   
-  def dump_history
-    Readline::HISTORY.entries.split("exit").last[0..-2].join("\n") 
+  def cls
+    system 'clear'
+    message = ENV['RAILS_ENV'] || "no environment"
+    return message
   end
   
-  private
+  def eigenclass
+    class << self; self; end
+  end
   
-  def puts_ri_documentation_for(obj, meth)
-    case self
-    when Module
-      candidates = ancestors.map{|klass| "#{klass}::#{meth}"}
-      candidates.concat(class << self; ancestors end.map{|k| "#{k}##{meth}"})
-    else
-      candidates = self.class.ancestors.map{|klass|  "#{klass}##{meth}"}
-    end
-    candidates.each do |candidate|
-      #puts "TRYING #{candidate}"
-      desc = `qri '#{candidate}'`
-      unless desc.chomp == "nil"
-      # uncomment to use ri (and some patience)
-      #desc = `ri -T '#{candidate}' 2>/dev/null`
-      #unless desc.empty?
-        puts desc
-        return true
-      end
-    end
-    false
+  def class_methods
+    (methods - Class.instance_methods - Object.methods).sort
+  end
+  
+  def local_methods
+    (methods - Object.instance_methods).sort
   end
 
-  def method_missing(meth, *args, &block)
-    if md = /ri_(.*)/.match(meth.to_s)
-      unless puts_ri_documentation_for(self,md[1])
-        "Ri doesn't know about ##{meth}"
-      end
-    else
-      super
-    end
+  def copy(str)
+    IO.popen('xclip -i', 'w') { |f| f << str.to_s }
   end
 
-  def ri_(meth)
-    unless puts_ri_documentation_for(self,meth.to_s)
-      "Ri doesn't know about ##{meth}"
-    end
+  def paste
+    `xclip -o`
   end
+
 end
 
-alias q exit
+class Class
+
+  def class_methods
+    (methods - Class.instance_methods - Object.methods).sort
+  end
+  
+  #Returns an array of methods defined in the class, class methods and instance methods
+  def defined_methods
+    methods = {}
+    methods[:instance] = new.local_methods
+    methods[:class] = class_methods
+    methods
+  end
+  
+  def metaclass
+    eigenclass
+  end
+
+end
+
+puts ".irbrc loaded successfully"
