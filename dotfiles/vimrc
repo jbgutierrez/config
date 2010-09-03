@@ -31,9 +31,14 @@ set shiftwidth=2
 set autoindent            " use spaces instead of tabs
 set expandtab"}}}
 " search options{{{
-set hlsearch
-set incsearch           " find while typing
+set gdefault           " global search/replace by default
+set incsearch hlsearch " ignore case when searching
+set smartcase          " override ignorecase when there are uppercase characters
 set ignorecase"}}}
+" wrap options"{{{
+set linebreak               " when wrapping, try to break at characters in breakat
+set breakat=\ ^I!@*-+;:,./? " when wrapping, break at these characters
+set showbreak=>             " character to show that a line is wrapped"}}}
 " make search results appear in the middle of the screen{{{
 nmap n nzz
 nmap N Nzz
@@ -42,11 +47,12 @@ nmap # #zz
 nmap g* g*zz
 nmap g# g#zz"}}}
 " encoding and fileformat{{{
-" set fileformat=dos
+autocmd BufRead * silent! %s/^M$// " never see ^M again! (DOS text files)
+" set fileformat=dos               " alternative configuration for the DOS text files
 " set enc=iso-8859-1
 " set spell spelllang=sp
 
-set enc=utf-8"}}}
+set enc=utf-8 nobomb"}}}
 " UI settings{{{
 
 "improve autocomplete menu color

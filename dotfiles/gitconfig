@@ -4,7 +4,7 @@
 [alias]
 	co = checkout
 [apply]
-	whitespace = nowarn
+  whitespace = strip
 [core]
 	editor = gvim -f
 [core]

@@ -8,5 +8,12 @@
 --pager=less -r
 
 # Custom extensions
---type-set=haml=.haml
---type-set=view=.ascx,.aspx,.Master  
+--type-add=css=.sass
+--type-add=ruby=.haml,.builder,.rake
+--type-set=html=.ascx,.aspx,.Master  
+
+--type-set=markdown=.markdown,.md,.mdown
+--type-set=cucumber=.feature
+--type-set=actionscript=.as
+
+--ignore-dir=.idea
