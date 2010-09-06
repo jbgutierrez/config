@@ -87,7 +87,7 @@ alias md='mkdir -p'
 function cdh(){
   cd "$HOME/$1"
 }
-alias cls='clear'
+alias c='clear'
 alias ..='cd ..'   # up one dir
 alias cd..='cd ..'   # up one dir
 alias cdl='cd -'  # goto last dir cd'ed from

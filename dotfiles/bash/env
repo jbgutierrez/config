@@ -12,6 +12,8 @@ export PATH=/opt/subversion/bin:$PATH
 
 export PATH=~/bin:$PATH:/usr/local/mysql/bin
 
+export VIMHOME=~/.vim
+
 # Cygwin customizations and walkarounds
 if [ $_YAP_CYGWIN ]; then
   # cygwin settings
