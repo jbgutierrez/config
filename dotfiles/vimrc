@@ -1,4 +1,6 @@
 " General settings{{{
+" load pathogen managed plugins{{{
+call pathogen#runtime_append_all_bundles()"}}}
 " general{{{
 set nocompatible        " Use Vim defaults (much better!)
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
@@ -8,55 +10,54 @@ set viminfo='20,\"50    " read/write a .viminfo file, don't store more
 set history=50          " keep 50 lines of command line history
 set ruler               " show the cursor position all the time
 set number              " show line numbers
-set smarttab            " smart tabulatin and backspace
 set title               " show title
 set hidden              " allows changing of buffers without saving
 set lazyredraw          " Set lazydraws so that rendering is much faster during macros
 set showmode            " I like to know which mode I am in at times
 set showcmd             " show the command being typed"
 set showmatch           " show matching brackets
-set nowrap              " don't wrap lines
-set linebreak
-set nolist
+set list                " show whitespace
+set listchars=tab:▸\ ,eol:¬  "use the same symbols as TextMate for tabstops and EOLs
 set hidden
-set listchars=tab:▸\ ,eol:¬ "use the same symbols as TextMate for tabstops and EOLs
-
 " set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
 set wildmenu            " turn on command line completion wild style"}}}
-" identation{{{
+" tabs and indentation{{{
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
-set autoindent            " use spaces instead of tabs
-set expandtab"}}}
-" search options{{{
-set gdefault           " global search/replace by default
-set incsearch hlsearch " ignore case when searching
+set smartindent    " use spaces instead of tabs
+set smarttab       " smart tabulatin and backspace
+set expandtab      " To spaces to tabs 'set noexpandtab' and ':retab!'
+"}}}
+" searches{{{
+" set gdefault           " global search/replace by default
+set incsearch hlsearch " highlight matches as you type
 set smartcase          " override ignorecase when there are uppercase characters
-set ignorecase"}}}
-" wrap options"{{{
-set linebreak               " when wrapping, try to break at characters in breakat
-set breakat=\ ^I!@*-+;:,./? " when wrapping, break at these characters
-set showbreak=>             " character to show that a line is wrapped"}}}
-" make search results appear in the middle of the screen{{{
-nmap n nzz
-nmap N Nzz
-nmap * *zz
-nmap # #zz
-nmap g* g*zz
-nmap g# g#zz"}}}
+set ignorecase         " ignore case when searching "}}}
+" wraping{{{
+set nowrap                   " don't wrap lines
+set listchars+=extends:»     " show a » when a line goes off the right edge of the screen
+set listchars+=precedes:«    " show a « when a line goes off the left edge of the screen
+set linebreak                " when wrapping, try to break at characters in breakat
+set breakat=\ ^I!@*-+;:,./?  " when wrapping, break at these characters
+set showbreak=>              " character to show that a line is wrapped"}}}
 " encoding and fileformat{{{
 autocmd BufRead * silent! %s/^M$// " never see ^M again! (DOS text files)
 set enc=utf-8 nobomb
 " set fileformat=dos               " alternative configuration for the DOS text files
 " set enc=iso-8859-1"}}}
 " spell checking{{{
-set spell spelllang=sp,es,gl " X + = to show suggestions
+set spell spelllang=es " X + = to show suggestions
 set spellsuggest=5"}}}
-" load abreviations"{{{
-:source $VIMHOME/personal/abbreviations.vim"}}}
-" UI settings{{{
+" load personal functions{{{
+:so $VIMHOME/personal/abbreviations.vim
+:so $VIMHOME/personal/functions.vim"}}}
+" file backups{{{
+set nobackup                      " Don't make a backup before overwriting a file.
+set nowritebackup                 " And again.
+set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location"}}}
+" uI settings{{{
 
 "improve autocomplete menu color
 "gui options
@@ -81,7 +82,6 @@ filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
 compiler ruby         " Enable compiler support for ruby
-" au BufWritePre * :call <SID>DeleteUselessWhitespacesAndBlankLines()
 " Auto save folds
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview"}}}
@@ -90,10 +90,9 @@ set foldlevel=1
 set foldmethod=syntax
 set fillchars=fold:\ "
 set foldtext=MyFoldText() " Custom fold text function
-set balloonexpr=FoldSpellBalloon()
+" set balloonexpr=FoldSpellBalloon()
 set ballooneval"}}}
 " javascript{{{
-au FileType javascript set foldlevel=1
 au FileType javascript set omnifunc=javascriptcomplete#CompleteJS"}}}
 " .vimrc{{{
 au BufWritePost .vimrc source % " When vimrc is edited, reload it
@@ -112,14 +111,19 @@ au FileType xml setlocal foldmethod=syntax"}}}
 " haml{{{
 au! BufRead,BufNewFile *.haml setfiletype haml"}}}
 " css{{{
-au FileType css set foldmethod=marker
-au FileType css set foldmarker={,}
+au FileType css setlocal foldmethod=marker
+au FileType css setlocal foldmarker={,}
 au FileType css set omnifunc=csscomplete#CompleteCSS"}}}
+" diff{{{
+au FileType diff setlocal fdm=expr
+au FileType diff setlocal fde=DiffFoldLevel()
+au FileType diff setlocal fdc=1
+au FileType diff setlocal foldlevel=0"}}}
 " file types really do require explicit tabs, and not spaces{{{
-au FileType make   set noexpandtab
-au FileType python set noexpandtab"}}}"}}}
-" load templates"{{{
-au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}
+au FileType make   setlocal noexpandtab
+au FileType python setlocal noexpandtab"}}}
+" load templates{{{
+au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}"}}}
 
 " Key mappings{{{
 " general{{{
@@ -128,16 +132,12 @@ map <s-u> :redo<CR>           " redo
 nmap <leader>l :set list!<CR> " shortcut to rapidly toggle `set list` (retab! if neccesary)
 " imap <Tab> <C-N>            " maps autocomplete to tab
 map <leader>e :e ~/.vimrc<cr> " fast editing of the .vimrc "}}}
-" moving around split windows"{{{
+" moving around split windows{{{
 nmap <s-down>   <c-w>w
 nmap <s-up>     <c-w>W
 nmap <s-left>   <c-w>h
 nmap <s-right>  <c-w>l"}}}
-" fuzzyFinder navigation{{{
-map <Leader>r :FuzzyFinderTextMate<CR>
-map <leader>b :FuzzyFinderBuffer<CR>
-map <leader>t :FuzzyFinderTag!<CR>"}}}
-" easies taglist navigation"{{{
+" easies taglist navigation{{{
 nmap <buffer> <F7> <C-]>
 nmap <buffer> <S-F7> <C-T>
 nmap <buffer> <A-F7> :ptselect<cr>
@@ -149,7 +149,11 @@ map <F3> :execute 'NERDTreeToggle ' . getcwd()<CR>      " F3 - List project file
 map <F4> :set hlsearch! hlsearch?<CR>                   " F4 - highlighting on/off
 map <F5> :ls<CR>:b                                      " F5 - List buffers
 map <F6> :call ToggleScratch()<CR>                      " F6 - Toggle scratch buffer
-nnoremap <silent> <F11>  :call  <SID>DeleteUselessWhitespacesAndBlankLines()<CR>
+set textwidth=80
+nmap <F10> gqap                                         " F10 - Format paragraph
+nmap <F11> 1G=G
+imap <F11> <ESC>1G=Ga                                   " F11 - Format code
+nmap <F11> :call Preserve("%s/\\s\\+$//e")<CR>
 map <F12> :%!tidy -q --tidy-mark 0 2>/dev/null<CR>"}}}
 " move text around{{{
 nmap <S-Tab> <<
@@ -181,7 +185,7 @@ vmap <C-k> :m-2<CR>gv=gv"}}}
 " folding{{{
 nnoremap <space> za    " space - toggle current fold
 nnoremap <s-space> za  " space - toggle current fold"}}}
-" coding utilities{{{
+" coding utilities {{{
 map <d-r> <plug>rubyfilerun                        " run file in shell mode with ruby
 " map <leader>d :v/\s/d<cr>                        " delete empty lines
 " map <leader>d <esc>my:%s/\(^\n\{2,}\)/\r/g<cr>`y " delete empty lines
@@ -196,14 +200,16 @@ nmap s diw"0P
 vmap s "_d"0P"}}}
 " save file {{{
 :map <C-s> :w<cr>
-:map <C-S-s> :browse confirm saveas<cr>"}}}
-"}}}
+:map <C-S-s> :browse confirm saveas<cr>"}}} "}}}
+" make search results appear in the middle of the screen{{{
+nmap n nzz
+nmap N Nzz
+nmap * *zz
+nmap # #zz
+nmap g* g*zz
+nmap g# g#zz"}}}
 
 " plugins settings{{{
-" Load pathogen managed plugins"{{{
-call pathogen#runtime_append_all_bundles()"}}}
-" snipmate setup"{{{
-source $VIMHOME/snippets/support_functions.vim"}}}
 " MiniBufExp{{{
 " let g:miniBufExplMapWindowNavArrows = 1
 " let g:miniBufExplMapCTabSwitchBufs = 1
@@ -217,52 +223,6 @@ let Tlist_Compact_Format=1"}}}
 " let NERDChristmasTree = 1               " NERDTree with colors
 " let NERDTreeHighlightCursorline = 1     " highlight cursorline
 " let NERDTreeMapActivateNode='<CR>'      " set Enter/Return to activate a node"}}}
-" FuzzyFinder{{{
-" Set FuzzyFinder settings
-let g:fuzzy_matching_limit = 70
-let g:fuzzy_enumerating_limit = 10
-let g:fuzzy_path_display = 'relative_path'
-let g:fuzzy_ceiling = 5000
-
-" Add what to ignore in the fuzzy search
-let g:fuzzy_ignore = "*.log"
-let g:fuzzy_ignore = "files/**;vendor/**;coverage/**;tmp/**,public/image/**"
-let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif"
-let g:fuzzy_ignore = "*.ogg;*.OGG;*.ogv;*.OGV;*.mkv;*.MKV"
-let g:fuzzy_ignore = "*.mp3;*.mp3;*.mp4;*.MP4;*.avi;*.AVI;*.wma;*.WMA;*.wmv;*.WMV"
-let g:fuzzy_ignore = "*.flv;*.FLV;*.mov;*.MOV;*.pdf;*.PDF"
-let g:fuzzy_ignore = "*.zip;*.ZIP;*.tar;*.7z;*.gz;*.bz2""}}}"}}}
-
-" Custom functions{{{
-" Pretty-formatting XML{{{
-function! DoPrettyXML()
-  " save the filetype so we can restore it later
-  let l:origft = &ft
-  set ft=
-  " delete the xml header if it exists. This will
-  " permit us to surround the document with fake tags
-  " without creating invalid xml.
-  1s/<?xml .*?>//e
-  " insert fake tags around the entire document.
-  " This will permit us to pretty-format excerpts of
-  " XML that may contain multiple top-level elements.
-  0put ='<PrettyXML>'
-  $put ='</PrettyXML>'
-  silent %!xmllint --format -
-  " xmllint will insert an <?xml?> header. it's easy enough to delete
-  " if you don't want it.
-  " delete the fake tags
-  2d
-  $d
-  " restore the 'normal' indentation, which is one extra level
-  " too deep due to the extra tags we wrapped around the document.
-  silent %<
-  " back to home
-  1
-  " restore the filetype
-  exe "set ft=" . l:origft
-endfunction
-command! PrettyXML call DoPrettyXML()"}}}
 " ToogleScratch{{{
 function! ToggleScratch()
   if expand('%') == g:ScratchBufferName
@@ -271,49 +231,3 @@ function! ToggleScratch()
     Sscratch
   endif
 endfunction"}}}
-" DeleteUselessWhitespacesAndBlankLines{{{
-function! <SID>DeleteUselessWhitespacesAndBlankLines()
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  %s/\s\+$//e
-  :g/^$/.,/./-j 
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfunction"}}}
-" Custom Folding{{{
-function! MyFoldText()
-  let line = getline(v:foldstart)
-  let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
-  let number = v:foldend - v:foldstart + 1
-  return sub . ' ... (' . number . ' lines)'
-endfunction
-
-function! FoldSpellBalloon()
-  let foldStart = foldclosed(v:beval_lnum )
-  let foldEnd = foldclosedend(v:beval_lnum)
-  let lines = []
-  " Detect if we are in a fold
-  if foldStart < 0
-    " Detect if we are on a misspelled word
-    let lines = spellsuggest( spellbadword(v:beval_text)[ 0 ], 5, 0 )
-  else
-    " we are in a fold
-    let numLines = foldEnd - foldStart + 1
-    " if we have too many lines in fold, show only the first 14
-    " and the last 14 lines
-    if ( numLines > 31 )
-      let lines = getline( foldStart, foldStart + 14 )
-      let lines += [ '-- Snipped ' . ( numLines - 30 ) . ' lines --' ]
-      let lines += getline( foldEnd - 14, foldEnd )
-    else
-      "less than 30 lines, lets show all of them
-      let lines = getline( foldStart, foldEnd )
-    endif
-  endif
-  " return result
-  return join( lines, has( "balloon_multiline" ) ? "\n" : " " )
-endfunction"}}}"}}}
