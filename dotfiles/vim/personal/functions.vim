@@ -1,3 +1,107 @@
+" Export Fremind mindmap to text{{{
+command! FremindToText call FremindToTextFunction()
+function! FreemindToTextFunction()
+  silent! normal djGddgg
+  silent! set ft=xml
+  silent! set tw=80
+  silent! set ft=
+  silent! %s/^\(\s*\).*TEXT="\([^"]*\)".*$/\1- \2/
+  silent! v/^\s*-/d
+  silent! call Entities()
+  silent! normal gggqG
+  silent! g/^-/s/- //
+  silent! g/^\w/t.|s/./=/g
+  silent! %s/^\s{4}//
+  silent! %s/^-/o/
+  silent! g/^\s*-/normal 0
+  silent! g/^\s\{8}\zs-/#/
+  silent! normal gg
+endfunction
+
+command! Entities :call Entities()
+function! Entities()
+  silent %s/$$/$/eg
+  silent %s/&#160;/ /eg
+  silent %s/&#38;/&/eg
+  silent %s/&#39;/'/eg
+  silent %s/&#60;/</eg
+  silent %s/&#62;/>/eg
+  silent %s/&#xAB;/'/eg
+  silent %s/&#xBA;/º/eg
+  silent %s/&#xBB;/'/eg
+  silent %s/&#xBF;/¿/eg
+  silent %s/&#xE1;/á/eg
+  silent %s/&#xE7;/ç/eg
+  silent %s/&#xE9;/é/eg
+  silent %s/&#xED;/í/eg
+  silent %s/&#xF1;/ñ/eg
+  silent %s/&#xF3;/ó/eg
+  silent %s/&#xFA;/ú/eg
+  silent %s/&quot;/"/eg
+  silent %s/\&AElig;/Æ/eg
+  silent %s/\&Aacute;/Á/eg
+  silent %s/\&Acirc;/Â/eg
+  silent %s/\&Agrave;/À/eg
+  silent %s/\&Aring;/Å/eg
+  silent %s/\&Atilde;/Ã/eg
+  silent %s/\&Auml;/Ä/eg
+  silent %s/\&Ccedil;/Ç/eg
+  silent %s/\&ETH;/Ð/eg
+  silent %s/\&Eacute;/É/eg
+  silent %s/\&Ecirc;/Ê/eg
+  silent %s/\&Egrave;/È/eg
+  silent %s/\&Euml;/Ë/eg
+  silent %s/\&Iacute;/Í/eg
+  silent %s/\&Icirc;/Î/eg
+  silent %s/\&Igrave;/Ì/eg
+  silent %s/\&Iuml;/Ï/eg
+  silent %s/\&Ntilde;/Ñ/eg
+  silent %s/\&Oacute;/Ó/eg
+  silent %s/\&Ocirc;/Ô/eg
+  silent %s/\&Ograve;/Ò/eg
+  silent %s/\&Oslash;/Ø/eg
+  silent %s/\&Otilde;/Õ/eg
+  silent %s/\&Ouml;/Ö/eg
+  silent %s/\&THORN;/Þ/eg
+  silent %s/\&Uacute;/Ú/eg
+  silent %s/\&Ucirc;/Û/eg
+  silent %s/\&Ugrave;/Ù/eg
+  silent %s/\&Uuml;/Ü/eg
+  silent %s/\&Yacute;/Ý/eg
+  silent %s/\&aacute;/á/eg
+  silent %s/\&acirc;/â/eg
+  silent %s/\&aelig;/æ/eg
+  silent %s/\&agrave;/à/eg
+  silent %s/\&aring;/å/eg
+  silent %s/\&atilde;/ã/eg
+  silent %s/\&auml;/ä/eg
+  silent %s/\&ccedil;/ç/eg
+  silent %s/\&eacute;/é/eg
+  silent %s/\&ecirc;/ê/eg
+  silent %s/\&egrave;/è/eg
+  silent %s/\&eth;/ð/eg
+  silent %s/\&euml;/ë/eg
+  silent %s/\&iacute;/í/eg
+  silent %s/\&icirc;/î/eg
+  silent %s/\&igrave;/ì/eg
+  silent %s/\&iuml;/ï/eg
+  silent %s/\&ntilde;/ñ/eg
+  silent %s/\&oacute;/ó/eg
+  silent %s/\&ocirc;/ô/eg
+  silent %s/\&ograve;/ò/eg
+  silent %s/\&oslash;/ø/eg
+  silent %s/\&otilde;/õ/eg
+  silent %s/\&ouml;/ö/eg
+  silent %s/\&szlig;/ß/eg
+  silent %s/\&thorn;/þ/eg
+  silent %s/\&uacute;/ú/eg
+  silent %s/\&ucirc;/û/eg
+  silent %s/\&ugrave;/ù/eg
+  silent %s/\&uuml;/ü/eg
+  silent %s/\&yacute;/ý/eg
+  silent %s/\&yuml;/ÿ/eg
+endfunction"}}}
+
 " DeleteUselessWhitespacesAndBlankLines{{{
 function! Preserve(command)
   " Preparation: save last search, and cursor position.
@@ -71,3 +175,4 @@ function! MyFoldText()
   let number = v:foldend - v:foldstart + 1
   return sub . ' ... (' . number . ' lines)'
 endfunction"}}}
+
