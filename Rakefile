@@ -28,6 +28,7 @@ task :install do
     else
       link_file(file, hidden_file)
     end
+  download_submodules
   end
 end
  
@@ -39,4 +40,9 @@ end
 def link_file(file, hidden_file)
   puts "linking #{hidden_file}"
   `ln -s "#{ENV['PWD']}/#{file}" "#{hidden_file}"`
+end
+
+def download_submodules
+  `git submodule init`
+  `git submodule update`
 end
