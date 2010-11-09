@@ -1,12 +1,13 @@
 " General settings{{{
 " load pathogen managed plugins{{{
-call pathogen#runtime_append_all_bundles()"}}}
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()"}}}
 " general{{{
 set nocompatible        " Use Vim defaults (much better!)
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set virtualedit=all     "allows the cursor to freely roam anywhere it likes in command mode
 set viminfo='20,\"50    " read/write a .viminfo file, don't store more
-                        " than 50 lines of registers
+" than 50 lines of registers
 set history=50          " keep 50 lines of command line history
 set ruler               " show the cursor position all the time
 set number              " show line numbers
@@ -52,6 +53,7 @@ set spell spelllang=es " X + = to show suggestions
 set spellsuggest=5"}}}
 " load personal functions{{{
 :so $VIMHOME/personal/abbreviations.vim
+:so $VIMHOME/personal/csharp_folding.vim
 :so $VIMHOME/personal/functions.vim"}}}
 " file backups{{{
 set nobackup                      " Don't make a backup before overwriting a file.
@@ -151,9 +153,8 @@ map <F5> :ls<CR>:b                                      " F5 - List buffers
 map <F6> :call ToggleScratch()<CR>                      " F6 - Toggle scratch buffer
 set textwidth=80
 nmap <F10> gqap                                         " F10 - Format paragraph
-nmap <F11> 1G=G
 imap <F11> <ESC>1G=Ga                                   " F11 - Format code
-nmap <F11> :call Preserve("%s/\\s\\+$//e")<CR>
+nnoremap <F11> :call CleanFile()<CR>                    " delete empty lines
 map <F12> :%!tidy -q --tidy-mark 0 2>/dev/null<CR>"}}}
 " move text around{{{
 nmap <S-Tab> <<
@@ -184,11 +185,9 @@ vmap <C-k> :m-2<CR>gv=gv"}}}
 " map <leader>sf :rsfunctionaltest"}}}
 " folding{{{
 nnoremap <space> za    " space - toggle current fold
-nnoremap <s-space> za  " space - toggle current fold"}}}
+nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR> " space - toggle current fold"}}}
 " coding utilities {{{
 map <d-r> <plug>rubyfilerun                        " run file in shell mode with ruby
-" map <leader>d :v/\s/d<cr>                        " delete empty lines
-" map <leader>d <esc>my:%s/\(^\n\{2,}\)/\r/g<cr>`y " delete empty lines
 map <leader>c gcc                                  " toggle comment "}}}
 " change colors{{{
 map <leader><f3> :nextcolor<cr>
@@ -198,16 +197,16 @@ nmap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
 vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
 nmap s diw"0P
 vmap s "_d"0P"}}}
-" save file {{{
+" save file{{{
 :map <C-s> :w<cr>
-:map <C-S-s> :browse confirm saveas<cr>"}}} "}}}
+:map <C-S-s> :browse confirm saveas<cr>"}}}
 " make search results appear in the middle of the screen{{{
 nmap n nzz
 nmap N Nzz
 nmap * *zz
 nmap # #zz
 nmap g* g*zz
-nmap g# g#zz"}}}
+nmap g# g#zz"}}}"}}}
 
 " plugins settings{{{
 " MiniBufExp{{{
@@ -231,3 +230,9 @@ function! ToggleScratch()
     Sscratch
   endif
 endfunction"}}}
+" Ack{{{
+set grepprg=ack
+set grepformat=%f:%l:%m"}}}
+" Command-T{{{
+set wildignore+=*.jpg,*.xls,*.doc,*.cd
+let g:CommandTMaxHeight=10"}}}

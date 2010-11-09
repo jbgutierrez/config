@@ -102,7 +102,19 @@ function! Entities()
   silent %s/\&yuml;/ÿ/eg
 endfunction"}}}
 
-" DeleteUselessWhitespacesAndBlankLines{{{
+" CleanFile{{{
+function! CleanFile()
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  silent! gg
+  silent! %s/\v\s+$//e
+  silent! :g/\v^\n{2,}/d
+  let @/=_s
+  call cursor(l, c)
+endfunction"}}}
+
+" Preserve{{{
 function! Preserve(command)
   " Preparation: save last search, and cursor position.
   let _s=@/
@@ -175,4 +187,7 @@ function! MyFoldText()
   let number = v:foldend - v:foldstart + 1
   return sub . ' ... (' . number . ' lines)'
 endfunction"}}}
+
+
+
 
