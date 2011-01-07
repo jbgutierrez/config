@@ -7,27 +7,29 @@ set nocompatible        " Use Vim defaults (much better!)
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set virtualedit=all     "allows the cursor to freely roam anywhere it likes in command mode
 set viminfo='20,\"50    " read/write a .viminfo file, don't store more
-" than 50 lines of registers
+                        " than 50 lines of registers
 set history=50          " keep 50 lines of command line history
 set ruler               " show the cursor position all the time
 set number              " show line numbers
+set scrolloff=3         " leave 3 lines of breathing room
 set title               " show title
 set hidden              " allows changing of buffers without saving
 set lazyredraw          " Set lazydraws so that rendering is much faster during macros
 set showmode            " I like to know which mode I am in at times
-set showcmd             " show the command being typed"
+set showcmd             " show the command being typed
 set showmatch           " show matching brackets
-set list                " show whitespace
+set nolist              " show whitespace
 set listchars=tab:▸\ ,eol:¬  "use the same symbols as TextMate for tabstops and EOLs
 set hidden
 " set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
+set laststatus=2        " always show the last status
 set wildmenu            " turn on command line completion wild style"}}}
 " tabs and indentation{{{
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
-set smartindent    " use spaces instead of tabs
+set smartindent    " use smart indentation over autoindent
 set smarttab       " smart tabulatin and backspace
 set expandtab      " To spaces to tabs 'set noexpandtab' and ':retab!'
 "}}}
@@ -56,10 +58,11 @@ set spellsuggest=5"}}}
 :so $VIMHOME/personal/csharp_folding.vim
 :so $VIMHOME/personal/functions.vim"}}}
 " file backups{{{
-set nobackup                      " Don't make a backup before overwriting a file.
-set nowritebackup                 " And again.
-set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location"}}}
-" uI settings{{{
+set nobackup                                        " Don't make a backup before overwriting a file.
+set nowritebackup                                   " And again.
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp " Store temporary files in a central spot
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp"}}}
+" UI settings{{{
 
 "improve autocomplete menu color
 "gui options
@@ -69,13 +72,22 @@ set guioptions-=r
 set guioptions-=R
 set guioptions-=l
 set guioptions-=R
+au ColorScheme * hi Pmenu ctermbg=238 gui=bold
+au ColorScheme * hi Folded guibg=#292421
+au ColorScheme * hi IncSearch gui=underline guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+au ColorScheme * hi Search gui=underline guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
 colorscheme sunburst
-au! ColorScheme * hi Pmenu ctermbg=238 gui=bold
-au! ColorScheme * hi Folded guibg=#292421
 "Invisible character colors
 set cursorline " highlight current line
 set cursorcolumn
-set clipboard+=unnamed "accessing the system clipboard"}}}"}}}
+set clipboard+=unnamed "accessing the system clipboard"}}}
+" mswin settings{{{
+if has('win32')
+  source $VIMRUNTIME/mswin.vim
+  behave mswin
+  set shell=c:\\cygwin\\bin\\zsh.exe shellcmdflag=-c shellxquote=\"
+  set ffs=dos
+endif"}}} "}}}
 
 " Coding settings{{{
 " general{{{
@@ -132,7 +144,6 @@ au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}"}}}
 let mapleader = ","
 map <s-u> :redo<CR>           " redo
 nmap <leader>l :set list!<CR> " shortcut to rapidly toggle `set list` (retab! if neccesary)
-" imap <Tab> <C-N>            " maps autocomplete to tab
 map <leader>e :e ~/.vimrc<cr> " fast editing of the .vimrc "}}}
 " moving around split windows{{{
 nmap <s-down>   <c-w>w
@@ -147,9 +158,7 @@ nmap <buffer> <F8> :tnext<cr>
 nmap <buffer> <C-F8> :tprev<cr>"}}}
 " function keys{{{
 map <F2> :TlistToggle<CR>                               " F2 - List methods
-map <F3> :execute 'NERDTreeToggle ' . getcwd()<CR>      " F3 - List project files
 map <F4> :set hlsearch! hlsearch?<CR>                   " F4 - highlighting on/off
-map <F5> :ls<CR>:b                                      " F5 - List buffers
 map <F6> :call ToggleScratch()<CR>                      " F6 - Toggle scratch buffer
 set textwidth=80
 nmap <F10> gqap                                         " F10 - Format paragraph
@@ -187,8 +196,10 @@ vmap <C-k> :m-2<CR>gv=gv"}}}
 nnoremap <space> za    " space - toggle current fold
 nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR> " space - toggle current fold"}}}
 " coding utilities {{{
-map <d-r> <plug>rubyfilerun                        " run file in shell mode with ruby
-map <leader>c gcc                                  " toggle comment "}}}
+map <d-r> <plug>rubyfilerun    " run file in shell mode with ruby
+map <leader>, V} :Align\|<cr>  " align tables
+map <leader>= V} <Plug>AM_t=|  " align assignments
+map <leader>c gcc              " toggle comment "}}}
 " change colors{{{
 map <leader><f3> :nextcolor<cr>
 map <leader><f2> :prevcolor<cr>"}}}
@@ -200,6 +211,8 @@ vmap s "_d"0P"}}}
 " save file{{{
 :map <C-s> :w<cr>
 :map <C-S-s> :browse confirm saveas<cr>"}}}
+" vim defaults overriden{{{
+nmap x "_dl"}}}
 " make search results appear in the middle of the screen{{{
 nmap n nzz
 nmap N Nzz
@@ -218,10 +231,6 @@ let Tlist_Show_Menu=1
 let Tlist_GainFocus_On_ToggleOpen=1
 let Tlist_Close_OnSelect=1
 let Tlist_Compact_Format=1"}}}
-" NERDTree{{{
-" let NERDChristmasTree = 1               " NERDTree with colors
-" let NERDTreeHighlightCursorline = 1     " highlight cursorline
-" let NERDTreeMapActivateNode='<CR>'      " set Enter/Return to activate a node"}}}
 " ToogleScratch{{{
 function! ToggleScratch()
   if expand('%') == g:ScratchBufferName
