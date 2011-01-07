@@ -75,6 +75,16 @@ if ENV['RAILS_ENV']
   end
   
   Hirb::View.enable
+
+# for rails 3
+elsif defined?(Rails) && !Rails.env.nil?
+  puts "Note that if your’e using Bundler  in your Rails app, AND use gems in your ~/.irbrc file AND  attempt to start the Rails console; you’ll get errors/warnings on requiring them UNLESS you define them in your Gemfile. I use a ‘development’ group in my Gemfile for these, like so."
+  if Rails.logger
+    Rails.logger =Logger.new(STDOUT)
+    ActiveRecord::Base.logger = Rails.logger
+  end
+else
+  # nothing to do
 end
 
 # CORE extensions

@@ -9,6 +9,7 @@ function topcommands() {
 # GIT aliases
 alias gk='gitk --all'
 alias gkr='gitk --all `git reflog | cut -c1-7`'
+alias gks'git instaweb'
 alias gst='git status'
 alias gl='git pull'
 alias gp='git push'
@@ -44,10 +45,32 @@ alias r="rake"
 # alias ruby19="export PATH=/opt/ruby19/bin:$PATH"
 
 # Rails
-alias sc='./script/console'
-alias sg='./script/generate'
 alias sp='./script/plugin'
-alias ss='./script/server'
+
+sc () {
+  if [ -f ./script/rails ]; then 
+    rails c $@
+  else
+    ./script/console $@
+  fi
+}
+
+sg () {
+  if [ -f ./script/rails ]; then
+    rails g $@
+  else
+    ./script/generate $@
+  fi
+}
+
+ss () {
+  if [ -f ./script/rails ]; then 
+    rails s $@
+  else
+    ./script/server $@
+  fi
+}
+
 alias tl='tail -f log/*.log'
 
 # TDD / BDD
@@ -72,6 +95,10 @@ alias djs='dj shell'
 alias gss='dev_appserver.py . -p 3000 -d' # --debug_imports -d'
 alias gcd='dev_appserver.py --clear_datastore .'
 alias gps='appcfg.py update .'
+
+# ObjectiveC
+alias xclean='xcodebuild -target Test clean'
+alias xbuild='scan-build -k -V xcodebuild -target Test'
 
 # Bash shortcuts
 alias less='less -r'
