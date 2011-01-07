@@ -1,33 +1,44 @@
 [submodule "dotfiles/vim/snippets"]
 	path = dotfiles/vim/snippets
 	url = http://github.com/scrooloose/snipmate-snippets.git
+  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-surround"]
 	path = dotfiles/vim/bundle/vim-surround
 	url = http://github.com/tpope/vim-surround.git
+  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-rails"]
 	path = dotfiles/vim/bundle/vim-rails
 	url = http://github.com/tpope/vim-rails.git
+  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-haml"]
 	path = dotfiles/vim/bundle/vim-haml
 	url = http://github.com/tpope/vim-haml.git
+  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-ruby"]
 	path = dotfiles/vim/bundle/vim-ruby
 	url = http://github.com/vim-ruby/vim-ruby.git
+  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-ragtag"]
 	path = dotfiles/vim/bundle/vim-ragtag
 	url = http://github.com/tpope/vim-ragtag.git
+  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-vividchalk"]
 	path = dotfiles/vim/bundle/vim-vividchalk
 	url = http://github.com/tpope/vim-vividchalk.git
+  ignore = untracked
 [submodule "dotfiles/vim/bundle/tcomment"]
 	path = dotfiles/vim/bundle/tcomment
 	url = http://github.com/tomtom/tcomment_vim.git
+  ignore = untracked
 [submodule "dotfiles/vim/bundle/supertab"]
 	path = dotfiles/vim/bundle/supertab
 	url = http://github.com/ervandew/supertab.git
+  ignore = untracked
 [submodule "dotfiles/vim/bundle/snipmate"]
 	path = dotfiles/vim/bundle/snipmate
 	url = http://github.com/msanders/snipmate.vim.git
+  ignore = untracked
 [submodule "dotfiles/vim/bundle/command-t"]
 	path = dotfiles/vim/bundle/command-t
 	url = http://github.com/wincent/Command-T.git
+  ignore = untracked
