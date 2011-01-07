@@ -27,7 +27,7 @@
 	url = http://github.com/ervandew/supertab.git
 [submodule "dotfiles/vim/bundle/snipmate"]
 	path = dotfiles/vim/bundle/snipmate
-	url = git@github.com:jbgutierrez/snipmate.vim.git
+	url = http://github.com/msanders/snipmate.vim.git
 [submodule "dotfiles/vim/bundle/command-t"]
 	path = dotfiles/vim/bundle/command-t
-	url = git://git.wincent.com/command-t.git
+	url = http://github.com/wincent/Command-T.git
