@@ -7,10 +7,11 @@ function topcommands() {
 }
 
 # GIT aliases
-alias gk='gitk --all'
+alias gk='gitk --all&'
 alias gkr='gitk --all `git reflog | cut -c1-7`'
 alias gks'git instaweb'
 alias gst='git status'
+alias gs='git status '
 alias gl='git pull'
 alias gp='git push'
 alias gd='git diff'
@@ -19,15 +20,16 @@ alias gca='git commit -v -a'
 alias gcsvn='git svn dcommit'
 alias ga='git commit -v --amend'
 alias gaa='git commit -v -a --amend'
+alias gadd='git add '
 alias gb='git branch --color'
 alias gbd='git branch -d'
-function gbc() {
+function go() {
   git checkout -b $1 2> /dev/null || git checkout $1
 }
-alias gadd='git add -i'
 alias glog='git log --pretty=format:"%ar - %an - %s"'
 alias gapply='git stash apply && git stash clear'
 alias gresolve='git add -u && git rebase --continue'
+
 function garchive() {
   git archive master | bzip2 >source-tree.tar.bz2
 }

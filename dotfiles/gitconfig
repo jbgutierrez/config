@@ -3,11 +3,16 @@
 	email = jbgutierrez@gmail.com
 [alias]
 	co = checkout
+  ci = commit
+  st = status
+  br = branch
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
 [apply]
   whitespace = strip
 [core]
-	editor = gvim -f
-[core]
+  editor = gvim -f
 	excludesfile = ~/.gitignore
 [color]
 	status = auto
