@@ -72,14 +72,17 @@ set guioptions-=r
 set guioptions-=R
 set guioptions-=l
 set guioptions-=R
-au ColorScheme * hi Pmenu ctermbg=238 gui=bold
+au! ColorScheme * hi Pmenu ctermbg=238 gui=bold
 au ColorScheme * hi Folded guibg=#292421
-au ColorScheme * hi IncSearch gui=underline guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
-au ColorScheme * hi Search gui=underline guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+au ColorScheme * hi IncSearch gui=underline guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
+au ColorScheme * hi Search gui=underline guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
 colorscheme sunburst
 "Invisible character colors
-set cursorline " highlight current line
-set cursorcolumn
+
+if has("gui_running")
+  set cursorline " highlight current line
+  set cursorcolumn
+endif
 set clipboard+=unnamed "accessing the system clipboard"}}}
 " mswin settings{{{
 if has('win32')
@@ -105,7 +108,11 @@ set foldmethod=syntax
 set fillchars=fold:\ "
 set foldtext=MyFoldText() " Custom fold text function
 " set balloonexpr=FoldSpellBalloon()
-set ballooneval"}}}
+
+if has("ruby")
+  set ballooneval
+endif
+"}}}
 " javascript{{{
 au FileType javascript set omnifunc=javascriptcomplete#CompleteJS"}}}
 " .vimrc{{{
