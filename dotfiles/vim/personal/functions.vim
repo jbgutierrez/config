@@ -180,16 +180,9 @@ function! FoldSpellBalloon()
   return join( lines, has( "balloon_multiline" ) ? "\n" : " " )
 endfunction"}}}
 
-" Custom Folding{{{
-function! MyFoldText()
-  let line = getline(v:foldstart)
-  let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
-  let number = v:foldend - v:foldstart + 1
-  return sub . ' ... (' . number . ' lines)'
-endfunction"}}}
-
 " Remap the tab key to do autocompletion or indentation depending on the"{{{
 " context (from http://vim.wikia.com/wiki/Smart_mapping_for_tab_completion)
+inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 function! Smart_TabComplete()
   let line = getline('.')                         " curline
   let substr = strpart(line, -1, col('.')+1)      " from start to cursor
@@ -207,4 +200,25 @@ function! Smart_TabComplete()
     return "\<C-X>\<C-O>"                         " plugin matching
   endif
 endfunction"}}}
-inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+
+" Autoformat cucumber tables (from https://gist.github.com/287147) {{{
+inoremap <silent>  <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction"}}}
+
+" Custom Folding{{{
+function! MyFoldText()
+  let line = getline(v:foldstart)
+  let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
+  let number = v:foldend - v:foldstart + 1
+  return sub . ' ... (' . number . ' lines)'
+endfunction"}}}
+

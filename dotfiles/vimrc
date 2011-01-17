@@ -197,8 +197,10 @@ nnoremap <space> za    " space - toggle current fold
 nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR> " space - toggle current fold"}}}
 " coding utilities {{{
 map <d-r> <plug>rubyfilerun    " run file in shell mode with ruby
-map <leader>, V} :Align\|<cr>  " align tables
-map <leader>= V} <Plug>AM_t=|  " align assignments
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:\zs<CR>
+vmap <Leader>a: :Tabularize /:\zs<CR>
 map <leader>c gcc              " toggle comment "}}}
 " change colors{{{
 map <leader><f3> :nextcolor<cr>
