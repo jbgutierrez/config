@@ -1,25 +1,9 @@
-# Utility Belt
-=begin
-
-  utility_belt cheatsheet:
-
-    edit_interactively(:gvim)     - Interactively edit IRB code in your preferred text editor
-    MacClipboard.read             - Read from OS X clipboard
-    history_to_vi                 - Write command history
-    h                             - Unix - style history
-    "string".grep_methods('join') - Grep classes and methods for strings
-    v/q                           - Verbosity controls for regular IRB and Rails console
-    x                             - exit
-
-=end
-
 libs =
   [ 'rubygems'       ,
     'wirble'         , # IRB tools, tricks, and techniques (requires 'pp', 'irb/completion' and 'rubygems')
     'pp'             , # Pretty Print method
     'ap'             , # Awesome Print (gem install awesome_print)
     'irb/completion' , # Tab Completion
-    'utility_belt'   ,
     'map_by_method'  , # Dr Nic's gems
     'what_methods'   , # Dr Nic's gems
     'net-http-spy'   , # Print information about any HTTP requests being made
@@ -78,7 +62,7 @@ if ENV['RAILS_ENV']
 
 # for rails 3
 elsif defined?(Rails) && !Rails.env.nil?
-  puts "Note that if your’e using Bundler  in your Rails app, AND use gems in your ~/.irbrc file AND  attempt to start the Rails console; you’ll get errors/warnings on requiring them UNLESS you define them in your Gemfile. I use a ‘development’ group in my Gemfile for these, like so."
+  puts "Note that if you are using Bundler in your Rails app, AND use gems in your ~/.irbrc file AND  attempt to start the Rails console; you'll get errors/warnings on requiring them UNLESS you define them in your Gemfile. I use a 'development' group in my Gemfile for these, like so."
   if Rails.logger
     Rails.logger =Logger.new(STDOUT)
     ActiveRecord::Base.logger = Rails.logger
