@@ -166,7 +166,7 @@ function zip2bzip() {
 alias tu='top -o cpu' # cpu
 alias tm='top -o vsize' # memory
 function killnamed () {
-  ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill
+  ps ax | grep $1 | cut -d ' ' -f 1 | xargs kill -9
 }
 
 # Finder
