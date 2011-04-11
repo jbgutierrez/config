@@ -44,16 +44,37 @@
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-textobj-user"]
 	path = dotfiles/vim/bundle/vim-textobj-user
-	url = https://github.com/kana/vim-textobj-user.git
+	url = http://github.com/kana/vim-textobj-user.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-textobj-rubyblock"]
 	path = dotfiles/vim/bundle/vim-textobj-rubyblock
-	url = https://github.com/nelstrom/vim-textobj-rubyblock.git
+	url = http://github.com/nelstrom/vim-textobj-rubyblock.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-ruby-refactoring"]
 	path = dotfiles/vim/bundle/vim-ruby-refactoring
-	url = https://github.com/ecomba/vim-ruby-refactoring.git
+	url = http://github.com/ecomba/vim-ruby-refactoring.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/tabular"]
 	path = dotfiles/vim/bundle/tabular
-	url = https://github.com/godlygeek/tabular.git
+	url = http://github.com/godlygeek/tabular.git
+[submodule "dotfiles/vim/bundle/vim-unimpaired"]
+	path = dotfiles/vim/bundle/vim-unimpaired
+	url = http://github.com/tpope/vim-unimpaired.git
+[submodule "dotfiles/vim/bundle/vim-endwise"]
+	path = dotfiles/vim/bundle/vim-endwise
+	url = http://github.com/tpope/vim-endwise.git
+[submodule "dotfiles/vim/bundle/vim-repeat"]
+	path = dotfiles/vim/bundle/vim-repeat
+	url = http://github.com/tpope/vim-repeat.git
+[submodule "dotfiles/vim/bundle/vim-pastie"]
+	path = dotfiles/vim/bundle/vim-pastie
+	url = http://github.com/tpope/vim-pastie.git
+[submodule "dotfiles/vim/bundle/asp.net"]
+	path = dotfiles/vim/bundle/asp.net
+	url = http://github.com/vim-scripts/asp.net.git
+[submodule "dotfiles/vim/bundle/simplefold"]
+	path = dotfiles/vim/bundle/simplefold
+	url = http://github.com/vim-scripts/simplefold.git
+[submodule "dotfiles/vim/bundle/vim-css-color"]
+	path = dotfiles/vim/bundle/vim-css-color
+	url = http://github.com/skammer/vim-css-color.git

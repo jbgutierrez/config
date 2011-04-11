@@ -10,7 +10,7 @@ set viminfo='20,\"50    " read/write a .viminfo file, don't store more
                         " than 50 lines of registers
 set history=50          " keep 50 lines of command line history
 set ruler               " show the cursor position all the time
-set number              " show line numbers
+set nonumber            " hide line numbers
 set scrolloff=3         " leave 3 lines of breathing room
 set title               " show title
 set hidden              " allows changing of buffers without saving
@@ -46,17 +46,11 @@ set linebreak                " when wrapping, try to break at characters in brea
 set breakat=\ ^I!@*-+;:,./?  " when wrapping, break at these characters
 set showbreak=>              " character to show that a line is wrapped"}}}
 " encoding and fileformat{{{
-autocmd BufRead * silent! %s/^M$// " never see ^M again! (DOS text files)
 set enc=utf-8 nobomb
-" set fileformat=dos               " alternative configuration for the DOS text files
 " set enc=iso-8859-1"}}}
 " spell checking{{{
 set spell spelllang=es " X + = to show suggestions
 set spellsuggest=5"}}}
-" load personal functions{{{
-:so $VIMHOME/personal/abbreviations.vim
-:so $VIMHOME/personal/csharp_folding.vim
-:so $VIMHOME/personal/functions.vim"}}}
 " file backups{{{
 set nobackup                                        " Don't make a backup before overwriting a file.
 set nowritebackup                                   " And again.
@@ -85,12 +79,26 @@ if has("gui_running")
 endif
 set clipboard+=unnamed "accessing the system clipboard"}}}
 " mswin settings{{{
-if has('win32')
-  source $VIMRUNTIME/mswin.vim
+if has('win32') || has ('win64')
+  so $VIMRUNTIME/mswin.vim
   behave mswin
   set shell=c:\\cygwin\\bin\\zsh.exe shellcmdflag=-c shellxquote=\"
   set ffs=dos
+  set guifont=Courier_New:h11
+  set list
+  set tabstop=4
+  set softtabstop=4
+  set shiftwidth=4
+  set listchars=tab:→\ ,eol:¬  "use the same symbols as TextMate for tabstops and EOLs
+  set noexpandtab		 " To spaces to tabs 'set noexpandtab' and ':retab!' "}}}
+  let $VIMHOME='~/vimfiles'
+else
+  let $VIMHOME='~/.vim'
 endif"}}} "}}}
+" load personal functions"{{{
+so $VIMHOME/personal/abbreviations.vim
+so $VIMHOME/personal/csharp_folding.vim
+so $VIMHOME/personal/functions.vim"}}}
 
 " Coding settings{{{
 " general{{{
@@ -102,6 +110,9 @@ compiler ruby         " Enable compiler support for ruby
 " Auto save folds
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview"}}}
+" spaces, tabs and DOS text files {{{
+au BufRead * silent! %s/\r$// " never see ^M again! (DOS text files)
+au BufWrite * silent! %s/\v\s+$// " chop off unnecesary tabs and spaces"}}}
 " folding{{{
 set foldlevel=1
 set foldmethod=syntax
@@ -116,33 +127,37 @@ endif
 " javascript{{{
 au FileType javascript set omnifunc=javascriptcomplete#CompleteJS"}}}
 " .vimrc{{{
-au BufWritePost .vimrc source % " When vimrc is edited, reload it
-au BufRead,BufWritePost .vimrc set foldmethod=marker"}}}
+au! BufWritePost $MYVIMRC source % " When vimrc is edited, reload it
+au BufRead,BufWritePost $MYVIMRC set foldmethod=marker "}}}
 " ruby{{{
-au FileType ruby,eruby set omnifunc=rubycomplete#Complete
+au! FileType ruby,eruby set omnifunc=rubycomplete#Complete
 au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 au FileType ruby,eruby let g:rubycomplete_rails = 1
 au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1"}}}
 " XML{{{
-au FileType html set omnifunc=htmlcomplete#CompleteTags
-au FileType xml set omnifunc=xmlcomplete#CompleteTags
+au! FileType html set omnifunc=htmlcomplete#CompleteTags
+au! FileType xml set omnifunc=xmlcomplete#CompleteTags
 au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 let g:xml_syntax_folding=1
 au FileType xml setlocal foldmethod=syntax"}}}
+" Java{{{
+au! FileType java setlocal foldmethod=syntax"}}}
 " haml{{{
 au! BufRead,BufNewFile *.haml setfiletype haml"}}}
 " css{{{
-au FileType css setlocal foldmethod=marker
+au! FileType css setlocal foldmethod=marker
 au FileType css setlocal foldmarker={,}
 au FileType css set omnifunc=csscomplete#CompleteCSS"}}}
+" csharp{{{
+au! FileType cs call CSharp()"}}}
 " diff{{{
-au FileType diff setlocal fdm=expr
+au! FileType diff setlocal fdm=expr
 au FileType diff setlocal fde=DiffFoldLevel()
 au FileType diff setlocal fdc=1
 au FileType diff setlocal foldlevel=0"}}}
 " file types really do require explicit tabs, and not spaces{{{
-au FileType make   setlocal noexpandtab
-au FileType python setlocal noexpandtab"}}}
+au! FileType make   setlocal noexpandtab
+au! FileType python setlocal noexpandtab"}}}
 " load templates{{{
 au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}"}}}
 
@@ -151,7 +166,7 @@ au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}"}}}
 let mapleader = ","
 map <s-u> :redo<CR>           " redo
 nmap <leader>l :set list!<CR> " shortcut to rapidly toggle `set list` (retab! if neccesary)
-map <leader>e :e ~/.vimrc<cr> " fast editing of the .vimrc "}}}
+map <leader>e :e $MYVIMRC<cr>   " fast editing of the .vimrc"}}}
 " moving around split windows{{{
 nmap <s-down>   <c-w>w
 nmap <s-up>     <c-w>W
@@ -172,6 +187,8 @@ nmap <F10> gqap                                         " F10 - Format paragraph
 imap <F11> <ESC>1G=Ga                                   " F11 - Format code
 nnoremap <F11> :call CleanFile()<CR>                    " delete empty lines
 map <F12> :%!tidy -q --tidy-mark 0 2>/dev/null<CR>"}}}
+" change working directory {{{
+nmap <silent> <leader>cd :cd %:p:h<cr>"}}}
 " move text around{{{
 nmap <S-Tab> <<
 nmap <Tab> >>
@@ -213,15 +230,13 @@ map <leader>c gcc              " toggle comment "}}}
 map <leader><f3> :nextcolor<cr>
 map <leader><f2> :prevcolor<cr>"}}}
 " replace selected text{{{
-nmap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
+" nmap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
 vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
 nmap s diw"0P
 vmap s "_d"0P"}}}
 " save file{{{
 :map <C-s> :w<cr>
 :map <C-S-s> :browse confirm saveas<cr>"}}}
-" vim defaults overriden{{{
-nmap x "_dl"}}}
 " make search results appear in the middle of the screen{{{
 nmap n nzz
 nmap N Nzz
