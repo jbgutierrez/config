@@ -34,74 +34,35 @@ railsrc_path = File.expand_path('~/.railsrc')
 if ( ENV['RAILS_ENV'] || defined? Rails ) && File.exist?( railsrc_path )
   begin
     load railsrc_path
-  rescue Exception
+  rescue Exception => e
     warn "Could not load: #{ railsrc_path }" # because of $!.message
+    warn e.message
+    pp e.backtrace
   end
-end
-# TODO Mover a railsrc
-if ENV['RAILS_ENV']
-  rails_env = ENV['RAILS_ENV']
-  rails_root = File.basename(Dir.pwd)
-  prompt = "#{rails_root}[#{rails_env.sub('production', 'prod').sub('development', 'dev')}]"
-  IRB.conf[:PROMPT] ||= {}
-  
-  IRB.conf[:PROMPT][:RAILS] = {
-    :PROMPT_I => "#{prompt}>> ",
-    :PROMPT_S => "#{prompt}* ",
-    :PROMPT_C => "#{prompt}? ",
-    :RETURN => "=> %s\n"
-  }
-  
-  IRB.conf[:PROMPT_MODE] = :RAILS
-  
-  #Redirect log to STDOUT, which means the console itself
-  IRB.conf[:IRB_RC] = Proc.new do
-    logger = Logger.new(STDOUT)
-    ActiveRecord::Base.logger = logger
-    ActiveResource::Base.logger = logger
-    ActiveRecord::Base.instance_eval { alias :[] :find }
-  end
-  
-  def log_to(path)
-    ActiveRecord::Base.logger = Logger.new path
-    reload!
-  end
-  
-  Hirb::View.enable
-
-# for rails 3
-elsif defined?(Rails) && !Rails.env.nil?
-  puts "Note that if you are using Bundler in your Rails app, AND use gems in your ~/.irbrc file AND  attempt to start the Rails console; you'll get errors/warnings on requiring them UNLESS you define them in your Gemfile. I use a 'development' group in my Gemfile for these, like so."
-  if Rails.logger
-    Rails.logger =Logger.new(STDOUT)
-    ActiveRecord::Base.logger = Rails.logger
-  end
-else
-  # nothing to do
 end
 
 # CORE extensions
 class Object
-  
+
   #methods defined in the parent class of the object
   def local_methods
     (methods - Object.instance_methods).sort
   end
-  
+
   def cls
     system 'clear'
     message = ENV['RAILS_ENV'] || "no environment"
     return message
   end
-  
+
   def eigenclass
     class << self; self; end
   end
-  
+
   def class_methods
     (methods - Class.instance_methods - Object.methods).sort
   end
-  
+
   def local_methods
     (methods - Object.instance_methods).sort
   end
@@ -121,7 +82,7 @@ class Class
   def class_methods
     (methods - Class.instance_methods - Object.methods).sort
   end
-  
+
   #Returns an array of methods defined in the class, class methods and instance methods
   def defined_methods
     methods = {}
@@ -129,7 +90,7 @@ class Class
     methods[:class] = class_methods
     methods
   end
-  
+
   def metaclass
     eigenclass
   end
