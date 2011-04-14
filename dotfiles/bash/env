@@ -4,13 +4,15 @@ export PROJECTS_FOLDER=$HOME/Projects
 # Adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 
-# Adding an appropriate MANPATH variable for use with MacPorts.
-export MANPATH=/opt/local/share/man:$MANPATH
+export PATH=/usr/local/bin:$PATH
 
 # svn upgrade
-export PATH=/opt/subversion/bin:$PATH
+export PATH=/opt/subversion/bin:/usr/local/mysql/bin:$PATH
 
-export PATH=~/bin:$PATH:/usr/local/mysql/bin
+export PATH=~/bin:$PATH
+
+# Adding an appropriate MANPATH variable for use with MacPorts.
+export MANPATH=/opt/local/share/man:$MANPATH
 
 export VIMHOME=~/.vim
 
@@ -22,7 +24,7 @@ if [ $_YAP_CYGWIN ]; then
   export OUTPUT_CHARSET="ISO-8859-15"
   export PATH=$PATH:"/cygdrive/c/Archivos de programa/TortoiseSVN/bin"
   export PROJECTS_FOLDER='/cygdrive/d/Proyectos'
-  
+
   # colorful shell
   export LESS="-erX"
 fi

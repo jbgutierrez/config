@@ -173,11 +173,9 @@ nmap <s-up>     <c-w>W
 nmap <s-left>   <c-w>h
 nmap <s-right>  <c-w>l"}}}
 " easies taglist navigation{{{
-nmap <buffer> <F7> <C-]>
-nmap <buffer> <S-F7> <C-T>
-nmap <buffer> <A-F7> :ptselect<cr>
-nmap <buffer> <F8> :tnext<cr>
-nmap <buffer> <C-F8> :tprev<cr>"}}}
+nmap ] :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+nmap <leader>ta :TlistToggle<cr>
+nmap <leader>bta :!/usr/local/bin/ctags -R .<CR>"}}}
 " function keys{{{
 map <F2> :TlistToggle<CR>                               " F2 - List methods
 map <F4> :set hlsearch! hlsearch?<CR>                   " F4 - highlighting on/off
@@ -226,17 +224,14 @@ vmap <Leader>a= :Tabularize /=<CR>
 nmap <Leader>a: :Tabularize /:\zs<CR>
 vmap <Leader>a: :Tabularize /:\zs<CR>
 map <leader>c gcc              " toggle comment "}}}
-" change colors{{{
-map <leader><f3> :nextcolor<cr>
-map <leader><f2> :prevcolor<cr>"}}}
 " replace selected text{{{
 " nmap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
 vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
 nmap s diw"0P
 vmap s "_d"0P"}}}
 " save file{{{
-:map <C-s> :w<cr>
-:map <C-S-s> :browse confirm saveas<cr>"}}}
+map <C-s> :w<cr>
+map <C-S-s> :browse confirm saveas<cr>"}}}
 " make search results appear in the middle of the screen{{{
 nmap n nzz
 nmap N Nzz
@@ -246,15 +241,24 @@ nmap g* g*zz
 nmap g# g#zz"}}}"}}}
 
 " plugins settings{{{
-" MiniBufExp{{{
-" let g:miniBufExplMapWindowNavArrows = 1
-" let g:miniBufExplMapCTabSwitchBufs = 1
-" let g:miniBufExplModSelTarget = 1 "}}}
 " Tag List{{{
 let Tlist_Show_Menu=1
-let Tlist_GainFocus_On_ToggleOpen=1
-let Tlist_Close_OnSelect=1
-let Tlist_Compact_Format=1"}}}
+let Tlist_GainFocus_On_ToggleOpen = 1      " Focus on the taglist when its toggled
+let Tlist_Close_On_Select = 1              " Close when something's selected
+let Tlist_Compact_Format=1
+let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"
+let Tlist_Use_Right_Window = 1             " Project uses the left window
+let Tlist_WinWidth = 50
+" Language Specifics"{{{
+    " just functions and classes please
+    let tlist_aspjscript_settings = 'asp;f:function;c:class'
+    " just functions and subs please
+    let tlist_aspvbs_settings = 'asp;f:function;s:sub'
+    " don't show variables in freaking php
+    let tlist_php_settings = 'php;c:class;d:constant;f:function'
+    " just functions and classes please
+    let tlist_vb_settings = 'asp;f:function;c:class'"}}}
+"}}}
 " ToogleScratch{{{
 function! ToggleScratch()
   if expand('%') == g:ScratchBufferName
@@ -267,5 +271,7 @@ endfunction"}}}
 set grepprg=ack
 set grepformat=%f:%l:%m"}}}
 " Command-T{{{
-set wildignore+=*.jpg,*.xls,*.doc,*.cd
+set wildignore+=*.xls,*.doc,*.cd,*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png
+set wildmode=list:longest " turn on wild mode huge list
 let g:CommandTMaxHeight=10"}}}
+
