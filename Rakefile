@@ -1,6 +1,8 @@
 require 'rake'
 require 'erb'
- 
+
+task :default => :install
+
 desc "install the dot files into user's home directory"
 task :install do
   replace_all = false
@@ -31,12 +33,12 @@ task :install do
   download_submodules
   end
 end
- 
+
 def replace_file(file, hidden_file)
   `rm "#{hidden_file}"`
   link_file(file, hidden_file)
 end
- 
+
 def link_file(file, hidden_file)
   puts "linking #{hidden_file}"
   `ln -s "#{ENV['PWD']}/#{file}" "#{hidden_file}"`
