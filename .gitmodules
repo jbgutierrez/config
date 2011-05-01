@@ -78,3 +78,6 @@
 [submodule "dotfiles/vim/bundle/vim-css-color"]
 	path = dotfiles/vim/bundle/vim-css-color
 	url = http://github.com/skammer/vim-css-color.git
+[submodule "dotfiles/vim/bundle/vim-coffee-script"]
+	path = dotfiles/vim/bundle/vim-coffee-script
+	url = http://github.com/kchmck/vim-coffee-script.git
