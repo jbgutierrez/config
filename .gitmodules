@@ -81,3 +81,6 @@
 [submodule "dotfiles/vim/bundle/vim-coffee-script"]
 	path = dotfiles/vim/bundle/vim-coffee-script
 	url = http://github.com/kchmck/vim-coffee-script.git
+[submodule "dotfiles/vim/bundle/vim-gtd"]
+	path = dotfiles/vim/bundle/vim-gtd
+	url = http://github.com/jbgutierrez/vim-gtd.git
