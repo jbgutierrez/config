@@ -172,12 +172,9 @@ nmap <s-down>   <c-w>w
 nmap <s-up>     <c-w>W
 nmap <s-left>   <c-w>h
 nmap <s-right>  <c-w>l"}}}
-" easies taglist navigation{{{
-nmap ] :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
-nmap <leader>ta :TlistToggle<cr>
-nmap <leader>bta :!/usr/local/bin/ctags -R .<CR>"}}}
 " function keys{{{
 map <F2> :TlistToggle<CR>                               " F2 - List methods
+map <S-F2> :!/usr/local/bin/ctags -R .<CR>
 map <F4> :set hlsearch! hlsearch?<CR>                   " F4 - highlighting on/off
 map <F6> :call ToggleScratch()<CR>                      " F6 - Toggle scratch buffer
 set textwidth=80
