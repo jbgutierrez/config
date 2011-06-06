@@ -95,10 +95,6 @@ if has('win32') || has ('win64')
 else
   let $VIMHOME='~/.vim'
 endif"}}} "}}}
-" load personal functions"{{{
-so $VIMHOME/personal/abbreviations.vim
-so $VIMHOME/personal/csharp_folding.vim
-so $VIMHOME/personal/functions.vim"}}}
 
 " Coding settings{{{
 " general{{{
