@@ -30,8 +30,8 @@ task :install do
     else
       link_file(file, hidden_file)
     end
-  download_submodules
   end
+  download_submodules
 end
 
 def replace_file(file, hidden_file)

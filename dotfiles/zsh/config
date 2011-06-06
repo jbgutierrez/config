@@ -8,15 +8,15 @@ done
 PR_RESET="%{${reset_color}%}";  
 
 refresh_git_status() {
-  unstaged=FALSE staged=FALSE stashed=FALSE
+  unstaged=false staged=false stashed=false
   if [[ $(git diff --cached --name-status 2>/dev/null ) != "" ]]; then
-    staged=TRUE
+    staged=true
   fi
   if [[ $(git diff --name-status 2>/dev/null ) != "" ]]; then
-    unstaged=TRUE
+    unstaged=true
   fi
   if [[ $(git stash list) != "" ]]; then
-    stashed=TRUE
+    stashed=true
   fi
 }
 
