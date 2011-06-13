@@ -21,8 +21,21 @@ set showmatch           " show matching brackets
 set nolist              " show whitespace
 set listchars=tab:▸\ ,eol:¬  "use the same symbols as TextMate for tabstops and EOLs
 set hidden
-" set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
-set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
+set statusline=%F%m%r%h%w[%L]%y[%p%%][%04l,%04v]%=[%{&ff},%{\"\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"} "[%{fugitive#statusline()}]
+"              | | | | |  |   |  |       |    |
+"              | | | | |  |   |  |       |    + current column
+"              | | | | |  |   |  |       +-- current line
+"              | | | | |  |   |  +-- current % into file
+"              | | | | |  |   +-- current syntax in square brackets
+"              | | | | |  +-- number of lines
+"              | | | | +-- preview flag in square brackets
+"              | | | +-- help flag in square brackets
+"              | | +-- readonly flag in square brackets
+"              | +-- rodified flag in square brackets
+"              +-- full path to file in the rbuffer
+"}
+
+
 set laststatus=2        " always show the last status
 set wildmenu            " turn on command line completion wild style"}}}
 " tabs and indentation{{{
@@ -33,7 +46,7 @@ set smartindent    " use smart indentation over autoindent
 set smarttab       " smart tabulatin and backspace
 set expandtab      " To spaces to tabs 'set noexpandtab' and ':retab!'
 "}}}
-" searches{{{
+" search{{{
 " set gdefault           " global search/replace by default
 set incsearch hlsearch " highlight matches as you type
 set smartcase          " override ignorecase when there are uppercase characters
@@ -82,15 +95,7 @@ set clipboard+=unnamed "accessing the system clipboard"}}}
 if has('win32') || has ('win64')
   so $VIMRUNTIME/mswin.vim
   behave mswin
-  set shell=c:\\cygwin\\bin\\zsh.exe shellcmdflag=-c shellxquote=\"
   set ffs=dos
-  set guifont=Courier_New:h11
-  set list
-  set tabstop=4
-  set softtabstop=4
-  set shiftwidth=4
-  set listchars=tab:→\ ,eol:¬  "use the same symbols as TextMate for tabstops and EOLs
-  set noexpandtab		 " To spaces to tabs 'set noexpandtab' and ':retab!' "}}}
   let $VIMHOME='~/vimfiles'
 else
   let $VIMHOME='~/.vim'
@@ -106,7 +111,7 @@ compiler ruby         " Enable compiler support for ruby
 " Auto save folds
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview"}}}
-" spaces, tabs and DOS text files {{{
+" spaces, tabs and DOS text files{{{
 au BufRead * silent! %s/\r$// " never see ^M again! (DOS text files)
 au BufWrite * silent! %s/\v\s+$// " chop off unnecesary tabs and spaces"}}}
 " folding{{{
@@ -151,6 +156,8 @@ au! FileType diff setlocal fdm=expr
 au FileType diff setlocal fde=DiffFoldLevel()
 au FileType diff setlocal fdc=1
 au FileType diff setlocal foldlevel=0"}}}
+" coffescript{{{
+autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile> "Autocompile Coffeescript files on save"}}}
 " file types really do require explicit tabs, and not spaces{{{
 au! FileType make   setlocal noexpandtab
 au! FileType python setlocal noexpandtab"}}}
@@ -178,7 +185,7 @@ nmap <F10> gqap                                         " F10 - Format paragraph
 imap <F11> <ESC>1G=Ga                                   " F11 - Format code
 nnoremap <F11> :call CleanFile()<CR>                    " delete empty lines
 map <F12> :%!tidy -q --tidy-mark 0 2>/dev/null<CR>"}}}
-" change working directory {{{
+" change working directory{{{
 nmap <silent> <leader>cd :cd %:p:h<cr>"}}}
 " move text around{{{
 nmap <S-Tab> <<
@@ -210,18 +217,37 @@ vmap <C-k> :m-2<CR>gv=gv"}}}
 " folding{{{
 nnoremap <space> za    " space - toggle current fold
 nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR> " space - toggle current fold"}}}
-" coding utilities {{{
+" coding utilities{{{
 map <d-r> <plug>rubyfilerun    " run file in shell mode with ruby
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-nmap <Leader>a: :Tabularize /:\zs<CR>
-vmap <Leader>a: :Tabularize /:\zs<CR>
+nmap <leader>a\| :Tab /\|<CR>
+vmap <leader>a\| :Tab /\|<CR>
+nmap <Leader>a= :Tab /=<CR>
+vmap <Leader>a= :Tab /=<CR>
+nmap <Leader>a: :Tab /:\zs<CR>
+vmap <Leader>a: :Tab /:\zs<CR>
 map <leader>c gcc              " toggle comment "}}}
+" rotating among results in an ack search{{{
+map <C-n> :cn<CR>
+map <C-p> :cp<CR>"}}}
 " replace selected text{{{
 " nmap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
 vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
 nmap s diw"0P
 vmap s "_d"0P"}}}
+" search{{{
+nnoremap <leader>a :Ack
+nnoremap / /\v
+vnoremap / /\v"}}}
+" switch between buffers{{{
+noremap <tab> :bn<CR>
+noremap <S-tab> :bp<CR>
+nmap <leader>d :bd<CR>
+nmap <leader>D :bufdo bd<CR>"}}}
+" move between splits{{{
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l"}}}
 " save file{{{
 map <C-s> :w<cr>
 map <C-S-s> :browse confirm saveas<cr>"}}}
@@ -266,5 +292,10 @@ set grepformat=%f:%l:%m"}}}
 " Command-T{{{
 set wildignore+=*.xls,*.doc,*.cd,*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png
 set wildmode=list:longest " turn on wild mode huge list
-let g:CommandTMaxHeight=10"}}}
+let g:CommandTMaxHeight=10"}}}"}}}
 
+" finally, load custom configs{{{
+let my_home = expand("$HOME/")
+if filereadable(my_home . '.vimrc.local')
+  source ~/.vimrc.local
+endif"}}}
