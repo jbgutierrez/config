@@ -157,7 +157,8 @@ au FileType diff setlocal fde=DiffFoldLevel()
 au FileType diff setlocal fdc=1
 au FileType diff setlocal foldlevel=0"}}}
 " coffescript{{{
-autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile> "Autocompile Coffeescript files on save"}}}
+let coffee_compile_on_save = 1
+let coffee_folding = 1 "}}}
 " file types really do require explicit tabs, and not spaces{{{
 au! FileType make   setlocal noexpandtab
 au! FileType python setlocal noexpandtab"}}}
@@ -188,8 +189,8 @@ map <F12> :%!tidy -q --tidy-mark 0 2>/dev/null<CR>"}}}
 " change working directory{{{
 nmap <silent> <leader>cd :cd %:p:h<cr>"}}}
 " move text around{{{
-nmap <S-Tab> <<
-nmap <Tab> >>
+nmap <S-Tab> <C-o>
+" nmap <Tab> >>
 vmap <S-Tab> <gv
 vmap <Tab> >gv
 nmap <C-j> :m+<CR>==
@@ -198,6 +199,10 @@ imap <C-j> <Esc>:m+<CR>==gi
 imap <C-k> <Esc>:m-2<CR>==gi
 vmap <C-j> :m'>+<CR>gv=gv
 vmap <C-k> :m-2<CR>gv=gv"}}}
+" i18n translations"{{{
+vmap t s'gvs)i= t<esc>
+nmap t cs"'vi'lohs)it<esc>
+" nmap t ds"ds'viws'gvs)it<esc>"}}}
 " shortcuts for rails commands{{{
 " map <leader>m :rmodel
 " map <leader>c :rcontroller
@@ -232,22 +237,22 @@ map <C-p> :cp<CR>"}}}
 " replace selected text{{{
 " nmap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
 vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
-nmap s diw"0P
+nmap s "_diw"0P
 vmap s "_d"0P"}}}
 " search{{{
-nnoremap <leader>a :Ack
+nmap <leader>a :Ack
 nnoremap / /\v
 vnoremap / /\v"}}}
 " switch between buffers{{{
-noremap <tab> :bn<CR>
-noremap <S-tab> :bp<CR>
+nmap <A-tab> :bn<CR>
+nmap <A-S-tab> :bp<CR>
 nmap <leader>d :bd<CR>
 nmap <leader>D :bufdo bd<CR>"}}}
 " move between splits{{{
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l"}}}
+noremap <A-H> <C-w>h
+noremap <A-J> <C-w>j
+noremap <A-K> <C-w>k
+noremap <A-L> <C-w>l"}}}
 " save file{{{
 map <C-s> :w<cr>
 map <C-S-s> :browse confirm saveas<cr>"}}}
@@ -299,3 +304,6 @@ let my_home = expand("$HOME/")
 if filereadable(my_home . '.vimrc.local')
   source ~/.vimrc.local
 endif"}}}
+
+autocmd BufReadPost fugitive://* set bufhidden=delete
+nnoremap <F5> :GundoToggle<cr>

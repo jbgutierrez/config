@@ -84,3 +84,9 @@
 [submodule "dotfiles/vim/bundle/vim-gtd"]
 	path = dotfiles/vim/bundle/vim-gtd
 	url = http://github.com/jbgutierrez/vim-gtd.git
+[submodule "dotfiles/vim/bundle/vim-fugitive"]
+	path = dotfiles/vim/bundle/vim-fugitive
+	url = http://github.com/tpope/vim-fugitive.git
+[submodule "dotfiles/vim/bundle/gundo"]
+	path = dotfiles/vim/bundle/gundo
+	url = http://github.com/sjl/gundo.vim.git
