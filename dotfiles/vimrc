@@ -136,11 +136,10 @@ au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 au FileType ruby,eruby let g:rubycomplete_rails = 1
 au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1"}}}
 " XML{{{
-au! FileType html set omnifunc=htmlcomplete#CompleteTags
-au! FileType xml set omnifunc=xmlcomplete#CompleteTags
+au! FileType html,xhtml setlocal omnifunc=htmlcomplete#CompleteTags
+au! FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
-let g:xml_syntax_folding=1
-au FileType xml setlocal foldmethod=syntax"}}}
+let g:xml_syntax_folding=1"}}}
 " Java{{{
 au! FileType java setlocal foldmethod=syntax"}}}
 " haml{{{
@@ -155,7 +154,8 @@ au! FileType cs call CSharp()"}}}
 au! FileType diff setlocal fdm=expr
 au FileType diff setlocal fde=DiffFoldLevel()
 au FileType diff setlocal fdc=1
-au FileType diff setlocal foldlevel=0"}}}
+au FileType diff setlocal foldlevel=0
+au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=diff"}}}
 " coffescript{{{
 let coffee_compile_on_save = 1
 let coffee_folding = 1 "}}}
@@ -168,7 +168,7 @@ au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}"}}}
 " Key mappings{{{
 " general{{{
 let mapleader = ","
-map <s-u> :redo<CR>           " redo
+nmap <s-u> :redo<CR>           " redo
 nmap <leader>l :set list!<CR> " shortcut to rapidly toggle `set list` (retab! if neccesary)
 map <leader>e :e $MYVIMRC<cr>   " fast editing of the .vimrc"}}}
 " moving around split windows{{{
@@ -238,11 +238,11 @@ map <C-p> :cp<CR>"}}}
 " nmap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
 vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
 nmap s "_diw"0P
-vmap s "_d"0P"}}}
+" vmap s "_d"0P"}}}
 " search{{{
 nmap <leader>a :Ack
-nnoremap / /\v
-vnoremap / /\v"}}}
+nmap + yiw:Ack <c-r>"
+"}}}
 " switch between buffers{{{
 nmap <A-tab> :bn<CR>
 nmap <A-S-tab> :bp<CR>

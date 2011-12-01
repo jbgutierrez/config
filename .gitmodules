@@ -90,3 +90,18 @@
 [submodule "dotfiles/vim/bundle/gundo"]
 	path = dotfiles/vim/bundle/gundo
 	url = http://github.com/sjl/gundo.vim.git
+[submodule "dotfiles/vim/bundle/vim-snippets.mootols"]
+	path = dotfiles/vim/bundle/vim-snippets.mootols
+	url = https://github.com/zalun/vim-snippets.mootools.git
+[submodule "dotfiles/vim/bundle/html5.vim"]
+	path = dotfiles/vim/bundle/html5.vim
+	url = https://github.com/othree/html5.vim.git
+[submodule "dotfiles/vim/bundle/xml.vim"]
+	path = dotfiles/vim/bundle/xml.vim
+	url = https://github.com/othree/xml.vim.git
+[submodule "dotfiles/vim/bundle/css-snippets-snipmate/snippets"]
+	path = dotfiles/vim/bundle/css-snippets-snipmate/snippets
+	url = https://github.com/tisho/css-snippets-snipmate.git
+[submodule "dotfiles/vim/bundle/vim-markdown"]
+	path = dotfiles/vim/bundle/vim-markdown
+	url = http://github.com/peplin/vim-markdown.git
