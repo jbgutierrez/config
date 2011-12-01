@@ -7,9 +7,9 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export PATH=/usr/local/bin:$PATH
 
 # svn upgrade
-export PATH=/opt/subversion/bin:/usr/local/mysql/bin:$PATH
+export PATH=/opt/subversion/bin:/usr/local/mysql/bin:/usr/local/git/bin/:$PATH
 
-export PATH=~/bin:$PATH
+export PATH=./bin:~/bin:$PATH
 
 # Adding an appropriate MANPATH variable for use with MacPorts.
 export MANPATH=/opt/local/share/man:$MANPATH

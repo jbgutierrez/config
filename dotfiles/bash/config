@@ -64,3 +64,5 @@ complete -o default -o nospace -F rakecomplete rake
 
 # Ruvy version manager
 if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi
+
+export PATH=./bin:~/bin:$PATH
