@@ -56,7 +56,7 @@ if ENV['RAILS_ENV'] || defined?(Rails)
       #  (and which don't break anything), e.g.
       include ActionView::Helpers::DebugHelper
       include ActionView::Helpers::NumberHelper
-      include ActionView::Helpers::RawOutputHelper
+      # include ActionView::Helpers::RawOutputHelper
       include ActionView::Helpers::SanitizeHelper
       include ActionView::Helpers::TagHelper
       include ActionView::Helpers::TextHelper

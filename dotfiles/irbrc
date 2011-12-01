@@ -26,8 +26,8 @@ require 'irb/ext/save-history'
 IRB.conf[:SAVE_HISTORY] = 100
 IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb-save-history"
 
-Wirble.init
-Wirble.colorize
+# Wirble.init
+# Wirble.colorize
 
 # RAILS specific
 railsrc_path = File.expand_path('~/.railsrc')
