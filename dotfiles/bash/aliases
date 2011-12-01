@@ -9,8 +9,8 @@ function topcommands() {
 # GIT aliases
 alias gk='gitk --all&'
 alias gkr='gitk --all `git reflog | cut -c1-7`'
-alias gks'git instaweb'
-alias gst='git status'
+alias gks='git instaweb'
+alias gst='git status -s'
 alias gs='git status '
 alias gl='git pull'
 alias gp='git push'
@@ -88,7 +88,7 @@ alias aaf='autotest -f' # Don't run all at start
 alias as="autospec"
 
 #heroku helpers
-alias hp="git push heroku master"
+alias hp="go heroku && git rebase master && git push heroku heroku:master --force && go master"
 alias hl="heroku logs"
 
 # Django aliases
