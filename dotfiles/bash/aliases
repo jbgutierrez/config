@@ -1,7 +1,8 @@
 # Utility
 alias reload='source ~/bin/dotfiles/bash/aliases'
-alias ea='gvim -f ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
-alias ee='gvim ~/bin/dotfiles/bash/env'
+alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+alias ea='vim -f ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
+alias ee='vim ~/bin/dotfiles/bash/env'
 function topcommands() {
   history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
@@ -140,7 +141,7 @@ for project_path in $PROJECTS_FOLDER/*; do
   if [ -d $project_path ]; then
     subfolder=`echo $project_path | /usr/bin/sed 's/.*\///'`
     alias "cd$subfolder"="cd $project_path"
-    alias "e$subfolder"="gvim $project_path"
+    alias "e$subfolder"="vim $project_path"
   fi
 done
 

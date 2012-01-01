@@ -1,7 +1,11 @@
 " General settings{{{
 " load pathogen managed plugins{{{
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()"}}}
+" To disable a plugin, add it's bundle name to the following list
+let g:pathogen_disabled = []
+if !has('gui_running')
+  call add(g:pathogen_disabled, "vim-css-color")
+endif
+call pathogen#infect()"}}}
 " general{{{
 set nocompatible        " Use Vim defaults (much better!)
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
@@ -80,10 +84,10 @@ set guioptions-=R
 set guioptions-=l
 set guioptions-=R
 au! ColorScheme * hi Pmenu ctermbg=238 gui=bold
-au ColorScheme * hi Folded guibg=#292421
+" au ColorScheme * hi Folded guibg=#292421
 au ColorScheme * hi IncSearch gui=underline guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
 au ColorScheme * hi Search gui=underline guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
-colorscheme sunburst
+" colorscheme sunburst
 "Invisible character colors
 
 if has("gui_running")
