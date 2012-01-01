@@ -162,7 +162,10 @@ au FileType diff setlocal foldlevel=0
 au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=diff"}}}
 " coffescript{{{
 let coffee_compile_on_save = 1
-let coffee_folding = 1 "}}}
+au BufWritePost *.coffee silent CoffeeCompile -b | cwindow | redraw!
+au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
+":[RANGE] CoffeeCompile [watch|unwatch] [vert[ical]] [WINDOW-SIZE]
+"}}}
 " file types really do require explicit tabs, and not spaces{{{
 au! FileType make   setlocal noexpandtab
 au! FileType python setlocal noexpandtab"}}}
@@ -228,6 +231,7 @@ nnoremap <space> za    " space - toggle current fold
 nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR> " space - toggle current fold"}}}
 " coding utilities{{{
 map <d-r> <plug>rubyfilerun    " run file in shell mode with ruby
+map <leader>m ggO# coding: UTF-8<esc>
 nmap <leader>a\| :Tab /\|<CR>
 vmap <leader>a\| :Tab /\|<CR>
 nmap <Leader>a= :Tab /=<CR>
@@ -244,7 +248,7 @@ vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
 nmap s "_diw"0P
 " vmap s "_d"0P"}}}
 " search{{{
-nmap <leader>a :Ack
+" nmap <leader>a :Ack
 nmap + yiw:Ack <c-r>"
 "}}}
 " switch between buffers{{{
