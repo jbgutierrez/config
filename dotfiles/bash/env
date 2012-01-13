@@ -17,7 +17,7 @@ export MANPATH=/opt/local/share/man:$MANPATH
 export VIMHOME=~/.vim
 
 # Cygwin customizations and walkarounds
-if [ $_YAP_CYGWIN ]; then
+# if [ $_YAP_CYGWIN ]; then
   # cygwin settings
   export LC_ALL="es_ES.ISO-8859-15"
   export LANG="es_ES.ISO-8859-15"
@@ -27,4 +27,4 @@ if [ $_YAP_CYGWIN ]; then
 
   # colorful shell
   export LESS="-erX"
-fi
+# fi

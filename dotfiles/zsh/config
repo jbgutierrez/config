@@ -2,10 +2,10 @@ autoload -U colors; colors
 setopt prompt_subst
 # set some colors
 for COLOR in RED GREEN YELLOW MAGENTA; do
-  eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'        
+  eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'
   eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
 done
-PR_RESET="%{${reset_color}%}";  
+PR_RESET="%{${reset_color}%}";
 
 refresh_git_status() {
   unstaged=false staged=false stashed=false
@@ -23,19 +23,19 @@ refresh_git_status() {
 git_info() {
   branch_name=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
   if [[ ${branch_name} != "" ]]; then
-    refresh_git_status
+    # refresh_git_status
     status_color=${PR_GREEN}
-    if ${staged}; then
-      status_color=${PR_YELLOW}
-      if ${unstaged}; then
-        branch_name+=${PR_RED}' + unstaged data'
-      fi
-    elif ${unstaged}; then
-      status_color=${PR_RED}
-    fi
-    if ${stashed}; then
-      branch_name+=${PR_RED}' + stashed commit'
-    fi
+    # if ${staged}; then
+    #   status_color=${PR_YELLOW}
+    #   if ${unstaged}; then
+    #     branch_name+=${PR_RED}' + unstaged data'
+    #   fi
+    # elif ${unstaged}; then
+    #   status_color=${PR_RED}
+    # fi
+    # if ${stashed}; then
+    #   branch_name+=${PR_RED}' + stashed commit'
+    # fi
     echo "${status_color}[${branch_name}${status_color}] "
   fi
 }

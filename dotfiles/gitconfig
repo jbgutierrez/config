@@ -14,7 +14,7 @@
 [core]
 	editor = gvim -f
 	excludesfile = ~/.gitignore
-	autocrlf = input
+	autocrlf = false
 	safecrlf = true
 [color]
 	status = auto
