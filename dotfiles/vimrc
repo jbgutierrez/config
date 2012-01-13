@@ -3,74 +3,75 @@
 " To disable a plugin, add it's bundle name to the following list
 let g:pathogen_disabled = []
 if !has('gui_running')
-  call add(g:pathogen_disabled, "vim-css-color")
+	call add(g:pathogen_disabled, "vim-css-color")
 endif
 call pathogen#infect()"}}}
 " general{{{
-set nocompatible        " Use Vim defaults (much better!)
+set nocompatible				" Use Vim defaults (much better!)
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
-set virtualedit=all     "allows the cursor to freely roam anywhere it likes in command mode
-set viminfo='20,\"50    " read/write a .viminfo file, don't store more
-                        " than 50 lines of registers
-set history=50          " keep 50 lines of command line history
-set ruler               " show the cursor position all the time
-set nonumber            " hide line numbers
-set scrolloff=3         " leave 3 lines of breathing room
-set title               " show title
-set hidden              " allows changing of buffers without saving
-set lazyredraw          " Set lazydraws so that rendering is much faster during macros
-set showmode            " I like to know which mode I am in at times
-set showcmd             " show the command being typed
-set showmatch           " show matching brackets
-set nolist              " show whitespace
-set listchars=tab:â–¸\ ,eol:Â¬  "use the same symbols as TextMate for tabstops and EOLs
+set virtualedit=all			"allows the cursor to freely roam anywhere it likes in command mode
+set viminfo='20,\"50		" read/write a .viminfo file, don't store more
+												" than 50 lines of registers
+set history=50					" keep 50 lines of command line history
+set ruler								" show the cursor position all the time
+set nonumber						" hide line numbers
+set scrolloff=3					" leave 3 lines of breathing room
+set title								" show title
+set hidden							" allows changing of buffers without saving
+set lazyredraw					" Set lazydraws so that rendering is much faster during macros
+set showmode						" I like to know which mode I am in at times
+set showcmd							" show the command being typed
+set showmatch						" show matching brackets
+set nolist							" show whitespace
+set listchars=tab:¨¨,eol:¬ "use the same symbols as TextMate for tabstops and EOLs
 set hidden
 set statusline=%F%m%r%h%w[%L]%y[%p%%][%04l,%04v]%=[%{&ff},%{\"\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"} "[%{fugitive#statusline()}]
-"              | | | | |  |   |  |       |    |
-"              | | | | |  |   |  |       |    + current column
-"              | | | | |  |   |  |       +-- current line
-"              | | | | |  |   |  +-- current % into file
-"              | | | | |  |   +-- current syntax in square brackets
-"              | | | | |  +-- number of lines
-"              | | | | +-- preview flag in square brackets
-"              | | | +-- help flag in square brackets
-"              | | +-- readonly flag in square brackets
-"              | +-- rodified flag in square brackets
-"              +-- full path to file in the rbuffer
+"							 | | | | |	|		|  |			 |		|
+"							 | | | | |	|		|  |			 |		+ current column
+"							 | | | | |	|		|  |			 +-- current line
+"							 | | | | |	|		|  +-- current % into file
+"							 | | | | |	|		+-- current syntax in square brackets
+"							 | | | | |	+-- number of lines
+"							 | | | | +-- preview flag in square brackets
+"							 | | | +-- help flag in square brackets
+"							 | | +-- readonly flag in square brackets
+"							 | +-- rodified flag in square brackets
+"							 +-- full path to file in the rbuffer
 "}
 
 
-set laststatus=2        " always show the last status
-set wildmenu            " turn on command line completion wild style"}}}
+set laststatus=2				" always show the last status
+set wildmenu						" turn on command line completion wild style"}}}
 " tabs and indentation{{{
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
-set smartindent    " use smart indentation over autoindent
-set smarttab       " smart tabulatin and backspace
-set expandtab      " To spaces to tabs 'set noexpandtab' and ':retab!'
+set smartindent		 " use smart indentation over autoindent
+set smarttab			 " smart tabulatin and backspace
+set noexpandtab			 " To spaces to tabs 'set noexpandtab' and ':retab!'
 "}}}
 " search{{{
-" set gdefault           " global search/replace by default
+" set gdefault					 " global search/replace by default
 set incsearch hlsearch " highlight matches as you type
-set smartcase          " override ignorecase when there are uppercase characters
-set ignorecase         " ignore case when searching "}}}
+set smartcase					 " override ignorecase when there are uppercase characters
+set ignorecase				 " ignore case when searching "}}}
 " wraping{{{
-set nowrap                   " don't wrap lines
-set listchars+=extends:Â»     " show a Â» when a line goes off the right edge of the screen
-set listchars+=precedes:Â«    " show a Â« when a line goes off the left edge of the screen
-set linebreak                " when wrapping, try to break at characters in breakat
+set nowrap									 " don't wrap lines
+set listchars+=extends:»		 " show a Â» when a line goes off the right edge of the screen
+set listchars+=precedes:«		 " show a Â« when a line goes off the left edge of the screen
+set linebreak								 " when wrapping, try to break at characters in breakat
 set breakat=\ ^I!@*-+;:,./?  " when wrapping, break at these characters
-set showbreak=>              " character to show that a line is wrapped"}}}
+set showbreak=>							 " character to show that a line is wrapped"}}}
 " encoding and fileformat{{{
 set enc=utf-8 nobomb
-" set enc=iso-8859-1"}}}
+set enc=iso-8859-1"}}}
 " spell checking{{{
 set spell spelllang=es " X + = to show suggestions
-set spellsuggest=5"}}}
+set spellsuggest=5
+set nospell "}}}
 " file backups{{{
-set nobackup                                        " Don't make a backup before overwriting a file.
-set nowritebackup                                   " And again.
+set nobackup																				" Don't make a backup before overwriting a file.
+set nowritebackup																		" And again.
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp " Store temporary files in a central spot
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp"}}}
 " UI settings{{{
@@ -91,33 +92,25 @@ au ColorScheme * hi Search gui=underline guifg=NONE guibg=NONE ctermfg=NONE cter
 "Invisible character colors
 
 if has("gui_running")
-  set cursorline " highlight current line
-  set cursorcolumn
+	set cursorline " highlight current line
+	set cursorcolumn
 endif
 set clipboard+=unnamed "accessing the system clipboard"}}}
-" mswin settings{{{
-if has('win32') || has ('win64')
-  so $VIMRUNTIME/mswin.vim
-  behave mswin
-  set ffs=dos
-  let $VIMHOME='~/vimfiles'
-else
-  let $VIMHOME='~/.vim'
-endif"}}} "}}}
 
 " Coding settings{{{
 " general{{{
-syntax on             " Enable syntax highlighting
-filetype on           " Enable filetype detection
-filetype indent on    " Enable filetype-specific indenting
-filetype plugin on    " Enable filetype-specific plugins
-compiler ruby         " Enable compiler support for ruby
+syntax on							" Enable syntax highlighting
+filetype on						" Enable filetype detection
+filetype indent on		" Enable filetype-specific indenting
+filetype plugin on		" Enable filetype-specific plugins
+compiler ruby					" Enable compiler support for ruby
 " Auto save folds
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview"}}}
 " spaces, tabs and DOS text files{{{
 au BufRead * silent! %s/\r$// " never see ^M again! (DOS text files)
-au BufWrite * silent! %s/\v\s+$// " chop off unnecesary tabs and spaces"}}}
+au BufWritePre * retab!
+" au BufWrite * silent! %s/\v\s+$// " chop off unnecesary tabs and spaces"}}}
 " folding{{{
 set foldlevel=1
 set foldmethod=syntax
@@ -125,12 +118,12 @@ set fillchars=fold:\ "
 set foldtext=MyFoldText() " Custom fold text function
 " set balloonexpr=FoldSpellBalloon()
 
-if has("ruby")
-  set ballooneval
-endif
+" if has("ruby")
+"		set ballooneval
+" endif
 "}}}
 " javascript{{{
-au FileType javascript set omnifunc=javascriptcomplete#CompleteJS"}}}
+au! FileType javascript set omnifunc=javascriptcomplete#CompleteJS "}}}
 " .vimrc{{{
 au! BufWritePost $MYVIMRC source % " When vimrc is edited, reload it
 au BufRead,BufWritePost $MYVIMRC set foldmethod=marker "}}}
@@ -167,7 +160,7 @@ au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 ":[RANGE] CoffeeCompile [watch|unwatch] [vert[ical]] [WINDOW-SIZE]
 "}}}
 " file types really do require explicit tabs, and not spaces{{{
-au! FileType make   setlocal noexpandtab
+au! FileType make		setlocal noexpandtab
 au! FileType python setlocal noexpandtab"}}}
 " load templates{{{
 au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}"}}}
@@ -175,23 +168,23 @@ au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}"}}}
 " Key mappings{{{
 " general{{{
 let mapleader = ","
-nmap <s-u> :redo<CR>           " redo
+nmap <s-u> :redo<CR>					 " redo
 nmap <leader>l :set list!<CR> " shortcut to rapidly toggle `set list` (retab! if neccesary)
-map <leader>e :e $MYVIMRC<cr>   " fast editing of the .vimrc"}}}
+map <leader>e :e $MYVIMRC<cr>		" fast editing of the .vimrc"}}}
 " moving around split windows{{{
-nmap <s-down>   <c-w>w
-nmap <s-up>     <c-w>W
-nmap <s-left>   <c-w>h
-nmap <s-right>  <c-w>l"}}}
+nmap <s-down>		<c-w>w
+nmap <s-up>			<c-w>W
+nmap <s-left>		<c-w>h
+nmap <s-right>	<c-w>l"}}}
 " function keys{{{
-map <F2> :TlistToggle<CR>                               " F2 - List methods
+map <F2> :TlistToggle<CR>																" F2 - List methods
 map <S-F2> :!/usr/local/bin/ctags -R .<CR>
-map <F4> :set hlsearch! hlsearch?<CR>                   " F4 - highlighting on/off
-map <F6> :call ToggleScratch()<CR>                      " F6 - Toggle scratch buffer
+map <F4> :set hlsearch! hlsearch?<CR>										" F4 - highlighting on/off
+map <F6> :call ToggleScratch()<CR>											" F6 - Toggle scratch buffer
 set textwidth=80
-nmap <F10> gqap                                         " F10 - Format paragraph
-imap <F11> <ESC>1G=Ga                                   " F11 - Format code
-nnoremap <F11> :call CleanFile()<CR>                    " delete empty lines
+nmap <F10> gqap																					" F10 - Format paragraph
+imap <F11> <ESC>1G=Ga																		" F11 - Format code
+nnoremap <F11> :call CleanFile()<CR>										" delete empty lines
 map <F12> :%!tidy -q --tidy-mark 0 2>/dev/null<CR>"}}}
 " change working directory{{{
 nmap <silent> <leader>cd :cd %:p:h<cr>"}}}
@@ -227,10 +220,10 @@ nmap t cs"'vi'lohs)it<esc>
 " map <leader>su :rsunittest
 " map <leader>sf :rsfunctionaltest"}}}
 " folding{{{
-nnoremap <space> za    " space - toggle current fold
+nnoremap <space> za		 " space - toggle current fold
 nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR> " space - toggle current fold"}}}
 " coding utilities{{{
-map <d-r> <plug>rubyfilerun    " run file in shell mode with ruby
+map <d-r> <plug>rubyfilerun		 " run file in shell mode with ruby
 map <leader>m ggO# coding: UTF-8<esc>
 nmap <leader>a\| :Tab /\|<CR>
 vmap <leader>a\| :Tab /\|<CR>
@@ -238,7 +231,7 @@ nmap <Leader>a= :Tab /=<CR>
 vmap <Leader>a= :Tab /=<CR>
 nmap <Leader>a: :Tab /:\zs<CR>
 vmap <Leader>a: :Tab /:\zs<CR>
-map <leader>c gcc              " toggle comment "}}}
+map <leader>c gcc							 " toggle comment "}}}
 " rotating among results in an ack search{{{
 map <C-n> :cn<CR>
 map <C-p> :cp<CR>"}}}
@@ -275,29 +268,29 @@ nmap g# g#zz"}}}"}}}
 " plugins settings{{{
 " Tag List{{{
 let Tlist_Show_Menu=1
-let Tlist_GainFocus_On_ToggleOpen = 1      " Focus on the taglist when its toggled
-let Tlist_Close_On_Select = 1              " Close when something's selected
+let Tlist_GainFocus_On_ToggleOpen = 1			 " Focus on the taglist when its toggled
+let Tlist_Close_On_Select = 1							 " Close when something's selected
 let Tlist_Compact_Format=1
 let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"
-let Tlist_Use_Right_Window = 1             " Project uses the left window
+let Tlist_Use_Right_Window = 1						 " Project uses the left window
 let Tlist_WinWidth = 50
 " Language Specifics"{{{
-    " just functions and classes please
-    let tlist_aspjscript_settings = 'asp;f:function;c:class'
-    " just functions and subs please
-    let tlist_aspvbs_settings = 'asp;f:function;s:sub'
-    " don't show variables in freaking php
-    let tlist_php_settings = 'php;c:class;d:constant;f:function'
-    " just functions and classes please
-    let tlist_vb_settings = 'asp;f:function;c:class'"}}}
+		" just functions and classes please
+		let tlist_aspjscript_settings = 'asp;f:function;c:class'
+		" just functions and subs please
+		let tlist_aspvbs_settings = 'asp;f:function;s:sub'
+		" don't show variables in freaking php
+		let tlist_php_settings = 'php;c:class;d:constant;f:function'
+		" just functions and classes please
+		let tlist_vb_settings = 'asp;f:function;c:class'"}}}
 "}}}
 " ToogleScratch{{{
 function! ToggleScratch()
-  if expand('%') == g:ScratchBufferName
-    quit
-  else
-    Sscratch
-  endif
+	if expand('%') == g:ScratchBufferName
+		quit
+	else
+		Sscratch
+	endif
 endfunction"}}}
 " Ack{{{
 set grepprg=ack
@@ -310,7 +303,7 @@ let g:CommandTMaxHeight=10"}}}"}}}
 " finally, load custom configs{{{
 let my_home = expand("$HOME/")
 if filereadable(my_home . '.vimrc.local')
-  source ~/.vimrc.local
+	source ~/.vimrc.local
 endif"}}}
 
 autocmd BufReadPost fugitive://* set bufhidden=delete

@@ -1,6 +1,6 @@
 # Utility
 alias reload='source ~/bin/dotfiles/bash/aliases'
-alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+alias vim='/usr/local/bin/vim'
 alias ea='vim -f ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
 alias ee='vim ~/bin/dotfiles/bash/env'
 function topcommands() {
@@ -51,7 +51,7 @@ alias r="rake"
 alias sp='./script/plugin'
 
 sc () {
-  if [ -f ./script/rails ]; then 
+  if [ -f ./script/rails ]; then
     rails c $@
   else
     ./script/console $@
@@ -67,7 +67,7 @@ sg () {
 }
 
 ss () {
-  if [ -f ./script/rails ]; then 
+  if [ -f ./script/rails ]; then
     rails s $@
   else
     ./script/server $@

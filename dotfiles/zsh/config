@@ -45,7 +45,7 @@ git_log() {
 }
 
 PROMPT='${PR_MAGENTA}$(date +%H:%M) %~ $(git_info)${PR_RESET}
-→ '
+~ '
 RPROMPT='%U${PR_WHITE}$(git_log)%u${PR_RESET}'
 #############################
 # Other Options
