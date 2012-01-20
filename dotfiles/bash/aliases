@@ -1,14 +1,15 @@
 # Utility
 alias reload='source ~/bin/dotfiles/bash/aliases'
-alias vim='/usr/local/bin/vim'
+alias vim='gvim.bat -u
+"C:/RailsInstaller/cygwin/home/javierbgut/bin/dotfiles/vimrc"'
 alias ea='vim -f ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
 alias ee='vim ~/bin/dotfiles/bash/env'
 function topcommands() {
-  history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
+	history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
 
 # GIT aliases
-alias gk='gitk --all&'
+alias gk='gitk --all'
 alias gkr='gitk --all `git reflog | cut -c1-7`'
 alias gks='git instaweb'
 alias gst='git status -s'
@@ -24,19 +25,20 @@ alias gaa='git commit -v -a --amend'
 alias gadd='git add '
 alias gb='git branch --color'
 alias gbd='git branch -d'
+alias coffee='coffee.cmd'
 function go() {
-  git checkout -b $1 2> /dev/null || git checkout $1
+	git checkout -b $1 2> /dev/null || git checkout $1
 }
 alias glog='git log --pretty=format:"%ar - %an - %s"'
 alias gapply='git stash apply && git stash clear'
 alias gresolve='git add -u && git rebase --continue'
 
 function garchive() {
-  git archive master | bzip2 >source-tree.tar.bz2
+	git archive master | bzip2 >source-tree.tar.bz2
 }
 # Git clone from GitHub
 function gclone() {
-  git clone git://github.com/$1/$2.git
+	git clone git://github.com/$1/$2.git
 }
 
 # Vim
@@ -51,27 +53,27 @@ alias r="rake"
 alias sp='./script/plugin'
 
 sc () {
-  if [ -f ./script/rails ]; then
-    rails c $@
-  else
-    ./script/console $@
-  fi
+	if [ -f ./script/rails ]; then
+		rails c $@
+	else
+		./script/console $@
+	fi
 }
 
 sg () {
-  if [ -f ./script/rails ]; then
-    rails g $@
-  else
-    ./script/generate $@
-  fi
+	if [ -f ./script/rails ]; then
+		rails g $@
+	else
+		./script/generate $@
+	fi
 }
 
 ss () {
-  if [ -f ./script/rails ]; then
-    rails s $@
-  else
-    ./script/server $@
-  fi
+	if [ -f ./script/rails ]; then
+		rails s $@
+	else
+		./script/server $@
+	fi
 }
 
 #  http://ryan.mcgeary.org/2011/02/09/vendor-everything-still-applies/
@@ -94,11 +96,11 @@ alias hl="heroku logs"
 
 # Django aliases
 alias dj='python manage.py'
-alias djsp='dj startproject'   # + project_name
+alias djsp='dj startproject'	 # + project_name
 alias djss='dj runserver 3000'
 alias djsdb='dj syncdb'
-alias djrt='dj sqlclear'       # + ModelName
-alias djsa='dj startapp'       # + app_name
+alias djrt='dj sqlclear'			 # + ModelName
+alias djsa='dj startapp'			 # + app_name
 alias djs='dj shell'
 
 #Google AppEngine
@@ -113,8 +115,8 @@ alias xbuild='scan-build -k -V xcodebuild -target Test'
 # Bash shortcuts
 alias less='less -r'
 alias la='ls -lhGta'
-alias l='ls -lhGt'  # -l long listing, most recent first
-                    # -G color
+alias l='ls -lhGt'	# -l long listing, most recent first
+										# -G color
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
@@ -122,28 +124,28 @@ alias df='df -h'
 alias h='history'
 alias md='mkdir -p'
 function cdh(){
-  cd "$HOME/$1"
+	cd "$HOME/$1"
 }
 alias c='clear'
-alias ..='cd ..'   # up one dir
-alias cd..='cd ..'   # up one dir
-alias cdl='cd -'  # goto last dir cd'ed from
-alias cdd='cd -'  # goto last dir cd'ed from
+alias ..='cd ..'	 # up one dir
+alias cd..='cd ..'	 # up one dir
+alias cdl='cd -'	# goto last dir cd'ed from
+alias cdd='cd -'	# goto last dir cd'ed from
 function take() {
-  mkdir -p "$1"
-  cd "$1"
+	mkdir -p "$1"
+	cd "$1"
 }
 alias q='exit'
 
 # Shortcuts to each project folder
 alias cdprojects="cd $PROJECTS_FOLDER"
-for project_path in $PROJECTS_FOLDER/*; do
-  if [ -d $project_path ]; then
-    subfolder=`echo $project_path | /usr/bin/sed 's/.*\///'`
-    alias "cd$subfolder"="cd $project_path"
-    alias "e$subfolder"="vim $project_path"
-  fi
-done
+# for project_path in `$PROJECTS_FOLDER/*`; do
+# 	if [ -d $project_path ]; then
+# 		subfolder=`echo $project_path | /usr/bin/sed 's/.*\///'`
+# 		alias "cd$subfolder"="cd $project_path"
+# 		alias "e$subfolder"="vim $project_path"
+# 	fi
+# done
 
 # Remember path position
 export REMEMBERME_PATH=$HOME
@@ -152,22 +154,22 @@ alias cdrememberme='cd "$REMEMBERME_PATH"'
 
 # List folders size
 function dufolders() {
-  du -h --max-depth=1
+	du -h --max-depth=1
 }
 
 # File compression
 function zipr() {
-  zip -r $1.zip $1
+	zip -r $1.zip $1
 }
 function zip2bzip() {
-  cat $1 | gunzip | bzip2 !#:1:s/gz/bz2
+	cat $1 | gunzip | bzip2 !#:1:s/gz/bz2
 }
 
 # Processes
 alias tu='top -o cpu' # cpu
 alias tm='top -o vsize' # memory
 function killnamed () {
-  ps ax | grep $1 | cut -d ' ' -f 1 | xargs kill -9
+	ps ax | grep $1 | cut -d ' ' -f 1 | xargs kill -9
 }
 
 # Finder
@@ -185,12 +187,12 @@ alias webshare='ruby -e "require\"webrick\";w=WEBrick::HTTPServer.new(:Port=>800
 
 # Social activity
 function tweet() {
-  curl -u user:pass http://twitter.com/statuses/update.xml -d status="$*"
+	curl -u user:pass http://twitter.com/statuses/update.xml -d status="$*"
 }
 
 # Top man pages
 function topmanpages() {
-  echo "man 1 intro - a tutorial that gets you started with Linux if you have never used it.
+	echo "man 1 intro - a tutorial that gets you started with Linux if you have never used it.
 man 2 syscalls - lists all Linux system calls by kernel version.
 man 1 select_tut - select() system call tutorial.
 man 3 string - lists all <string.h> string manipulation functions.
@@ -216,26 +218,3 @@ man 7 url - description of URIs, URLs and URNs."
 # RVM settings
 # => $ bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
 [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
-
-# Cygwin customizations and walkarounds
-if [ $_YAP_CYGWIN ]; then
-  # Shortcuts to each project folder
-  alias cdprojects="cd $PROJECTS_FOLDER"
-  for path in $PROJECTS_FOLDER/*; do
-    if [ -d $path ]; then
-      subfolder=`echo $path | sed 's/.*\///' | tr "[:upper:]" "[:lower:]"`
-      alias "cd$subfolder"="cd $path/Software/trunk"
-      alias "e$subfolder"="e $path/Software/trunk"
-      alias "u$subfolder"="cd $path/Software/trunk && git svn rebase && cd -"
-      alias "o$subfolder"='"/cygdrive/c/Archivos de programa/Microsoft Visual Studio 8/Common7/IDE/devenv.exe" "D:/Proyectos/$subfolder/Software/trunk/$ subfolder.sln"&'
-    fi
-  done
-
-  # Cygwin walkarounds
-  alias rake='C:/ruby/bin/rake'
-  alias gem='C:/ruby/bin/gem'
-  alias gvim='gvim.bat'
-  alias reload='cd && source bin/dotfiles/bash/aliases && cd -'
-  alias ea='cd && gvim -f bin/dotfiles/bash/aliases && reload && cd -' # Edit aliases
-  alias ee='cd && gvim bin/dotfiles/bash/env && cd -'
-fi

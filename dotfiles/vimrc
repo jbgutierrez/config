@@ -2,9 +2,9 @@
 " load pathogen managed plugins{{{
 " To disable a plugin, add it's bundle name to the following list
 let g:pathogen_disabled = []
-if !has('gui_running')
-	call add(g:pathogen_disabled, "vim-css-color")
-endif
+" if !has('gui_running')
+" 	call add(g:pathogen_disabled, "vim-css-color")
+" endif
 call pathogen#infect()"}}}
 " general{{{
 set nocompatible				" Use Vim defaults (much better!)
@@ -64,7 +64,7 @@ set breakat=\ ^I!@*-+;:,./?  " when wrapping, break at these characters
 set showbreak=>							 " character to show that a line is wrapped"}}}
 " encoding and fileformat{{{
 set enc=utf-8 nobomb
-set enc=iso-8859-1"}}}
+" set enc=iso-8859-1"}}}
 " spell checking{{{
 set spell spelllang=es " X + = to show suggestions
 set spellsuggest=5
@@ -78,7 +78,7 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp"}}}
 
 "improve autocomplete menu color
 "gui options
-set guifont=Monaco:h12.00
+set guifont=Monaco:h10.00
 set guioptions-=T
 set guioptions-=r
 set guioptions-=R
@@ -109,7 +109,7 @@ compiler ruby					" Enable compiler support for ruby
 " au BufWinEnter * silent loadview"}}}
 " spaces, tabs and DOS text files{{{
 au BufRead * silent! %s/\r$// " never see ^M again! (DOS text files)
-au BufWritePre * retab!
+" au BufWritePre * retab!
 " au BufWrite * silent! %s/\v\s+$// " chop off unnecesary tabs and spaces"}}}
 " folding{{{
 set foldlevel=1
@@ -133,9 +133,9 @@ au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 au FileType ruby,eruby let g:rubycomplete_rails = 1
 au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1"}}}
 " XML{{{
-au! FileType html,xhtml setlocal omnifunc=htmlcomplete#CompleteTags
+au! FileType htm,html,xhtml setlocal omnifunc=htmlcomplete#CompleteTags
 au! FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
+" au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 let g:xml_syntax_folding=1"}}}
 " Java{{{
 au! FileType java setlocal foldmethod=syntax"}}}
@@ -155,7 +155,8 @@ au FileType diff setlocal foldlevel=0
 au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=diff"}}}
 " coffescript{{{
 let coffee_compile_on_save = 1
-au BufWritePost *.coffee silent CoffeeCompile -b | cwindow | redraw!
+" au BufWritePost *.coffee silent CoffeeCompile -b | cwindow | redraw!
+au BufWritePost,FileWritePost *.coffee :silent !coffee -bc <afile>
 au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 ":[RANGE] CoffeeCompile [watch|unwatch] [vert[ical]] [WINDOW-SIZE]
 "}}}
@@ -242,7 +243,7 @@ nmap s "_diw"0P
 " vmap s "_d"0P"}}}
 " search{{{
 " nmap <leader>a :Ack
-nmap + yiw:Ack <c-r>"
+" nmap + yiw:Ack <c-r>"
 "}}}
 " switch between buffers{{{
 nmap <A-tab> :bn<CR>
@@ -308,3 +309,4 @@ endif"}}}
 
 autocmd BufReadPost fugitive://* set bufhidden=delete
 nnoremap <F5> :GundoToggle<cr>
+" set term=builtin_ansi

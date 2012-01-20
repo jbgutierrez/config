@@ -3,4 +3,6 @@ set meta-flag on
 set convert-meta off 
 set output-meta on 
 set input-meta on
-set kanji-code sjis
+# set kanji-code sjis
+
+"\C-v": paste-from-clipboard

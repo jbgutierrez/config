@@ -8,22 +8,29 @@ set maxwidth 16
 set cmitmode patch
 set wrapcomment none
 set autoselect 1
+set autosellen 40
 set showneartags 1
+set hideremotes 0
 set showlocalchanges 1
 set datetimeformat {%Y-%m-%d %H:%M:%S}
 set limitdiffs 1
+set uicolor SystemButtonFace
+set want_ttk 1
 set bgcolor white
 set fgcolor black
 set colors {green red blue magenta darkgrey brown orange}
 set diffcolors {red "#00a000" blue}
+set markbgcolor #e0e0ff
 set diffcontext 3
 set selectbgcolor gray85
 set extdifftool meld
-set geometry(main) 1247x681+5+45
-set geometry(topwidth) 1243
-set geometry(topheight) 252
-set geometry(pwsash0) "443 2"
-set geometry(pwsash1) "665 2"
-set geometry(botwidth) 554
-set geometry(botheight) 409
+set perfile_attrs 0
+set geometry(main) 1920x1014+0+20
+set geometry(state) zoomed
+set geometry(topwidth) 1916
+set geometry(topheight) 566
+set geometry(pwsash0) "685 2"
+set geometry(pwsash1) "1029 2"
+set geometry(botwidth) 1351
+set geometry(botheight) 432
 set permviews {}

@@ -23,7 +23,7 @@ export VIMHOME=~/.vim
   export LANG="es_ES.ISO-8859-15"
   export OUTPUT_CHARSET="ISO-8859-15"
   export PATH=$PATH:"/cygdrive/c/Archivos de programa/TortoiseSVN/bin"
-  export PROJECTS_FOLDER='/cygdrive/d/Proyectos'
+  export PROJECTS_FOLDER='~/projects'
 
   # colorful shell
   export LESS="-erX"

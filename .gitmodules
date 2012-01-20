@@ -77,7 +77,7 @@
 	url = http://github.com/vim-scripts/simplefold.git
 [submodule "dotfiles/vim/bundle/vim-css-color"]
 	path = dotfiles/vim/bundle/vim-css-color
-	url = http://github.com/skammer/vim-css-color.git
+	url = https://github.com/skammer/vim-css-color.git
 [submodule "dotfiles/vim/bundle/vim-coffee-script"]
 	path = dotfiles/vim/bundle/vim-coffee-script
 	url = http://github.com/kchmck/vim-coffee-script.git
@@ -86,7 +86,7 @@
 	url = http://github.com/jbgutierrez/vim-gtd.git
 [submodule "dotfiles/vim/bundle/vim-fugitive"]
 	path = dotfiles/vim/bundle/vim-fugitive
-	url = http://github.com/tpope/vim-fugitive.git
+	url = https://github.com/tpope/vim-fugitive.git
 [submodule "dotfiles/vim/bundle/gundo"]
 	path = dotfiles/vim/bundle/gundo
 	url = http://github.com/sjl/gundo.vim.git

@@ -10,7 +10,7 @@
 # Custom extensions
 --type-add=css=.sass
 --type-add=ruby=.haml,.builder,.rake
---type-set=html=.ascx,.aspx,.Master  
+--type-set=html=.ascx,.aspx,.Master,.htm
 
 --type-set=markdown=.markdown,.md,.mdown
 --type-set=cucumber=.feature

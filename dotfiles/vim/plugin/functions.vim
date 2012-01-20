@@ -217,9 +217,18 @@ endfunction"}}}
 " Custom Folding{{{
 function! MyFoldText()
   let line = getline(v:foldstart)
-  let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
-  let number = v:foldend - v:foldstart + 1
-  return sub . ' ... (' . number . ' lines)'
+  let sub = substitute(line, '/\*\|\*/\|{{{\d\=', ' ', 'g')
+	let number = v:foldend - v:foldstart + 1
+
+	let ind = indent(v:foldstart)
+	let spaces = ''
+	let i = 0
+	while i < ind
+		let i = i+2
+		let spaces = spaces . ' '
+	endwhile
+
+  return spaces . sub . ' ... (' . number . ' lines)'
 endfunction"}}}
 
 function! Buflist()
