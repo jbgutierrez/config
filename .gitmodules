@@ -105,3 +105,6 @@
 [submodule "dotfiles/vim/bundle/vim-markdown"]
 	path = dotfiles/vim/bundle/vim-markdown
 	url = http://github.com/peplin/vim-markdown.git
+[submodule "dotfiles/vim/bundle/jshint.vim"]
+	path = dotfiles/vim/bundle/jshint.vim
+	url = https://github.com/walm/jshint.vim.git
