@@ -223,10 +223,10 @@ function! MyFoldText()
 	let ind = indent(v:foldstart)
 	let spaces = ''
 	let i = 0
-	while i < ind
-		let i = i+2
-		let spaces = spaces . ' '
-	endwhile
+	" while i < ind
+	" 	let i = i+2
+	" 	let spaces = spaces . ' '
+	" endwhile
 
   return spaces . sub . ' ... (' . number . ' lines)'
 endfunction"}}}
@@ -268,13 +268,13 @@ function! CleanCoffee()
     " echo vars
     for var in vars
       if search('^ *' . var . ' =') > 0
-        silent! normal ^ivar
+        silent! normal ^ivar 
         silent! normal G$
       endif
     endfor
   endwhile
 
-  silent! %g/\v\s*return null;/d
+		silent! %s/return \([^\(]*;\)\@!/\1/
 
   " Restore caret position
   call setpos(".", cursor_position)

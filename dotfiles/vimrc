@@ -1,9 +1,11 @@
+set runtimepath=C:/RailsInstaller/cygwin/home/javierbgut/bin/dotfiles/vim,$VIMRUNTIME
+
 " General settings{{{
 " load pathogen managed plugins{{{
 " To disable a plugin, add it's bundle name to the following list
 let g:pathogen_disabled = []
 " if !has('gui_running')
-" 	call add(g:pathogen_disabled, "vim-css-color")
+	call add(g:pathogen_disabled, "xml.vim")
 " endif
 call pathogen#infect()"}}}
 " general{{{
@@ -164,7 +166,7 @@ au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 au! FileType make		setlocal noexpandtab
 au! FileType python setlocal noexpandtab"}}}
 " load templates{{{
-au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}"}}}
+au BufNewFile * silent! 0r $HOME/vimfiles.bak/personal/%:e.tpl"}}}"}}}
 
 " Key mappings{{{
 " general{{{
@@ -179,7 +181,7 @@ nmap <s-left>		<c-w>h
 nmap <s-right>	<c-w>l"}}}
 " function keys{{{
 map <F2> :TlistToggle<CR>																" F2 - List methods
-map <S-F2> :!/usr/local/bin/ctags -R .<CR>
+map <S-F2> :!ctags -R .<CR>
 map <F4> :set hlsearch! hlsearch?<CR>										" F4 - highlighting on/off
 map <F6> :call ToggleScratch()<CR>											" F6 - Toggle scratch buffer
 set textwidth=80
@@ -272,7 +274,7 @@ let Tlist_Show_Menu=1
 let Tlist_GainFocus_On_ToggleOpen = 1			 " Focus on the taglist when its toggled
 let Tlist_Close_On_Select = 1							 " Close when something's selected
 let Tlist_Compact_Format=1
-let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"
+let Tlist_Ctags_Cmd = "ctags"
 let Tlist_Use_Right_Window = 1						 " Project uses the left window
 let Tlist_WinWidth = 50
 " Language Specifics"{{{
