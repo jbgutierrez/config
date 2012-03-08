@@ -1,95 +1,95 @@
 [submodule "dotfiles/vim/snippets"]
 	path = dotfiles/vim/snippets
-	url = http://github.com/scrooloose/snipmate-snippets.git
+	url = https://github.com/scrooloose/snipmate-snippets.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-surround"]
 	path = dotfiles/vim/bundle/vim-surround
-	url = http://github.com/tpope/vim-surround.git
+	url = https://github.com/tpope/vim-surround.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-rails"]
 	path = dotfiles/vim/bundle/vim-rails
-	url = http://github.com/tpope/vim-rails.git
+	url = https://github.com/tpope/vim-rails.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-haml"]
 	path = dotfiles/vim/bundle/vim-haml
-	url = http://github.com/tpope/vim-haml.git
+	url = https://github.com/tpope/vim-haml.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-ruby"]
 	path = dotfiles/vim/bundle/vim-ruby
-	url = http://github.com/vim-ruby/vim-ruby.git
+	url = https://github.com/vim-ruby/vim-ruby.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-ragtag"]
 	path = dotfiles/vim/bundle/vim-ragtag
-	url = http://github.com/tpope/vim-ragtag.git
+	url = https://github.com/tpope/vim-ragtag.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-vividchalk"]
 	path = dotfiles/vim/bundle/vim-vividchalk
-	url = http://github.com/tpope/vim-vividchalk.git
+	url = https://github.com/tpope/vim-vividchalk.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/tcomment"]
 	path = dotfiles/vim/bundle/tcomment
-	url = http://github.com/tomtom/tcomment_vim.git
+	url = https://github.com/tomtom/tcomment_vim.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/supertab"]
 	path = dotfiles/vim/bundle/supertab
-	url = http://github.com/ervandew/supertab.git
+	url = https://github.com/ervandew/supertab.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/snipmate"]
 	path = dotfiles/vim/bundle/snipmate
-	url = http://github.com/msanders/snipmate.vim.git
+	url = https://github.com/msanders/snipmate.vim.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/command-t"]
 	path = dotfiles/vim/bundle/command-t
-	url = http://github.com/wincent/Command-T.git
+	url = https://github.com/wincent/Command-T.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-textobj-user"]
 	path = dotfiles/vim/bundle/vim-textobj-user
-	url = http://github.com/kana/vim-textobj-user.git
+	url = https://github.com/kana/vim-textobj-user.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-textobj-rubyblock"]
 	path = dotfiles/vim/bundle/vim-textobj-rubyblock
-	url = http://github.com/nelstrom/vim-textobj-rubyblock.git
+	url = https://github.com/nelstrom/vim-textobj-rubyblock.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-ruby-refactoring"]
 	path = dotfiles/vim/bundle/vim-ruby-refactoring
-	url = http://github.com/ecomba/vim-ruby-refactoring.git
+	url = https://github.com/ecomba/vim-ruby-refactoring.git
   ignore = untracked
 [submodule "dotfiles/vim/bundle/tabular"]
 	path = dotfiles/vim/bundle/tabular
-	url = http://github.com/godlygeek/tabular.git
+	url = https://github.com/godlygeek/tabular.git
 [submodule "dotfiles/vim/bundle/vim-unimpaired"]
 	path = dotfiles/vim/bundle/vim-unimpaired
-	url = http://github.com/tpope/vim-unimpaired.git
+	url = https://github.com/tpope/vim-unimpaired.git
 [submodule "dotfiles/vim/bundle/vim-endwise"]
 	path = dotfiles/vim/bundle/vim-endwise
-	url = http://github.com/tpope/vim-endwise.git
+	url = https://github.com/tpope/vim-endwise.git
 [submodule "dotfiles/vim/bundle/vim-repeat"]
 	path = dotfiles/vim/bundle/vim-repeat
-	url = http://github.com/tpope/vim-repeat.git
+	url = https://github.com/tpope/vim-repeat.git
 [submodule "dotfiles/vim/bundle/vim-pastie"]
 	path = dotfiles/vim/bundle/vim-pastie
-	url = http://github.com/tpope/vim-pastie.git
+	url = https://github.com/tpope/vim-pastie.git
 [submodule "dotfiles/vim/bundle/asp.net"]
 	path = dotfiles/vim/bundle/asp.net
-	url = http://github.com/vim-scripts/asp.net.git
+	url = https://github.com/vim-scripts/asp.net.git
 [submodule "dotfiles/vim/bundle/simplefold"]
 	path = dotfiles/vim/bundle/simplefold
-	url = http://github.com/vim-scripts/simplefold.git
+	url = https://github.com/vim-scripts/simplefold.git
 [submodule "dotfiles/vim/bundle/vim-css-color"]
 	path = dotfiles/vim/bundle/vim-css-color
-	url = http://github.com/skammer/vim-css-color.git
+	url = https://github.com/skammer/vim-css-color.git
 [submodule "dotfiles/vim/bundle/vim-coffee-script"]
 	path = dotfiles/vim/bundle/vim-coffee-script
-	url = http://github.com/kchmck/vim-coffee-script.git
+	url = https://github.com/kchmck/vim-coffee-script.git
 [submodule "dotfiles/vim/bundle/vim-gtd"]
 	path = dotfiles/vim/bundle/vim-gtd
-	url = http://github.com/jbgutierrez/vim-gtd.git
+	url = https://github.com/jbgutierrez/vim-gtd.git
 [submodule "dotfiles/vim/bundle/vim-fugitive"]
 	path = dotfiles/vim/bundle/vim-fugitive
-	url = http://github.com/tpope/vim-fugitive.git
+	url = https://github.com/tpope/vim-fugitive.git
 [submodule "dotfiles/vim/bundle/gundo"]
 	path = dotfiles/vim/bundle/gundo
-	url = http://github.com/sjl/gundo.vim.git
+	url = https://github.com/sjl/gundo.vim.git
 [submodule "dotfiles/vim/bundle/vim-snippets.mootols"]
 	path = dotfiles/vim/bundle/vim-snippets.mootols
 	url = https://github.com/zalun/vim-snippets.mootools.git
@@ -104,4 +104,4 @@
 	url = https://github.com/tisho/css-snippets-snipmate.git
 [submodule "dotfiles/vim/bundle/vim-markdown"]
 	path = dotfiles/vim/bundle/vim-markdown
-	url = http://github.com/peplin/vim-markdown.git
+	url = https://github.com/peplin/vim-markdown.git

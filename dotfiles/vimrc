@@ -194,7 +194,8 @@ imap <F11> <ESC>1G=Ga                                   " F11 - Format code
 nnoremap <F11> :call CleanFile()<CR>                    " delete empty lines
 map <F12> :%!tidy -q --tidy-mark 0 2>/dev/null<CR>"}}}
 " change working directory{{{
-nmap <silent> <leader>cd :cd %:p:h<cr>"}}}
+nmap <silent>cd :cd %:p:h<CR>:pwd<CR>
+nmap <silent>lcd :lcd %:p:h<CR>:pwd<CR>"}}}
 " move text around{{{
 nmap <S-Tab> <C-o>
 " nmap <Tab> >>

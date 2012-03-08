@@ -12,7 +12,7 @@
 [apply]
 	whitespace = strip
 [core]
-	editor = gvim -f
+	editor = vim -f
 	excludesfile = ~/.gitignore
 	autocrlf = input
 	safecrlf = true
@@ -25,4 +25,4 @@
 	user = *
 	token = *
 [diff]
-	tool = gvimdiff
+	tool = vimdiff
