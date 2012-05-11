@@ -52,8 +52,8 @@ RPROMPT='%U${PR_WHITE}$(git_log)%u${PR_RESET}'
 
 # setopt PRINT_EXIT_VALUE
 
-setopt CORRECT
-setopt CORRECTALL
+unsetopt CORRECT
+unsetopt CORRECTALL
 
 setopt hist_ignore_dups     # ignore duplication command history list
 setopt share_history        # share command history data

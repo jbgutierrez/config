@@ -16,13 +16,13 @@ function! CleanCoffee()
     " echo vars
     for var in vars
       if search('^ *' . var . ' =') > 0
-        silent! normal ^ivar 
+        silent! normal ^ivar
         silent! normal G$
       endif
     endfor
   endwhile
 
-  silent! %g/\v\s*return null;/d
+  silent! %s/\vreturn +(.*[(=])/\1/
 
   " Restore caret position
   call setpos(".", cursor_position)

@@ -93,6 +93,8 @@ au ColorScheme * hi Search gui=underline guifg=NONE guibg=NONE ctermfg=NONE cter
 if has("gui_running")
   set cursorline " highlight current line
   set cursorcolumn
+else
+  set nospell
 endif
 set clipboard+=unnamed "accessing the system clipboard"}}}
 " mswin settings{{{
@@ -116,8 +118,8 @@ compiler ruby         " Enable compiler support for ruby
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview"}}}
 " spaces, tabs and DOS text files{{{
-au BufRead * silent! %s/\r$// " never see ^M again! (DOS text files)
-au BufWrite * silent! %s/\v\s+$// " chop off unnecesary tabs and spaces"}}}
+" au BufRead * silent! %s/\r$// " never see ^M again! (DOS text files)
+" au BufWrite * silent! %s/\v\s+$// " chop off unnecesary tabs and spaces"}}}
 " folding{{{
 set foldlevel=1
 set foldmethod=syntax
@@ -162,7 +164,8 @@ au FileType diff setlocal foldlevel=0
 au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=diff"}}}
 " coffescript{{{
 let coffee_compile_on_save = 1
-au BufWritePost *.coffee silent CoffeeCompile -b | cwindow | redraw!
+" au BufWritePost *.coffee silent CoffeeCompile -b | cwindow | redraw!
+au! BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
 au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 ":[RANGE] CoffeeCompile [watch|unwatch] [vert[ical]] [WINDOW-SIZE]
 "}}}
@@ -250,7 +253,7 @@ nmap s "_diw"0P
 " vmap s "_d"0P"}}}
 " search{{{
 " nmap <leader>a :Ack
-nmap + yiw:Ack <c-r>"
+" nmap + yiw:Ack <c-r>"
 "}}}
 " switch between buffers{{{
 nmap <A-tab> :bn<CR>
@@ -316,3 +319,6 @@ endif"}}}
 
 autocmd BufReadPost fugitive://* set bufhidden=delete
 nnoremap <F5> :GundoToggle<cr>
+
+" find . -name "*.rb" | xargs file | grep "CRLF" | awk -F: '{print $1}' | xargs gvim
+" bufdo set ff=unix | w

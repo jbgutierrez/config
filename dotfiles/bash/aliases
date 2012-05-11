@@ -152,7 +152,7 @@ alias cdrememberme='cd "$REMEMBERME_PATH"'
 
 # List folders size
 function dufolders() {
-  du -h --max-depth=1
+  du -h -g -d 1
 }
 
 # File compression

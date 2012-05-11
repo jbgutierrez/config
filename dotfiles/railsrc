@@ -61,7 +61,6 @@ if ENV['RAILS_ENV'] || defined?(Rails)
       include ActionView::Helpers::TagHelper
       include ActionView::Helpers::TextHelper
       include ActionView::Helpers::TranslationHelper
-      Hirb.add_view ActionDispatch::Routing::Route, :class => Hirb::Helpers::Route
 
       # short and long route list
       def routes(long_output = false)

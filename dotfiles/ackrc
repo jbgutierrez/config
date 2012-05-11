@@ -8,9 +8,9 @@
 --pager=less -r
 
 # Custom extensions
---type-add=css=.sass
+--type-add=css=.sass,.scss
 --type-add=ruby=.haml,.builder,.rake
---type-set=html=.ascx,.aspx,.Master  
+# --type-set=html=.ascx,.aspx,.Master
 
 --type-set=markdown=.markdown,.md,.mdown
 --type-set=cucumber=.feature

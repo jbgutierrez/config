@@ -214,14 +214,7 @@ function! s:align()
   endif
 endfunction"}}}
 
-" Custom Folding{{{
-function! MyFoldText()
-  let line = getline(v:foldstart)
-  let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
-  let number = v:foldend - v:foldstart + 1
-  return sub . ' ... (' . number . ' lines)'
-endfunction"}}}
-
+" Delete buffer without delete window {{{ 
 function! Buflist()
     redir => bufnames
     silent ls
@@ -230,7 +223,7 @@ function! Buflist()
     for i in split(bufnames, "\n")
         let buf = split(i, '"' )
         call add(list, buf[-2])
-|   endfor
+    endfor
     return list
 endfunction
 
@@ -241,4 +234,20 @@ function! Bdeleteonly()
     endfor
 endfunction
 
-command! BdelOnly :silent call Bdeleteonly()
+command! BdelOnly :silent call Bdeleteonly()"}}}
+
+" Custom Folding{{{
+function! MyFoldText()
+  let line = getline(v:foldstart)
+  let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
+  let ind = indent(v:foldstart) / &tabstop
+  let spaces = ''
+  let i = 0
+  while i < ind
+    let i = i+1
+    let spaces = spaces . ' '
+  endwhile
+
+  let number = v:foldend - v:foldstart + 1
+  return spaces . sub . ' ... (' . number . ' lines)'
+endfunction"}}}
