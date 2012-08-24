@@ -135,6 +135,9 @@ function take() {
 }
 alias q='exit'
 
+alias postgres_start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
+alias postgres_stop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
+
 # Shortcuts to each project folder
 alias cdprojects="cd $PROJECTS_FOLDER"
 for project_path in $PROJECTS_FOLDER/*; do

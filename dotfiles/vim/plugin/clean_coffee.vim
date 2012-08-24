@@ -16,7 +16,7 @@ function! CleanCoffee()
     " echo vars
     for var in vars
       if search('^ *' . var . ' =') > 0
-        silent! normal ^ivar
+        silent! normal ^ivar 
         silent! normal G$
       endif
     endfor

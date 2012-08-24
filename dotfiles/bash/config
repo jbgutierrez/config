@@ -62,7 +62,7 @@ complete -o default -o nospace -F rakecomplete rake
 # export LANG="es_ES"
 # export OUTPUT_CHARSET="es_ES"
 
-# Ruvy version manager
-if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi
+# Ruby version manager
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 export PATH=./bin:~/bin:$PATH
