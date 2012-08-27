@@ -101,6 +101,9 @@ alias djrt='dj sqlclear'       # + ModelName
 alias djsa='dj startapp'       # + app_name
 alias djs='dj shell'
 
+# YUICompressor
+alias yui='yuicompressor'
+
 #Google AppEngine
 alias gss='dev_appserver.py . -p 3000 -d' # --debug_imports -d'
 alias gcd='dev_appserver.py --clear_datastore .'
