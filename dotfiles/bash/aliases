@@ -44,14 +44,12 @@ alias g='gvim --remote-silent'
 
 # Ruby
 alias r="rake"
-# Puts you in a 1.9 sandbox
-# alias ruby19="export PATH=/opt/ruby19/bin:$PATH"
 
 # Rails
 alias sp='./script/plugin'
 
 sc () {
-  if [ -f ./script/rails ]; then 
+  if [ -f ./script/rails ]; then
     rails c $@
   else
     ./script/console $@
@@ -67,7 +65,7 @@ sg () {
 }
 
 ss () {
-  if [ -f ./script/rails ]; then 
+  if [ -f ./script/rails ]; then
     rails s $@
   else
     ./script/server $@
@@ -79,8 +77,7 @@ alias b="bundle"
 alias bi="b install --path vendor"
 alias bu="b update"
 alias be="b exec"
-alias binit="bi && b package && echo 'vendor/ruby' >> .gitignore && echo 'rvm ruby-1.9.3' >> .rvmrc"
-
+alias binit="bi && b package && echo 'vendor/ruby' >> .gitignore && rbenv local 1.9.3-p194"
 alias tl='tail -f log/*.log'
 
 # TDD / BDD
@@ -182,9 +179,6 @@ alias ff='open -a Firefox'
 
 # Recursively Remove .DS_Store files in OS X
 alias clean='find . -name *.DS_Store -type f -exec rm {} \;'
-
-# Update Text Bundles
-alias update_bundles='svn update ~/Library/Application\ Support/TextMate/Bundles'
 
 # Instant web sharing via webrick
 alias webshare='ruby -e "require\"webrick\";w=WEBrick::HTTPServer.new(:Port=>3000,:DocumentRoot=>Dir::pwd);Signal.trap(2){w.shutdown};w.start"'
