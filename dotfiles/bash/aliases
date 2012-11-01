@@ -7,6 +7,19 @@ function topcommands() {
   history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
 
+function farchive() {
+  for f in *; do
+    if [[ $f =~ ^[0-9]{4}-.* ]]; then
+      echo "Skipping "$f
+    else
+      date=`stat -f %SB -t %y%m $f`
+      mv $f $date-$f
+      command="mv $f $date-$f"
+      echo $command
+    fi;
+  done
+}
+
 # GIT aliases
 alias gk='gitk --all&'
 alias gkr='gitk --all `git reflog | cut -c1-7`'
