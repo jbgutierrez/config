@@ -240,14 +240,20 @@ command! BdelOnly :silent call Bdeleteonly()"}}}
 function! MyFoldText()
   let line = getline(v:foldstart)
   let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
-  let ind = indent(v:foldstart) / &tabstop
   let spaces = ''
-  let i = 0
-  while i < ind
-    let i = i+1
-    let spaces = spaces . ' '
-  endwhile
+  if &expandtab == '0'
+    let ind = indent(v:foldstart) / &tabstop
+    let i = 0
+    while i < ind
+      let i = i+1
+      let spaces = spaces . ' '
+    endwhile
+  endif
 
   let number = v:foldend - v:foldstart + 1
-  return spaces . sub . ' ... (' . number . ' lines)'
+  let dots =  ' ... '
+  if sub =~# '{'
+    let dots =  '...} '
+  endif
+  return spaces . sub . dots . '(' . number . ' lines)'
 endfunction"}}}

@@ -1,59 +1,45 @@
 [submodule "dotfiles/vim/snippets"]
 	path = dotfiles/vim/snippets
 	url = https://github.com/scrooloose/snipmate-snippets.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-surround"]
 	path = dotfiles/vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-rails"]
 	path = dotfiles/vim/bundle/vim-rails
 	url = https://github.com/tpope/vim-rails.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-haml"]
 	path = dotfiles/vim/bundle/vim-haml
 	url = https://github.com/tpope/vim-haml.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-ruby"]
 	path = dotfiles/vim/bundle/vim-ruby
 	url = https://github.com/vim-ruby/vim-ruby.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-ragtag"]
 	path = dotfiles/vim/bundle/vim-ragtag
 	url = https://github.com/tpope/vim-ragtag.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-vividchalk"]
 	path = dotfiles/vim/bundle/vim-vividchalk
 	url = https://github.com/tpope/vim-vividchalk.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/tcomment"]
 	path = dotfiles/vim/bundle/tcomment
 	url = https://github.com/tomtom/tcomment_vim.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/supertab"]
 	path = dotfiles/vim/bundle/supertab
 	url = https://github.com/ervandew/supertab.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/snipmate"]
 	path = dotfiles/vim/bundle/snipmate
 	url = https://github.com/msanders/snipmate.vim.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/command-t"]
 	path = dotfiles/vim/bundle/command-t
 	url = https://github.com/wincent/Command-T.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-textobj-user"]
 	path = dotfiles/vim/bundle/vim-textobj-user
 	url = https://github.com/kana/vim-textobj-user.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-textobj-rubyblock"]
 	path = dotfiles/vim/bundle/vim-textobj-rubyblock
 	url = https://github.com/nelstrom/vim-textobj-rubyblock.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/vim-ruby-refactoring"]
 	path = dotfiles/vim/bundle/vim-ruby-refactoring
 	url = https://github.com/ecomba/vim-ruby-refactoring.git
-  ignore = untracked
 [submodule "dotfiles/vim/bundle/tabular"]
 	path = dotfiles/vim/bundle/tabular
 	url = https://github.com/godlygeek/tabular.git
@@ -105,3 +91,57 @@
 [submodule "dotfiles/vim/bundle/vim-markdown"]
 	path = dotfiles/vim/bundle/vim-markdown
 	url = https://github.com/peplin/vim-markdown.git
+[submodule "dotfiles/vim/bundle/vim-javascript"]
+	path = dotfiles/vim/bundle/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
+[submodule "dotfiles/vim/bundle/matchit"]
+	path = dotfiles/vim/bundle/matchit
+	url = https://github.com/vim-scripts/matchit.zip
+[submodule "dotfiles/vim/bundle/ack.vim"]
+	path = dotfiles/vim/bundle/ack.vim
+	url = https://github.com/mileszs/ack.vim
+[submodule "dotfiles/vim/bundle/vim-scratch"]
+	path = dotfiles/vim/bundle/vim-scratch
+	url = https://github.com/duff/vim-scratch.git
+[submodule "dotfiles/vim/bundle/vim-autoclose"]
+	path = dotfiles/vim/bundle/vim-autoclose
+	url = https://github.com/Townk/vim-autoclose.git
+[submodule "dotfiles/vim/bundle/tagbar"]
+	path = dotfiles/vim/bundle/tagbar
+	url = https://github.com/majutsushi/tagbar
+[submodule "dotfiles/vim/bundle/syntastic"]
+	path = dotfiles/vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "dotfiles/vim/bundle/vim-abolish"]
+	path = dotfiles/vim/bundle/vim-abolish
+	url = https://github.com/tpope/vim-abolish
+[submodule "dotfiles/vim/bundle/vim-colors-solarized"]
+	path = dotfiles/vim/bundle/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule "dotfiles/vim/bundle/detectindent"]
+	path = dotfiles/vim/bundle/detectindent
+	url = https://github.com/ciaranm/detectindent.git
+[submodule "dotfiles/vim/bundle/setcolors.vim"]
+	path = dotfiles/vim/bundle/setcolors.vim
+	url = https://github.com/felixhummel/setcolors.vim
+[submodule "dotfiles/vim/bundle/jshint.vim"]
+	path = dotfiles/vim/bundle/jshint.vim
+	url = https://github.com/walm/jshint.vim
+[submodule "dotfiles/vim/bundle/vim-jsbeautify"]
+	path = dotfiles/vim/bundle/vim-jsbeautify
+	url = https://github.com/maksimr/vim-jsbeautify.git
+[submodule "dotfiles/vim/bundle/vim-indent-guides"]
+	path = dotfiles/vim/bundle/vim-indent-guides
+	url = https://github.com/nathanaelkane/vim-indent-guides.git
+[submodule "dotfiles/vim/bundle/zencoding-vim"]
+	path = dotfiles/vim/bundle/zencoding-vim
+	url = https://github.com/mattn/zencoding-vim.git
+[submodule "dotfiles/vim/bundle/neocomplcache"]
+	path = dotfiles/vim/bundle/neocomplcache
+	url = https://github.com/Shougo/neocomplcache.git
+[submodule "dotfiles/vim/bundle/neocomplcache-snippets-complete"]
+	path = dotfiles/vim/bundle/neocomplcache-snippets-complete
+	url = https://github.com/Shougo/neocomplcache-snippets-complete.git
+[submodule "dotfiles/vim/bundle/vim-powerline"]
+	path = dotfiles/vim/bundle/vim-powerline
+	url = https://github.com/Lokaltog/vim-powerline.git
