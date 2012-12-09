@@ -214,7 +214,7 @@ function! s:align()
   endif
 endfunction"}}}
 
-" Delete buffer without delete window {{{ 
+" Delete buffer without delete window {{{
 function! Buflist()
     redir => bufnames
     silent ls
@@ -239,7 +239,19 @@ command! BdelOnly :silent call Bdeleteonly()"}}}
 " Custom Folding{{{
 function! MyFoldText()
   let line = getline(v:foldstart)
-  let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
+  let number = v:foldend - v:foldstart + 1
+  let dots =  ' ... '
+  if sub =~# '{'
+    let dots =  '...} '
+  endif
+
+  let sub = substitute(line, '\/\*\*\|\*/\|{{{\d\=', '', 'g')
+
+  if sub =~# '^\s*$'
+   let line = getline(v:foldstart + 1)
+   let sub = substitute(line, '\/\*\|\*/\|{{{\d\=', '', 'g')
+  endif
+
   let spaces = ''
   if &expandtab == '0'
     let ind = indent(v:foldstart) / &tabstop
@@ -250,10 +262,26 @@ function! MyFoldText()
     endwhile
   endif
 
-  let number = v:foldend - v:foldstart + 1
-  let dots =  ' ... '
-  if sub =~# '{'
-    let dots =  '...} '
-  endif
+  let dots = sub =~# '{' ? '...} ' : ' ...  '
   return spaces . sub . dots . '(' . number . ' lines)'
 endfunction"}}}
+
+function! ExtractVariable()
+    let name = input("Variable name: ")
+    if name == ''
+        return
+    endif
+    " Enter visual mode (not sure why this is needed since we're already in
+    " visual mode anyway)
+    normal! gv
+
+    " Replace selected text with the variable name
+    exec "normal c" . name
+    " Define the variable on the line above
+    exec "normal! O" . name . " = "
+    " Paste the original selected text to be the variable value
+    normal! $p
+endfunction
+vnoremap <leader>rv :call ExtractVariable()<cr>
+
+command! InsertTime :normal a<c-r>=strftime('%F %H:%M:%S.0 %z')<cr>

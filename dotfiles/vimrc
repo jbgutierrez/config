@@ -6,13 +6,13 @@ if !has('gui_running')
   call add(g:pathogen_disabled, "vim-css-color")
 endif
 call pathogen#infect()"}}}
-" general{{{
+" general configuration {{{
 set nocompatible        " Use Vim defaults (much better!)
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set virtualedit=all     "allows the cursor to freely roam anywhere it likes in command mode
 set viminfo='20,\"50    " read/write a .viminfo file, don't store more
                         " than 50 lines of registers
-set history=50          " keep 50 lines of command line history
+set history=1000        " keep 50 lines of command line history
 set ruler               " show the cursor position all the time
 set nonumber            " hide line numbers
 set scrolloff=3         " leave 3 lines of breathing room
@@ -22,8 +22,8 @@ set lazyredraw          " Set lazydraws so that rendering is much faster during 
 set showmode            " I like to know which mode I am in at times
 set showcmd             " show the command being typed
 set showmatch           " show matching brackets
-set nolist              " show whitespace
-set listchars=tab:▸\ ,eol:¬  "use the same symbols as TextMate for tabstops and EOLs
+set list                " show whitespace
+set listchars=tab:▸\ ,eol:¬,trail:.  "use the same symbols as TextMate for tabstops and EOLs
 set hidden
 set statusline=%F%m%r%h%w[%L]%y[%p%%][%04l,%04v]%=[%{&ff},%{\"\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"} "[%{fugitive#statusline()}]
 "              | | | | |  |   |  |       |    |
@@ -40,8 +40,11 @@ set statusline=%F%m%r%h%w[%L]%y[%p%%][%04l,%04v]%=[%{&ff},%{\"\".(&fenc==\"\"?&e
 "}
 
 
-set laststatus=2        " always show the last status
-set wildmenu            " turn on command line completion wild style"}}}
+set nrformats=            " make CTRL-A and CTRL-X commands work exclusively with decimals
+set laststatus=2          " always show the last status
+set wildignore+=*.xls,*.doc,*.cd,*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png
+set wildmode=list:longest " turn on wild mode huge list
+set wildmenu              " turn on command line completion wild style"}}}
 " tabs and indentation{{{
 set tabstop=2
 set softtabstop=2
@@ -52,6 +55,9 @@ set expandtab      " To spaces to tabs 'set noexpandtab' and ':retab!'
 "}}}
 " search{{{
 set gdefault           " global search/replace by default
+" clear the search buffer when hitting return {{{
+nnoremap <cr> :set hlsearch! hlsearch?<cr>
+nnoremap <leader><leader> <c-^>"}}}
 set incsearch hlsearch " highlight matches as you type
 set smartcase          " override ignorecase when there are uppercase characters
 set ignorecase         " ignore case when searching "}}}
@@ -66,7 +72,7 @@ set showbreak=>              " character to show that a line is wrapped"}}}
 set enc=utf-8 nobomb
 " set enc=iso-8859-1"}}}
 " spell checking{{{
-set spell spelllang=es " X + = to show suggestions
+set spell spelllang=en " Z= to show suggestions
 set spellsuggest=5"}}}
 " file backups{{{
 set nobackup                                        " Don't make a backup before overwriting a file.
@@ -105,7 +111,7 @@ if has('win32') || has ('win64')
   let $VIMHOME='~/vimfiles'
 else
   let $VIMHOME='~/.vim'
-endif"}}} "}}}
+endif"}}}"}}}
 
 " Coding settings{{{
 " general{{{
@@ -118,14 +124,13 @@ compiler ruby         " Enable compiler support for ruby
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview"}}}
 " spaces, tabs and DOS text files{{{
-" au BufRead * silent! %s/\r$// " never see ^M again! (DOS text files)
+" au BufRead * silent! %s//\r/g  " never see ^M again! (DOS text files, <c-v> <c-m> )
 " au BufWrite * silent! %s/\v\s+$// " chop off unnecesary tabs and spaces"}}}
 " folding{{{
 set foldlevel=1
 set foldmethod=syntax
 set fillchars=fold:\ "
 set foldtext=MyFoldText() " Custom fold text function
-" set balloonexpr=FoldSpellBalloon()
 
 if has("ruby")
   set ballooneval
@@ -171,7 +176,60 @@ au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}
 " guess indent from buffer {{{
 let g:detectindent_preferred_indent=2
 au BufReadPost * :DetectIndent "}}}
-"}}}
+" jumps to the last known position in a file just after opening it, if the '" mark is set: > {{{
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif "}}}
+" open a split for each dirty file in git {{{
+function! OpenChangedFiles()
+  only " Close all windows, unless they're modified
+  let status = system('git status -s | grep "^ \?\(M\|A\|UU\)" | sed "s/^.\{3\}//"')
+  let filenames = split(status, "\n")
+  exec "edit " . filenames[0]
+  for filename in filenames[1:]
+    exec "sp " . filename
+  endfor
+endfunction
+command! OpenChangedFiles :call OpenChangedFiles()"}}}
+" resize stacked windows {{{
+nnoremap <C-W>j <C-W>j<C-W>_
+nnoremap <C-W>k <C-W>k<C-W>_
+nnoremap <C-W>l <C-W>l<C-W>_
+nnoremap <C-W>h <C-W>h<C-W>_
+set winheight=4
+set winminheight=4"}}}
+" strip trailing whitespace {{{
+function! <SID>StripTrailingWhitespaces()
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  %s/\s\+$//e
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()"}}}
+" show extra whitespace as error {{{
+highlight ExtraWhitespace ctermbg=red guibg=red
+augroup WhitespaceMatch
+  " Remove ALL autocommands for the WhitespaceMatch group.
+  autocmd!
+  autocmd BufWinEnter * let w:whitespace_match_number =
+        \ matchadd('ExtraWhitespace', '\s\+$')
+  autocmd InsertEnter * call s:ToggleWhitespaceMatch('i')
+  autocmd InsertLeave * call s:ToggleWhitespaceMatch('n')
+augroup END
+
+function! s:ToggleWhitespaceMatch(mode)
+  let pattern = (a:mode == 'i') ? '\s\+\%#\@<!$' : '\s\+$'
+  if exists('w:whitespace_match_number')
+    call matchdelete(w:whitespace_match_number)
+    call matchadd('ExtraWhitespace', pattern, 10, w:whitespace_match_number)
+  else
+    " Something went wrong, try to be graceful.
+    let w:whitespace_match_number =  matchadd('ExtraWhitespace', pattern)
+  endif
+endfunction"}}}"}}}
 
 " Key mappings{{{
 " general{{{
@@ -179,15 +237,19 @@ let mapleader = ","
 nmap <s-u> :redo<CR>           " redo
 nmap <leader>l :set list!<CR> " shortcut to rapidly toggle `set list` (retab! if neccesary)
 map <leader>e :e $MYVIMRC<cr>   " fast editing of the .vimrc"}}}
+" can't be bothered to understand ESC vs <c-c> in insert mode {{{
+imap <c-c> <esc>
+"}}}
 " moving around split windows{{{
-nmap <s-down>   <c-w>w
-nmap <s-up>     <c-w>W
-nmap <s-left>   <c-w>h
-nmap <s-right>  <c-w>l"}}}
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l"}}}
 " function keys{{{
 map <F2> :TlistToggle<CR>                               " F2 - List methods
 map <S-F2> :!/usr/local/bin/ctags -R .<CR>
 map <F4> :set hlsearch! hlsearch?<CR>                   " F4 - highlighting on/off
+map <F5> :GundoToggle<cr>                               " F5 - Toggle Gundo bufferbuffer
 map <F6> :call ToggleScratch()<CR>                      " F6 - Toggle scratch buffer
 set textwidth=80
 nmap <F10> gqap                                         " F10 - Format paragraph
@@ -196,6 +258,8 @@ nnoremap <F11> :call CleanFile()<CR>                    " delete empty lines "}}
 " change working directory{{{
 nmap <silent>cd :cd %:p:h<CR>:pwd<CR>
 nmap <silent>lcd :lcd %:p:h<CR>:pwd<CR>"}}}
+" easy Expansion of the Active File Directory{{{
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'"}}}
 " move text around{{{
 nmap <S-Tab> <C-o>
 " nmap <Tab> >>
@@ -203,8 +267,8 @@ vmap <S-Tab> <gv
 vmap <Tab> >gv
 nmap <C-j> :m+<CR>==
 nmap <C-k> :m-2<CR>==
-imap <C-j> <Esc>:m+<CR>==gi
-imap <C-k> <Esc>:m-2<CR>==gi
+" imap <C-j> <Esc>:m+<CR>==gi
+" imap <C-k> <Esc>:m-2<CR>==gi
 vmap <C-j> :m'>+<CR>gv=gv
 vmap <C-k> :m-2<CR>gv=gv"}}}
 " i18n translations {{{
@@ -230,15 +294,22 @@ nmap t cs"'vi'lohs)it<esc>
 " folding{{{
 nnoremap <space> za    " space - toggle current fold
 nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR> " space - toggle current fold"}}}
+" rename current file {{{
+map <leader>t :CommandT<cr>
+map <leader>tt :CommandTFlush<cr>\|:CommandT<cr>
+"}}}
 " coding utilities{{{
 map <d-r> <plug>rubyfilerun    " run file in shell mode with ruby
 map <leader>m ggO# coding: UTF-8<esc>
+map <leader>r ggO#!/usr/bin/env ruby<esc>
 nmap <leader>a\| :Tab /\|<CR>
 vmap <leader>a\| :Tab /\|<CR>
 nmap <Leader>a= :Tab /=<CR>
 vmap <Leader>a= :Tab /=<CR>
 nmap <Leader>a: :Tab /:\zs<CR>
 vmap <Leader>a: :Tab /:\zs<CR>
+" Insert a hash rocket with <c-l>
+imap <c-l> <space>=><space>
 map <leader>c gcc              " toggle comment "}}}
 " rotating among results in an ack search{{{
 map <C-n> :cn<CR>
@@ -272,7 +343,8 @@ function! RenameFile()
     redraw!
   endif
 endfunction
-map <leader>n :call RenameFile()<cr>"}}}
+map <leader>n :call RenameFile()<cr>
+"}}}
 " save file{{{
 map <C-s> :w<cr>
 map <C-S-s> :browse confirm saveas<cr>"}}}
@@ -349,24 +421,37 @@ endif
 let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 " Plugin key-mappings.
-imap <C-k>     <Plug>(neocomplcache_snippets_expand)
-smap <C-k>     <Plug>(neocomplcache_snippets_expand)
-inoremap <expr><C-g>     neocomplcache#undo_completion()
-inoremap <expr><C-l>     neocomplcache#complete_common_string()
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 
 " SuperTab like snippets behavior.
-imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+" " Plugin key-mappings.
+" imap <C-k>     <Plug>(neocomplcache_snippets_expand)
+" smap <C-k>     <Plug>(neocomplcache_snippets_expand)
+" inoremap <expr><C-g>     neocomplcache#undo_completion()
+" inoremap <expr><C-l>     neocomplcache#complete_common_string()
+"
+" " SuperTab like snippets behavior.
+" imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+"
+" " Recommended key-mappings.
+" " <CR>: close popup and save indent.
+" inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
+" " <TAB>: completion.
+" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" " <C-h>, <BS>: close popup and delete backword char.
+" inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+" inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+" inoremap <expr><C-y>  neocomplcache#close_popup()
+" inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 " AutoComplPop like behavior.
 " let g:neocomplcache_enable_auto_select = 1
@@ -375,8 +460,8 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 set completeopt+=longest
 let g:neocomplcache_enable_auto_select = 1
 " let g:neocomplcache_disable_auto_complete = 1
-inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<TAB>"
-inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
+" inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<TAB>"
+" inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
 
 " Enable omni completion.
 au FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -394,9 +479,9 @@ let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplcache_omni_patterns.c = '\%(\.\|->\)\h\w*'
 let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'"}}}
+" Fugitive {{{
+autocmd BufReadPost fugitive://* set bufhidden=delete"}}}
 " Command-T{{{
-set wildignore+=*.xls,*.doc,*.cd,*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png
-set wildmode=list:longest " turn on wild mode huge list
 let g:CommandTMaxHeight=10"}}}"}}}
 
 " finally, load local project configs {{{
@@ -404,8 +489,6 @@ if filereadable('.vimrc.local')
   source .vimrc.local
 endif"}}}
 
-autocmd BufReadPost fugitive://* set bufhidden=delete
-nnoremap <F5> :GundoToggle<cr>
-
+" command! InsertTime :normal a<c-r>=strftime('%F %H:%M:%S.0 %z')<cr>
 " find . -name "*.rb" | xargs file | grep "CRLF" | awk -F: '{print $1}' | xargs gvim
 " bufdo set ff=unix | w
