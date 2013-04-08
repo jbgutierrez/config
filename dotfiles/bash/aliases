@@ -1,34 +1,22 @@
 # Utility
 alias reload='source ~/bin/dotfiles/bash/aliases'
 alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+alias vimun='vim -u NONE -N'
 alias ea='vim -f ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
 alias ee='vim ~/bin/dotfiles/bash/env'
-function topcommands() {
+topcommands() {
   history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
 
-function farchive() {
-  for f in *; do
-    if [[ $f =~ ^[0-9]{4}-.* ]]; then
-      echo "Skipping "$f
-    else
-      date=`stat -f %SB -t %y%m $f`
-      mv $f $date-$f
-      command="mv $f $date-$f"
-      echo $command
-    fi;
-  done
-}
-
 # GIT aliases
-alias gk='gitk --all&'
-alias gkr='gitk --all `git reflog | cut -c1-7`'
+alias gk='gitk --all 2>/dev/null&'
+alias gkr='gitk --all `git reflog | cut -c1-7` 2>/dev/null&'
 alias gks='git instaweb'
-alias gst='git status -s'
-alias gs='git status '
+alias gst='git status -s --ignore-submodules=dirty'
+alias gs='git status --ignore-submodules=dirty'
 alias gl='git pull'
 alias gp='git push'
-alias gd='git diff'
+alias gd='git diff --ignore-submodules=dirty'
 alias gc='git commit -v'
 alias gca='git commit -v -a'
 alias gcsvn='git svn dcommit'
@@ -37,23 +25,22 @@ alias gaa='git commit -v -a --amend'
 alias gadd='git add '
 alias gb='git branch --color'
 alias gbd='git branch -d'
-function go() {
+go() {
   git checkout -b $1 2> /dev/null || git checkout $1
 }
 alias glog='git log --pretty=format:"%ar - %an - %s"'
 alias gapply='git stash apply && git stash clear'
 alias gresolve='git add -u && git rebase --continue'
+alias glmodules='git submodule foreach "(git checkout master; git pull)"'
 
-function garchive() {
+garchive() {
   git archive master | bzip2 >source-tree.tar.bz2
 }
+
 # Git clone from GitHub
 function gclone() {
   git clone git://github.com/$1/$2.git
 }
-
-# Vim
-alias g='gvim --remote-silent'
 
 # Ruby
 alias r="rake"
@@ -128,28 +115,53 @@ alias less='less -r'
 alias la='ls -lhGta'
 alias l='ls -lhGt'  # -l long listing, most recent first
                     # -G color
+
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 alias df='df -h'
 alias h='history'
 alias md='mkdir -p'
-function cdh(){
-  cd "$HOME/$1"
+cdh(){
+  cd "$home/$1"
 }
 alias c='clear'
 alias ..='cd ..'   # up one dir
 alias cd..='cd ..'   # up one dir
 alias cdl='cd -'  # goto last dir cd'ed from
 alias cdd='cd -'  # goto last dir cd'ed from
-function take() {
+take() {
   mkdir -p "$1"
   cd "$1"
 }
 alias q='exit'
 
-alias postgres_start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
-alias postgres_stop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
+# start/stop postgresql
+alias postgres_start='pg_ctl -d /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
+alias postgres_stop='pg_ctl -d /usr/local/var/postgres stop -s -m fast'
+
+# curl for useragents
+alias iecurl="curl -H \"User-Agent: Mozilla/5.0 (Windows; U; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)\""
+alias ffcurl="curl -H \"User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.8) Gecko/2009032609 Firefox/3.0.0 (.NET CLR 3.5.30729)\""
+
+# archive project folders
+farchive() {
+  for f in *; do
+    if [[ $f =~ ^[0-9]{4}-.* ]]; then
+      echo "Skipping "$f
+    else
+      date=`stat -f %SB -t %y%m $f`
+      mv $f $date-$f
+      command="mv $f $date-$f"
+      echo $command
+    fi;
+  done
+}
+
+# grep dictionary words
+dict() {
+  grep "$@" /usr/share/dict/words
+}
 
 # Shortcuts to each project folder
 alias cdprojects="cd $PROJECTS_FOLDER"
@@ -167,23 +179,52 @@ alias rememberme='export REMEMBERME_PATH=$PWD'
 alias cdrememberme='cd "$REMEMBERME_PATH"'
 
 # List folders size
-function dufolders() {
+dufolders() {
   du -h -g -d 1
 }
 
 # File compression
-function zipr() {
+zipr() {
   zip -r $1.zip $1
 }
-function zip2bzip() {
+zip2bzip() {
   cat $1 | gunzip | bzip2 !#:1:s/gz/bz2
 }
+extract () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)        tar xjf $1        ;;
+      *.tar.gz)         tar xzf $1        ;;
+      *.bz2)            bunzip2 $1        ;;
+      *.rar)            unrar x $1        ;;
+      *.gz)             gunzip $1         ;;
+      *.tar)            tar xf $1         ;;
+      *.tbz2)           tar xjf $1        ;;
+      *.tgz)            tar xzf $1        ;;
+      *.zip)            unzip $1          ;;
+      *.z)              uncompress $1     ;;
+      *)                echo "'$1' cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
 
 # Processes
 alias tu='top -o cpu' # cpu
 alias tm='top -o vsize' # memory
-function killnamed () {
-  ps ax | grep $1 | cut -d ' ' -f 1 | xargs kill -9
+killnamed() {
+  # Kills any process that matches a regexp passed to it
+  ps aux | grep -v "grep" | grep "$@" | awk '{print $2}' | xargs kill
+}
+psgrep() {
+  if [ ! -z $1 ] ; then
+    echo "Grepping for processes matching $1..."
+    ps aux | grep $1 | grep -v grep
+  else
+    echo "!! Need name to grep for"
+  fi
 }
 
 # Finder
@@ -197,7 +238,7 @@ alias clean='find . -name *.DS_Store -type f -exec rm {} \;'
 alias webshare='ruby -e "require\"webrick\";w=WEBrick::HTTPServer.new(:Port=>3000,:DocumentRoot=>Dir::pwd);Signal.trap(2){w.shutdown};w.start"'
 
 # Social activity
-function tweet() {
+tweet() {
   curl -u user:pass http://twitter.com/statuses/update.xml -d status="$*"
 }
 
@@ -225,30 +266,3 @@ man 7 units - kilo, kibi, mega, mebi, giga, gibi, ... - decimal (SI) and binary 
 man 7 utf8 - description of UTF-8 encoding.
 man 7 url - description of URIs, URLs and URNs."
 }
-
-# RVM settings
-# => $ bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
-[[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
-
-# Cygwin customizations and walkarounds
-if [ $_YAP_CYGWIN ]; then
-  # Shortcuts to each project folder
-  alias cdprojects="cd $PROJECTS_FOLDER"
-  for path in $PROJECTS_FOLDER/*; do
-    if [ -d $path ]; then
-      subfolder=`echo $path | sed 's/.*\///' | tr "[:upper:]" "[:lower:]"`
-      alias "cd$subfolder"="cd $path/Software/trunk"
-      alias "e$subfolder"="e $path/Software/trunk"
-      alias "u$subfolder"="cd $path/Software/trunk && git svn rebase && cd -"
-      alias "o$subfolder"='"/cygdrive/c/Archivos de programa/Microsoft Visual Studio 8/Common7/IDE/devenv.exe" "D:/Proyectos/$subfolder/Software/trunk/$ subfolder.sln"&'
-    fi
-  done
-
-  # Cygwin walkarounds
-  alias rake='C:/ruby/bin/rake'
-  alias gem='C:/ruby/bin/gem'
-  alias gvim='gvim.bat'
-  alias reload='cd && source bin/dotfiles/bash/aliases && cd -'
-  alias ea='cd && gvim -f bin/dotfiles/bash/aliases && reload && cd -' # Edit aliases
-  alias ee='cd && gvim bin/dotfiles/bash/env && cd -'
-fi
