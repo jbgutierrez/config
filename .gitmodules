@@ -115,15 +115,6 @@
 [submodule "dotfiles/vim/bundle/zencoding-vim"]
 	path = dotfiles/vim/bundle/zencoding-vim
 	url = https://github.com/mattn/zencoding-vim.git
-[submodule "dotfiles/vim/bundle/neocomplcache"]
-	path = dotfiles/vim/bundle/neocomplcache
-	url = https://github.com/Shougo/neocomplcache.git
-[submodule "dotfiles/vim/bundle/neocomplcache-snippets-complete"]
-	path = dotfiles/vim/bundle/neocomplcache-snippets-complete
-	url = https://github.com/Shougo/neocomplcache-snippets-complete.git
 [submodule "dotfiles/vim/bundle/vim-powerline"]
 	path = dotfiles/vim/bundle/vim-powerline
 	url = https://github.com/Lokaltog/vim-powerline.git
-[submodule "dotfiles/vim/bundle/neosnippet"]
-	path = dotfiles/vim/bundle/neosnippet
-	url = https://github.com/Shougo/neosnippet.git
