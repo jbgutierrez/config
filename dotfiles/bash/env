@@ -4,6 +4,9 @@ export PROJECTS_FOLDER=$HOME/Projects
 # Adding an appropriate PATH variable for use with Homebrew
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
+# Adding an appropriate PATH variable for use with npm packages
+export PATH=/usr/local/share/npm/bin:$PATH
+
 # User utilities
 export PATH=./bin:~/bin:$PATH
 
