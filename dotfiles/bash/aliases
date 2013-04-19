@@ -170,6 +170,7 @@ for project_path in $PROJECTS_FOLDER/*; do
     subfolder=`echo $project_path | /usr/bin/sed 's/.*\///'`
     alias "cd$subfolder"="cd $project_path"
     alias "e$subfolder"="vim $project_path"
+    alias "o$subfolder"="open $project_path"
   fi
 done
 
