@@ -1,4 +1,4 @@
-export EDITOR='/usr/bin/mate -w'
+export EDITOR='vim -f'
 export PROJECTS_FOLDER=$HOME/Projects
 
 # Adding an appropriate PATH variable for use with Homebrew

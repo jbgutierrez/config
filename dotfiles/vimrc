@@ -44,6 +44,7 @@ set nrformats=            " make CTRL-A and CTRL-X commands work exclusively wit
 set laststatus=2          " always show the last status
 set wildignore+=*.xls,*.doc,*.cd,*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png
 set wildmode=list:longest " turn on wild mode huge list
+set complete-=i           " don't need to scan included files
 set wildmenu              " turn on command line completion wild style"}}}
 " tabs and indentation{{{
 set tabstop=2
@@ -54,7 +55,7 @@ set smarttab       " smart tabulatin and backspace
 set expandtab      " To spaces to tabs 'set noexpandtab' and ':retab!'
 "}}}
 " search{{{
-set gdefault           " global search/replace by default
+" set gdefault           " global search/replace by default
 " clear the search buffer when hitting return {{{
 " nnoremap <cr> :set hlsearch! hlsearch?<cr>
 nnoremap <leader><leader> <c-^>"}}}
@@ -70,6 +71,7 @@ set breakat=\ ^I!@*-+;:,./?  " when wrapping, break at these characters
 set showbreak=>              " character to show that a line is wrapped"}}}
 " encoding and fileformat{{{
 set enc=utf-8 nobomb
+set fileformats+=mac
 " set enc=iso-8859-1"}}}
 " spell checking{{{
 set spell spelllang=en " Z= to show suggestions
@@ -247,6 +249,8 @@ map <leader>e :e $MYVIMRC<cr>   " fast editing of the .vimrc"}}}
 " can't be bothered to understand ESC vs <c-c> in insert mode {{{
 imap <c-c> <esc>
 "}}}
+" make Y behave like C and D {{{
+nmap Y y$"}}}
 " moving around split windows{{{
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -268,8 +272,8 @@ nmap <silent>lcd :lcd %:p:h<CR>:pwd<CR>"}}}
 " easy Expansion of the Active File Directory{{{
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'"}}}
 " move text around{{{
-nmap <S-Tab> <C-o>
-" nmap <Tab> >>
+nmap <S-Tab> <<
+nmap <Tab> >>
 vmap <S-Tab> <gv
 vmap <Tab> >gv
 nmap <C-j> :m+<CR>==
@@ -278,10 +282,10 @@ nmap <C-k> :m-2<CR>==
 " imap <C-k> <Esc>:m-2<CR>==gi
 vmap <C-j> :m'>+<CR>gv=gv
 vmap <C-k> :m-2<CR>gv=gv"}}}
-" i18n translations {{{
-vmap t s'gvs)i= t<esc>
-nmap t cs"'vi'lohs)it<esc>
-" nmap t ds"ds'viws'gvs)it<esc>"}}}
+" " i18n translations {{{
+" vmap t s'gvs)i= t<esc>
+" nmap t cs"'vi'lohs)it<esc>
+" " nmap t ds"ds'viws'gvs)it<esc>"}}}
 " shortcuts for rails commands{{{
 " map <leader>m :rmodel
 " map <leader>c :rcontroller
@@ -326,9 +330,12 @@ map <C-p> :cp<CR>"}}}
 vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
 nmap s "_diw"0P
 " vmap s "_d"0P"}}}
+" fix the & command {{{
+nnoremap & :&&<CR>
+xnoremap & :&&<CR>"}}}
 " search{{{
 " nmap <leader>a :Ack
-" nmap + yiw:Ack <c-r>"
+nmap <leader>a yiw:Ack <c-r>"
 "}}}
 " search for selected text, forwards or backwards {{{
 vnoremap <silent> * :<C-U>
