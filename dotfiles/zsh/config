@@ -1,11 +1,31 @@
+# show elapsed time if command took more than X seconds
+REPORTTIME=10
+# ask to complete if top of list would scroll off screen
+LISTMAX=0
+
+# command history configuration
+HISTFILE=$HOME/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+
+# make CTRL-W delete after other chars, not just spaces
+WORDCHARS=${WORDCHARS//[&=\/;\!#%\{]}
+
+# make with the pretty colors
 autoload -U colors; colors
-setopt prompt_subst
-# set some colors
+
 for COLOR in RED GREEN YELLOW MAGENTA; do
   eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'
   eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
 done
 PR_RESET="%{${reset_color}%}";
+
+PROMPT='${PR_MAGENTA}$(date +%H:%M) %~ $(git_info)${PR_RESET}
+→ '
+RPROMPT='%U${PR_WHITE}$(git_log)%u${PR_RESET}'
+
+# turn on command substitution in the prompt
+setopt prompt_subst
 
 refresh_git_status() {
   unstaged=false staged=false stashed=false
@@ -44,49 +64,47 @@ git_log() {
   git log --pretty=format:"%h - %ar : %s" -n 1 2> /dev/null
 }
 
-PROMPT='${PR_MAGENTA}$(date +%H:%M) %~ $(git_info)${PR_RESET}
-→ '
-RPROMPT='%U${PR_WHITE}$(git_log)%u${PR_RESET}'
-#############################
-# Other Options
+# show a message with the exit code when a command returns with a non-zero exit code
+setopt print_exit_value
 
-# setopt PRINT_EXIT_VALUE
+# don't want to be corrected
+unsetopt correct
+unsetopt correctall
 
-unsetopt CORRECT
-unsetopt CORRECTALL
+setopt                                       \
+  append_history                             \
+  extended_history                           \
+  hist_expire_dups_first                     \
+  hist_ignore_dups                           \
+  hist_ignore_space                          \
+  hist_verify                                \
+  inc_append_history                         \
+  share_history
 
-setopt hist_ignore_dups     # ignore duplication command history list
-setopt share_history        # share command history data
-setopt HIST_IGNORE_SPACE
-setopt APPEND_HISTORY # write history only when closing
-setopt EXTENDED_HISTORY # add more info
+# globbing on steroids
 setopt extended_glob
-# Other tabbing options
-# setopt NO_AUTO_MENU
-# setopt BASH_AUTO_LIST
 
-#############################
-# Variables
+# other tabbing options
+# setopt no_auto_menu
+# setopt bash_auto_list
 
-# Quote pasted URLs
+# quote pasted URLs
 autoload url-quote-magic
 zle -N self-insert url-quote-magic
 
-HISTFILE=~/.zsh_history
-SAVEHIST=10000
-HISTSIZE=10000
+# load completions for Ruby, Git, etc.
+autoload compinit; compinit
 
-REPORTTIME=10 # Show elapsed time if command took more than X seconds
-LISTMAX=0 # ask to complete if top of list would scroll off screen
+# multiple move
+autoload zmv
 
-# Load completions for Ruby, Git, etc.
-autoload compinit
-compinit
-
-# Make CTRL-W delete after other chars, not just spaces
-WORDCHARS=${WORDCHARS//[&=\/;\!#%\{]}
+# completion for kill-like commands
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm -w -w"
+zstyle ':completion:*:ssh:*' tag-order hosts users
+zstyle ':completion:*:ssh:*' group-order hosts-domain hosts-host users hosts-ipaddr
 
 bindkey -e
 
-# Ruby version manager
+# ruby version manager
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
