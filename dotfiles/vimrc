@@ -42,7 +42,7 @@ set statusline=%F%m%r%h%w[%L]%y[%p%%][%04l,%04v]%=[%{&ff},%{\"\".(&fenc==\"\"?&e
 
 set nrformats=            " make CTRL-A and CTRL-X commands work exclusively with decimals
 set laststatus=2          " always show the last status
-set wildignore+=*.xls,*.doc,*.cd,*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png
+set wildignore+=*.xls,*.doc,*.cd,*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png,node_modules,vendor,components,bower_components
 set wildmode=list:longest " turn on wild mode huge list
 set complete-=i           " don't need to scan included files
 set wildmenu              " turn on command line completion wild style"}}}
@@ -63,6 +63,7 @@ set incsearch hlsearch " highlight matches as you type
 set smartcase          " override ignorecase when there are uppercase characters
 set ignorecase         " ignore case when searching "}}}
 " wraping{{{
+set textwidth=80
 set nowrap                   " don't wrap lines
 set listchars+=extends:»     " show a » when a line goes off the right edge of the screen
 set listchars+=precedes:«    " show a « when a line goes off the left edge of the screen
@@ -161,7 +162,16 @@ au! FileType java setlocal foldmethod=syntax"}}}
 au! BufRead,BufNewFile *.haml setfiletype haml"}}}
 " css{{{
 au! FileType css setlocal foldmethod=marker
-au FileType css setlocal foldmarker={,} "}}}
+au FileType css setlocal foldmarker={,}
+au FileType css inoremap <buffer> :<space> : ;<left>
+" au FileType css inoremap <buffer> <space><space>
+"}}}
+" js {{{
+au! FileType javascript inoremap <buffer> :f : function(){<esc>o<cr>},<esc>ki<tab>
+au FileType javascript inoremap <buffer> :<space> : ,<left>
+au FileType javascript inoremap <buffer> f<tab> <esc>:AutoCloseOff<cr>afunction(){  }<left><esc>:AutoCloseOn<cr>i
+au FileType javascript inoremap <buffer> ;; <esc>ma$a;<esc>`aa
+"}}}
 " csharp{{{
 au! FileType cs call CSharp()"}}}
 " diff{{{
@@ -177,7 +187,7 @@ au! BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
 au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 ":[RANGE] CoffeeCompile [watch|unwatch] [vert[ical]] [WINDOW-SIZE]
 "}}}
-" file types really do require explicit tabs, and not spaces{{{
+" file types that require explicit tabs, and not spaces{{{
 au! FileType make   setlocal noexpandtab
 au! FileType python setlocal noexpandtab"}}}
 " load templates{{{
@@ -238,16 +248,24 @@ function! s:ToggleWhitespaceMatch(mode)
     " Something went wrong, try to be graceful.
     let w:whitespace_match_number =  matchadd('ExtraWhitespace', pattern)
   endif
-endfunction"}}}"}}}
+endfunction"}}}
+" operation pending motion for parenthesis{{{
+onoremap p :<c-u>normal! t)vi(<cr>
+"}}}
+"}}}
 
 " Key mappings{{{
+" shortcut to open a new line while in the middle of an existing one{{{
+" inoremap <buffer> <C-M> <esc>o
+"}}}
 " general{{{
 let mapleader = ","
-nmap <s-u> :redo<CR>           " redo
-nmap <leader>l :set list!<CR> " shortcut to rapidly toggle `set list` (retab! if neccesary)
+nmap <s-u> :redo<CR>            " redo
+nmap <leader>l :set list!<CR>   " shortcut to rapidly toggle `set list` (retab! if neccesary)
 map <leader>e :e $MYVIMRC<cr>   " fast editing of the .vimrc"}}}
 " can't be bothered to understand ESC vs <c-c> in insert mode {{{
-imap <c-c> <esc>
+inoremap <c-c> <esc>
+inoremap <esc> <nop>
 "}}}
 " make Y behave like C and D {{{
 nmap Y y$"}}}
@@ -257,15 +275,21 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l"}}}
 " function keys{{{
-map <F2> :TlistToggle<CR>                               " F2 - List methods
+" F2 - List methods
+map <F2> :TlistToggle<CR>
 map <S-F2> :!/usr/local/bin/ctags -R .<CR>
-map <F4> :set hlsearch! hlsearch?<CR>                   " F4 - highlighting on/off
-map <F5> :GundoToggle<cr>                               " F5 - Toggle Gundo bufferbuffer
-map <F6> :call ToggleScratch()<CR>                      " F6 - Toggle scratch buffer
-set textwidth=80
-nmap <F10> gqap                                         " F10 - Format paragraph
-imap <F11> <ESC>1G=Ga                                   " F11 - Format code
-nnoremap <F11> :call CleanFile()<CR>                    " delete empty lines "}}}
+" F3 - insert timestamp
+map <F3> <esc>:normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
+" map <F3> <esc>:normal a<c-r>=strftime('%F %H:%M:%S.0 %z')<CR><esc>
+" F4 - highlighting on/off
+map <F4> :set hlsearch! hlsearch?<CR>
+" F5 - Toggle Gundo bufferbuffer
+map <F5> :GundoToggle<cr>
+" F6 - Toggle scratch buffer
+map <F6> :call ToggleScratch()<CR>
+" F11 - delete empty lines
+map <F11> :call CleanFile()<CR>
+"}}}
 " change working directory{{{
 nmap <silent>cd :cd %:p:h<CR>:pwd<CR>
 nmap <silent>lcd :lcd %:p:h<CR>:pwd<CR>"}}}
@@ -305,37 +329,61 @@ vmap <C-k> :m-2<CR>gv=gv"}}}
 " folding{{{
 nnoremap <space> za    " space - toggle current fold
 nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR> " space - toggle current fold"}}}
-" rename current file {{{
+" bring up the command-t file window {{{
 map <leader>t :CommandT<cr>
 map <leader>tt :CommandTFlush<cr>\|:CommandT<cr>
 "}}}
 " coding utilities{{{
-map <d-r> <plug>rubyfilerun    " run file in shell mode with ruby
-map <leader>m ggO# coding: UTF-8<esc>
-map <leader>r ggO#!/usr/bin/env ruby<esc>
+au FileType ruby,eruby nnoremap <buffer> <d-r> <plug>rubyfilerun
+" run file in shell mode with ruby
+au FileType ruby,eruby nnoremap <buffer> <leader>m ggO# coding: UTF-8<esc>
+au FileType ruby,eruby nnoremap <buffer> <leader>r ggO#!/usr/bin/env ruby<esc>
 nmap <leader>a\| :Tab /\|<CR>
 vmap <leader>a\| :Tab /\|<CR>
 nmap <Leader>a= :Tab /=<CR>
 vmap <Leader>a= :Tab /=<CR>
 nmap <Leader>a: :Tab /:\zs<CR>
 vmap <Leader>a: :Tab /:\zs<CR>
-" Insert a hash rocket with <c-l>
-imap <c-l> <space>=><space>
 map <leader>c gcc              " toggle comment "}}}
 " rotating among results in an ack search{{{
 map <C-n> :cn<CR>
 map <C-p> :cp<CR>"}}}
 " replace selected text{{{
 " nmap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
-vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
+" vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
+vmap <c-r> y:%s/<c-r>=escape(@", '/\.*$^~[')//gc<left><left><left>
 nmap s "_diw"0P
 " vmap s "_d"0P"}}}
+" upcase/downcase last inserted word without leaving insert mode{{{
+inoremap <c-u> <esc>viwUea
+inoremap <c-d> <esc>viwuea
+"}}}
+" upcase/downcase current word in normal mode{{{
+nnoremap <leader>u viwU
+nnoremap <leader>d viwu
+"}}}
 " fix the & command {{{
 nnoremap & :&&<CR>
 xnoremap & :&&<CR>"}}}
 " search{{{
-" nmap <leader>a :Ack
-nmap <leader>a yiw:Ack <c-r>"
+set grepprg=ack
+set grepformat=%f:%l:%m
+nnoremap <leader>a :set operatorfunc=GrepOperator<cr>g@
+vnoremap <leader>a :<c-u>call GrepOperator(visualmode())<cr>
+
+function! GrepOperator(type)
+  if a:type ==# 'v'
+    normal! `<v`>y
+  elseif a:type ==# 'char'
+    normal! `[v`]y
+  else
+    return
+  endif
+
+  " silent execute "grep! -R " . shellescape(@@) . " ."
+  silent execute ":Ack " . shellescape(@@)
+  copen
+endfunction
 "}}}
 " search for selected text, forwards or backwards {{{
 vnoremap <silent> * :<C-U>
@@ -352,11 +400,6 @@ nmap <A-tab> :bn<CR>
 nmap <A-S-tab> :bp<CR>
 nmap <leader>d :bd<CR>
 nmap <leader>D :bufdo bd<CR>"}}}
-" move between splits{{{
-noremap <A-H> <C-w>h
-noremap <A-J> <C-w>j
-noremap <A-K> <C-w>k
-noremap <A-L> <C-w>l"}}}
 " rename file {{{
 function! RenameFile()
   let old_name = expand('%')
@@ -369,7 +412,7 @@ function! RenameFile()
 endfunction
 map <leader>n :call RenameFile()<cr>
 "}}}
-" copy file {{{
+" copy file{{{
 function! CopyFile()
   let old_name = expand('%')
   let new_name = input('New file name: ', expand('%'), 'file')
@@ -378,7 +421,7 @@ function! CopyFile()
     redraw!
   endif
 endfunction
-map <leader>c :call CopyFile()<cr>
+map <leader>c :call CopyFile()<cr>"}}}
 " save file{{{
 map <C-s> :w<cr>
 map <C-S-s> :browse confirm saveas<cr>"}}}
@@ -388,7 +431,11 @@ nmap N Nzz
 nmap * *zz
 nmap # #zz
 nmap g* g*zz
-nmap g# g#zz"}}}"}}}
+nmap g# g#zz"}}}
+" remap Backtick {{{
+nnoremap ' `
+nnoremap ` '"}}}
+"}}}
 
 " plugins settings{{{
 " Tag List{{{
@@ -417,9 +464,6 @@ function! ToggleScratch()
     Sscratch
   endif
 endfunction"}}}
-" Ack{{{
-set grepprg=ack
-set grepformat=%f:%l:%m"}}}
 " JsBeautify {{{
 autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
 " for html
@@ -429,13 +473,13 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>"}}}
 " Fugitive {{{
 autocmd BufReadPost fugitive://* set bufhidden=delete"}}}
 " Command-T{{{
-let g:CommandTMaxHeight=10"}}}"}}}
+let g:CommandTMaxHeight=10"}}}
+"}}}
 
 " finally, load local project configs {{{
 if filereadable('.vimrc.local')
   source .vimrc.local
 endif"}}}
 
-" command! InsertTime :normal a<c-r>=strftime('%F %H:%M:%S.0 %z')<cr>
 " find . -name "*.rb" | xargs file | grep "CRLF" | awk -F: '{print $1}' | xargs gvim
 " bufdo set ff=unix | w
