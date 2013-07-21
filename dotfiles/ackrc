@@ -11,9 +11,15 @@
 --type-add=css=.sass,.scss
 --type-add=ruby=.haml,.builder,.rake
 # --type-set=html=.ascx,.aspx,.Master
-
 --type-set=markdown=.markdown,.md,.mdown
 --type-set=cucumber=.feature
 --type-set=actionscript=.as
 
---ignore-dir=.idea
+# Ignored dirs and files
+--ignore-dir=.ideas
+--ignore-dir=.sass-cache
+--ignore-dir=bower_components
+--ignore-dir=components
+--ignore-dir=node_modules
+--ignore-dir=vendor
+--ignore-file=is:tags
