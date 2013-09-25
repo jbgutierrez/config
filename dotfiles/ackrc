@@ -7,13 +7,18 @@
 # Use "less -r" as my pager
 --pager=less -r
 
-# Custom extensions
+# Custom extensions (ack --help-types)
 --type-add=css=.sass,.scss
 --type-add=ruby=.haml,.builder,.rake
-# --type-set=html=.ascx,.aspx,.Master
+
+--type-set=html=.ascx,.aspx,.Master
 --type-set=markdown=.markdown,.md,.mdown
---type-set=cucumber=.feature
 --type-set=actionscript=.as
+--type-set=scss=.sass,.scss
+--type-set=coffeescript=.coffee
+--type-set=coffee=.coffee
+--type-set=jade=.jade
+--type-set=json=.json
 
 # Ignored dirs and files
 --ignore-dir=.ideas
