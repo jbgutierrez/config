@@ -149,7 +149,11 @@ if has("gui_running")
 else
   set nospell
 endif
-set clipboard+=unnamed "accessing the system clipboard"}}}
+set cursorcolumn
+if $TMUX == ''
+    set clipboard+=unnamed "accessing the system clipboard
+endif
+"}}}
 " mswin settings{{{
 if has('win32') || has ('win64')
   so $VIMRUNTIME/mswin.vim
@@ -185,19 +189,25 @@ set foldtext=MyFoldText() " Custom fold text function
 " endif
 "}}}
 " .vimrc{{{
-au! BufWritePost $MYVIMRC source % " When vimrc is edited, reload it
-au BufRead,BufWritePost $MYVIMRC set foldmethod=marker "}}}
+" When vimrc is edited, reload it
+au! BufWritePost $MYVIMRC source %
+au BufRead,BufWritePost $MYVIMRC set foldmethod=marker
+"}}}
 " ruby{{{
 au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 au FileType ruby,eruby let g:rubycomplete_rails = 1
-au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1"}}}
+au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+"}}}
 " XML{{{
 au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
-let g:xml_syntax_folding=1"}}}
+let g:xml_syntax_folding=1
+"}}}
 " Java{{{
-au! FileType java setlocal foldmethod=syntax"}}}
+au! FileType java setlocal foldmethod=syntax
+"}}}
 " haml{{{
-au! BufRead,BufNewFile *.haml setfiletype haml"}}}
+au! BufRead,BufNewFile *.haml set filetype=haml
+"}}}
 " css{{{
 au! FileType css setlocal foldmethod=marker
 au FileType css setlocal foldmarker={,}
@@ -210,14 +220,20 @@ au FileType javascript inoremap <buffer> :<space> : ,<left>
 au FileType javascript inoremap <buffer> f<tab> <esc>:AutoCloseOff<cr>afunction(){  }<left><esc>:AutoCloseOn<cr>i
 au FileType javascript inoremap <buffer> ;; <esc>ma$a;<esc>`aa
 "}}}
+" json{{{
+au! BufRead,BufNewFile *.json set filetype=json
+au FileType json noremap <leader>p  <Esc>:%!python -m json.tool<CR>
+"}}}
 " csharp{{{
-au! FileType cs call CSharp()"}}}
+au! FileType cs call CSharp()
+"}}}
 " diff{{{
 au! FileType diff setlocal fdm=expr
 au FileType diff setlocal fde=DiffFoldLevel()
 au FileType diff setlocal fdc=1
 au FileType diff setlocal foldlevel=0
-au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=diff"}}}
+au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=diff
+"}}}
 " coffescript{{{
 let coffee_compile_on_save = 1
 " au BufWritePost *.coffee silent CoffeeCompile -b | cwindow | redraw!
@@ -227,14 +243,18 @@ au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 "}}}
 " file types that require explicit tabs, and not spaces{{{
 au! FileType make   setlocal noexpandtab
-au! FileType python setlocal noexpandtab"}}}
+au! FileType python setlocal noexpandtab
+"}}}
 " load templates{{{
-au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl"}}}
+au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl
+"}}}
 " guess indent from buffer {{{
 let g:detectindent_preferred_indent=2
-au BufReadPost * :DetectIndent "}}}
+au BufReadPost * :DetectIndent
+"}}}
 " jumps to the last known position in a file just after opening it, if the '" mark is set: > {{{
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif "}}}
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+"}}}
 " open a split for each dirty file in git {{{
 function! OpenChangedFiles()
   only " Close all windows, unless they're modified
@@ -245,14 +265,16 @@ function! OpenChangedFiles()
     exec "sp " . filename
   endfor
 endfunction
-command! OpenChangedFiles :call OpenChangedFiles()"}}}
+command! OpenChangedFiles :call OpenChangedFiles()
+"}}}
 " resize stacked windows {{{
 nnoremap <C-W>j <C-W>j<C-W>_
 nnoremap <C-W>k <C-W>k<C-W>_
 nnoremap <C-W>l <C-W>l<C-W>_
 nnoremap <C-W>h <C-W>h<C-W>_
 set winheight=4
-set winminheight=4"}}}
+set winminheight=4
+"}}}
 " strip trailing whitespace {{{
 function! <SID>StripTrailingWhitespaces()
   " Preparation: save last search, and cursor position.
@@ -265,7 +287,8 @@ function! <SID>StripTrailingWhitespaces()
   let @/=_s
   call cursor(l, c)
 endfunction
-autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()"}}}
+au BufWritePre * :call <SID>StripTrailingWhitespaces()
+"}}}
 " show extra whitespace as error {{{
 highlight ExtraWhitespace ctermbg=red guibg=red
 augroup WhitespaceMatch
@@ -286,7 +309,8 @@ function! s:ToggleWhitespaceMatch(mode)
     " Something went wrong, try to be graceful.
     let w:whitespace_match_number =  matchadd('ExtraWhitespace', pattern)
   endif
-endfunction"}}}
+endfunction
+"}}}
 " operation pending motion for parenthesis{{{
 onoremap p :<c-u>normal! t)vi(<cr>
 "}}}
@@ -298,100 +322,114 @@ onoremap p :<c-u>normal! t)vi(<cr>
 "}}}
 " general{{{
 let mapleader = ","
-nmap <s-u> :redo<CR>            " redo
-nmap <leader>l :set list!<CR>   " shortcut to rapidly toggle `set list` (retab! if neccesary)
-map <leader>e :e $MYVIMRC<cr>   " fast editing of the .vimrc"}}}
+nnoremap <s-u> :redo<CR>            " redo
+nnoremap <leader>l :set list!<CR>   " shortcut to rapidly toggle `set list` (retab! if neccesary)
+noremap <leader>e :e $MYVIMRC<cr>   " fast editing of the .vimrc
+"}}}
 " can't be bothered to understand ESC vs <c-c> in insert mode {{{
 inoremap <c-c> <esc>
 inoremap <esc> <nop>
 "}}}
 " make Y behave like C and D {{{
-nmap Y y$"}}}
+nnoremap Y y$
+"}}}
 " moving around split windows{{{
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l"}}}
+nnoremap <c-l> <c-w>l
+"}}}
 " function keys{{{
 " F2 - List methods
-map <F2> :TlistToggle<CR>
-map <S-F2> :!/usr/local/bin/ctags -R .<CR>
+noremap <F2> :TlistToggle<CR>
+noremap <S-F2> :!/usr/local/bin/ctags -R .<CR>
 " F3 - insert timestamp
-map <F3> <esc>:normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
-" map <F3> <esc>:normal a<c-r>=strftime('%F %H:%M:%S.0 %z')<CR><esc>
+noremap <F3> <esc>:normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
+" noremap <F3> <esc>:normal a<c-r>=strftime('%F %H:%M:%S.0 %z')<CR><esc>
 " F4 - highlighting on/off
-map <F4> :set hlsearch! hlsearch?<CR>
+noremap <F4> :set hlsearch! hlsearch?<CR>
 " F5 - Toggle Gundo bufferbuffer
-map <F5> :GundoToggle<cr>
+noremap <F5> :GundoToggle<cr>
 " F6 - Toggle scratch buffer
-map <F6> :call ToggleScratch()<CR>
+noremap <F6> :call ToggleScratch()<CR>
 " F11 - delete empty lines
-map <F11> :call CleanFile()<CR>
+noremap <F11> :call CleanFile()<CR>
 "}}}
 " change working directory{{{
-nmap <silent>cd :cd %:p:h<CR>:pwd<CR>
-nmap <silent>lcd :lcd %:p:h<CR>:pwd<CR>"}}}
+nnoremap <silent>cd :cd %:p:h<CR>:pwd<CR>
+nnoremap <silent>lcd :lcd %:p:h<CR>:pwd<CR>
+"}}}
 " easy Expansion of the Active File Directory{{{
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'"}}}
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+"}}}
 " move text around{{{
-nmap <S-Tab> <<
-nmap <Tab> >>
-vmap <S-Tab> <gv
-vmap <Tab> >gv
-nmap <C-j> :m+<CR>==
-nmap <C-k> :m-2<CR>==
-" imap <C-j> <Esc>:m+<CR>==gi
-" imap <C-k> <Esc>:m-2<CR>==gi
-vmap <C-j> :m'>+<CR>gv=gv
-vmap <C-k> :m-2<CR>gv=gv"}}}
+nnoremap <S-Tab> <<
+nnoremap <Tab> >>
+vnoremap <S-Tab> <gv
+vnoremap <Tab> >gv
+nnoremap <C-j> :m+<CR>==
+nnoremap <C-k> :m-2<CR>==
+" inoremap <C-j> <Esc>:m+<CR>==gi
+" inoremap <C-k> <Esc>:m-2<CR>==gi
+vnoremap <C-j> :m'>+<CR>gv=gv
+vnoremap <C-k> :m-2<CR>gv=gv
+"}}}
 " " i18n translations {{{
-" vmap t s'gvs)i= t<esc>
-" nmap t cs"'vi'lohs)it<esc>
-" " nmap t ds"ds'viws'gvs)it<esc>"}}}
+" vnoremap t s'gvs)i= t<esc>
+" nnoremap t cs"'vi'lohs)it<esc>
+" " nnoremap t ds"ds'viws'gvs)it<esc>
+"}}}
 " shortcuts for rails commands{{{
-" map <leader>m :rmodel
-" map <leader>c :rcontroller
-" map <leader>v :rview
-" map <leader>u :runittest
-" map <leader>f :rfunctionaltest
-" map <leader>tm :rtmodel
-" map <leader>tc :rtcontroller
-" map <leader>tv :rtview
-" map <leader>tu :rtunittest
-" map <leader>tf :rtfunctionaltest
-" map <leader>sm :rsmodel
-" map <leader>sc :rscontroller
-" map <leader>sv :rsview
-" map <leader>su :rsunittest
-" map <leader>sf :rsfunctionaltest"}}}
-" folding{{{
+" noremap <leader>m :rmodel
+" noremap <leader>c :rcontroller
+" noremap <leader>v :rview
+" noremap <leader>u :runittest
+" noremap <leader>f :rfunctionaltest
+" noremap <leader>tm :rtmodel
+" noremap <leader>tc :rtcontroller
+" noremap <leader>tv :rtview
+" noremap <leader>tu :rtunittest
+" noremap <leader>tf :rtfunctionaltest
+" noremap <leader>sm :rsmodel
+" noremap <leader>sc :rscontroller
+" noremap <leader>sv :rsview
+" noremap <leader>su :rsunittest
+" noremap <leader>sf :rsfunctionaltest
+"}}}
+" folding with space{{{
 nnoremap <space> za    " space - toggle current fold
-nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR> " space - toggle current fold"}}}
-" bring up the command-t file window {{{
-map <leader>t :CommandT<cr>
-map <leader>tt :CommandTFlush<cr>\|:CommandT<cr>
+nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR>
+"}}}
+" bring up the command-t file window{{{
+noremap <leader>t :CommandT<cr>
+noremap <leader>tt :CommandTFlush<cr>\|:CommandT<cr>
 "}}}
 " coding utilities{{{
 au FileType ruby,eruby nnoremap <buffer> <d-r> <plug>rubyfilerun
 " run file in shell mode with ruby
 au FileType ruby,eruby nnoremap <buffer> <leader>m ggO# coding: UTF-8<esc>
 au FileType ruby,eruby nnoremap <buffer> <leader>r ggO#!/usr/bin/env ruby<esc>
-nmap <leader>a\| :Tab /\|<CR>
-vmap <leader>a\| :Tab /\|<CR>
-nmap <Leader>a= :Tab /=<CR>
-vmap <Leader>a= :Tab /=<CR>
-nmap <Leader>a: :Tab /:\zs<CR>
-vmap <Leader>a: :Tab /:\zs<CR>
-map <leader>c gcc              " toggle comment "}}}
+nnoremap <leader>a\| :Tab /\|<CR>
+vnoremap <leader>a\| :Tab /\|<CR>
+nnoremap <Leader>a= :Tab /=<CR>
+vnoremap <Leader>a= :Tab /=<CR>
+nnoremap <Leader>a: :Tab /:\zs<CR>
+vnoremap <Leader>a: :Tab /:\zs<CR>
+" toggle comment
+noremap <leader>c gcc
+"}}}
 " rotating among results in an ack search{{{
-map <C-n> :cn<CR>
-map <C-p> :cp<CR>"}}}
+noremap <C-n> :cn<CR>
+noremap <C-p> :cp<CR>
+"}}}
 " replace selected text{{{
-" nmap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
-" vmap <c-r> y:%s/<c-r>"//gc<left><left><left>
-vmap <c-r> y:%s/<c-r>=escape(@", '/\.*$^~[')//gc<left><left><left>
-nmap s "_diw"0P
-" vmap s "_d"0P"}}}
+" nnoremap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
+vnoremap <c-r> y:%s/<c-r>"//gc<left><left><left>
+"}}}
+" replace text with current register without droping it{{{
+vnoremap s "_dP
+nnoremap s "_diw"0P
+"}}}
 " upcase/downcase last inserted word without leaving insert mode{{{
 inoremap <c-u> <esc>viwUea
 inoremap <c-d> <esc>viwuea
@@ -402,7 +440,8 @@ nnoremap <leader>d viwu
 "}}}
 " fix the & command {{{
 nnoremap & :&&<CR>
-xnoremap & :&&<CR>"}}}
+xnoremap & :&&<CR>
+"}}}
 " search{{{
 set grepprg=ack
 set grepformat=%f:%l:%m
@@ -434,10 +473,11 @@ vnoremap <silent> # :<C-U>
   \gV:call setreg('"', old_reg, old_regtype)<CR>
 "}}}
 " switch between buffers{{{
-nmap <A-tab> :bn<CR>
-nmap <A-S-tab> :bp<CR>
-nmap <leader>d :bd<CR>
-nmap <leader>D :bufdo bd<CR>"}}}
+nnoremap <A-tab> :bn<CR>
+nnoremap <A-S-tab> :bp<CR>
+nnoremap <leader>d :bd<CR>
+nnoremap <leader>D :bufdo bd<CR>
+"}}}
 " rename file {{{
 function! RenameFile()
   let old_name = expand('%')
@@ -448,7 +488,7 @@ function! RenameFile()
     redraw!
   endif
 endfunction
-map <leader>n :call RenameFile()<cr>
+noremap <leader>n :call RenameFile()<cr>
 "}}}
 " copy file{{{
 function! CopyFile()
@@ -459,20 +499,24 @@ function! CopyFile()
     redraw!
   endif
 endfunction
-map <leader>c :call CopyFile()<cr>"}}}
+noremap <leader>c :call CopyFile()<cr>
+"}}}
 " save file{{{
-map <C-s> :w<cr>
-map <C-S-s> :browse confirm saveas<cr>"}}}
+noremap <C-s> :w<cr>
+noremap <C-S-s> :browse confirm saveas<cr>
+"}}}
 " make search results appear in the middle of the screen{{{
-nmap n nzz
-nmap N Nzz
-nmap * *zz
-nmap # #zz
-nmap g* g*zz
-nmap g# g#zz"}}}
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+nnoremap g* g*zz
+nnoremap g# g#zz
+"}}}
 " remap Backtick {{{
 nnoremap ' `
-nnoremap ` '"}}}
+nnoremap ` '
+"}}}
 "}}}
 
 " plugins settings{{{
@@ -492,7 +536,8 @@ let Tlist_WinWidth = 50
     " don't show variables in freaking php
     let tlist_php_settings = 'php;c:class;d:constant;f:function'
     " just functions and classes please
-    let tlist_vb_settings = 'asp;f:function;c:class'"}}}
+    let tlist_vb_settings = 'asp;f:function;c:class'
+"}}}
 "}}}
 " ToogleScratch{{{
 function! ToggleScratch()
@@ -501,23 +546,28 @@ function! ToggleScratch()
   else
     Sscratch
   endif
-endfunction"}}}
+endfunction
+"}}}
 " JsBeautify {{{
 autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
 " for html
 autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 " for css or scss
-autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>"}}}
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+"}}}
 " Fugitive {{{
-autocmd BufReadPost fugitive://* set bufhidden=delete"}}}
+autocmd BufReadPost fugitive://* set bufhidden=delete
+"}}}
 " Command-T{{{
-let g:CommandTMaxHeight=10"}}}
+let g:CommandTMaxHeight=10
+"}}}
 "}}}
 
 " finally, load local project configs {{{
 if filereadable('.vimrc.local')
   source .vimrc.local
-endif"}}}
+endif
+"}}}
 
 " find . -name "*.rb" | xargs file | grep "CRLF" | awk -F: '{print $1}' | xargs gvim
 " bufdo set ff=unix | w
