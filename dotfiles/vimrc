@@ -219,10 +219,7 @@ au! FileType javascript inoremap <buffer> :f : function(){<esc>o<cr>},<esc>ki<ta
 au FileType javascript inoremap <buffer> :<space> : ,<left>
 au FileType javascript inoremap <buffer> f<tab> <esc>:AutoCloseOff<cr>afunction(){  }<left><esc>:AutoCloseOn<cr>i
 au FileType javascript inoremap <buffer> ;; <esc>ma$a;<esc>`aa
-"}}}
-" json{{{
-au! BufRead,BufNewFile *.json set filetype=json
-au FileType json noremap <leader>p  <Esc>:%!python -m json.tool<CR>
+au FileType javascript noremap <leader>p  <Esc>:%!python -m json.tool<CR>
 "}}}
 " csharp{{{
 au! FileType cs call CSharp()
