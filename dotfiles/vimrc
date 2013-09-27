@@ -150,9 +150,7 @@ else
   set nospell
 endif
 set cursorcolumn
-if $TMUX == ''
-    set clipboard+=unnamed "accessing the system clipboard
-endif
+set clipboard+=unnamed "accessing the system clipboard
 "}}}
 " mswin settings{{{
 if has('win32') || has ('win64')
