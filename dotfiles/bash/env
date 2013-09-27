@@ -27,3 +27,8 @@ if [ $_YAP_CYGWIN ]; then
   # colorful shell
   export LESS="-erX"
 fi
+
+if [[ "$TERM" != "screen-256color" ]] then
+  tmux attach-session -t "$USER" || tmux new-session -s "$USER"
+  exit
+fi
