@@ -18,7 +18,7 @@ Bundle 'kchmck/vim-coffee-script.git'
 Bundle 'majutsushi/tagbar'
 Bundle 'maksimr/vim-jsbeautify.git'
 Bundle 'mattn/emmet-vim'
-Bundle 'mileszs/ack.vim'
+" Bundle 'mileszs/ack.vim'
 Bundle 'nathanaelkane/vim-indent-guides.git'
 Bundle 'nelstrom/vim-textobj-rubyblock.git'
 Bundle 'othree/html5.vim.git'
@@ -438,24 +438,27 @@ nnoremap & :&&<CR>
 xnoremap & :&&<CR>
 "}}}
 " search{{{
-set grepprg=ack
-set grepformat=%f:%l:%m
-nnoremap <leader>a :set operatorfunc=GrepOperator<cr>g@
-vnoremap <leader>a :<c-u>call GrepOperator(visualmode())<cr>
-
-function! GrepOperator(type)
-  if a:type ==# 'v'
-    normal! `<v`>y
-  elseif a:type ==# 'char'
-    normal! `[v`]y
-  else
-    return
-  endif
-
-  " silent execute "grep! -R " . shellescape(@@) . " ."
-  silent execute ":Ack " . shellescape(@@)
-  copen
+function! Ack(args)
+  try
+    let grepprg_bak=&grepprg
+    let grepformat_bak=&grepformat
+    let &grepprg='ack -H --nocolor --nogroup --column --output="' . "$&$'" .  '"'
+    let &grepformat="%f:%l:%c:%m"
+    let cmd='silent grep "' . escape(a:args, '|') . '" > /dev/null'
+    exe cmd
+    botright copen
+    " let @/=a:args
+    " set hlsearch
+    redraw!
+  finally
+    let &grepprg=grepprg_bak
+    let &grepformat=grepformat_bak
+  endtry
 endfunction
+
+command! -nargs=* -complete=file Ack call Ack(<q-args>)
+command! -complete=file TODOS execute 'call Ack(''^[^\w]*\b(todo|fix|xxx)\b'')'
+
 "}}}
 " search for selected text, forwards or backwards {{{
 vnoremap <silent> * :<C-U>

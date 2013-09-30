@@ -27,4 +27,7 @@
 --ignore-dir=components
 --ignore-dir=node_modules
 --ignore-dir=vendor
+--ignore-dir=bundle
 --ignore-file=is:tags
+
+--ignore-case
