@@ -21,7 +21,7 @@ if ENV['RAILS_ENV'] || defined?(Rails)
     logger = Logger.new(STDOUT)
     ActiveRecord::Base.logger = logger
     ActiveRecord::Base.clear_reloadable_connections!
-    ActiveResource::Base.logger = logger
+    # ActiveResource::Base.logger = logger
     ActionController::Base.logger = logger
 
     # # #
