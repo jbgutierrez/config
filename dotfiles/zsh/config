@@ -117,6 +117,12 @@ autoload compinit; compinit
 # multiple move
 autoload zmv
 
+# typing a directory name as a command changes into it
+setopt autocd
+
+# make cd push the old directory onto the directory stack
+setopt autopushd
+
 # completion for kill-like commands
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm -w -w"
