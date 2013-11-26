@@ -42,6 +42,7 @@
 	excludesfile = ~/.gitignore
 	autocrlf = false
 	safecrlf = true
+	fileMode = false
 [color]
 	status = auto
 	branch = auto
