@@ -2,17 +2,19 @@
 " load vundle managed plugins{{{
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-Bundle 'gmarik/vundle'
-Bundle 'Lokaltog/vim-powerline.git'
+Bundle "bcaccinolo/bclose"
 Bundle 'Townk/vim-autoclose.git'
 Bundle 'altercation/vim-colors-solarized.git'
+Bundle 'bling/vim-airline'
 Bundle 'ciaranm/detectindent.git'
 Bundle 'duff/vim-scratch.git'
 Bundle 'ecomba/vim-ruby-refactoring.git'
 Bundle 'ervandew/supertab.git'
 Bundle 'felixhummel/setcolors.vim'
+Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular.git'
 Bundle 'jbgutierrez/vim-gtd.git'
+Bundle 'jimmyhchan/dustjs.vim'
 Bundle 'kana/vim-textobj-user.git'
 Bundle 'kchmck/vim-coffee-script.git'
 Bundle 'majutsushi/tagbar'
@@ -22,12 +24,14 @@ Bundle 'mattn/emmet-vim'
 Bundle 'nathanaelkane/vim-indent-guides.git'
 Bundle 'nelstrom/vim-textobj-rubyblock.git'
 Bundle 'othree/html5.vim.git'
+Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'othree/xml.vim.git'
 Bundle 'pangloss/vim-javascript.git'
 Bundle 'peplin/vim-markdown.git'
+Bundle 'rking/ag.vim'
 Bundle 'scrooloose/syntastic.git'
 Bundle 'sjl/gundo.vim.git'
-Bundle 'skammer/vim-css-color.git'
+" Bundle 'skammer/vim-css-color.git'
 Bundle 'tomtom/tcomment_vim.git'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-endwise.git'
@@ -43,7 +47,6 @@ Bundle 'vim-ruby/vim-ruby.git'
 Bundle 'vim-scripts/matchit.zip'
 Bundle 'walm/jshint.vim'
 Bundle 'wincent/Command-T.git'
-Bundle "bcaccinolo/bclose"
 "}}}
 " general configuration {{{
 set nocompatible        " Use Vim defaults (much better!)
@@ -51,7 +54,8 @@ set backspace=indent,eol,start " allow backspacing over everything in insert mod
 set virtualedit=all     "allows the cursor to freely roam anywhere it likes in command mode
 set viminfo='20,\"50    " read/write a .viminfo file, don't store more
                         " than 50 lines of registers
-set history=1000        " keep 50 lines of command line history
+set history=1000        " keep 100 lines of command line history
+set undolevels=1000     " keep last 1000 undo changes
 set ruler               " show the cursor position all the time
 set nonumber            " hide line numbers
 set scrolloff=3         " leave 3 lines of breathing room
@@ -117,9 +121,11 @@ set fileformats+=mac
 set spell spelllang=en " Z= to show suggestions
 set spellsuggest=5"}}}
 " file backups{{{
-set nobackup                                        " Don't make a backup before overwriting a file.
-set nowritebackup                                   " And again.
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp " Store temporary files in a central spot
+set nobackup      " Don't make a backup before overwriting a file.
+set nowritebackup " And again.
+set undofile      " Save undo tree among sessions
+set undodir=~/.vim/tmp/undo//
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp"}}}
 " UI settings{{{
 
@@ -389,8 +395,11 @@ noremap <leader>tt :CommandTFlush<cr>\|:CommandT<cr>
 " coding utilities{{{
 au FileType ruby,eruby nnoremap <buffer> <d-r> <plug>rubyfilerun
 " run file in shell mode with ruby
-au FileType ruby,eruby nnoremap <buffer> <leader>m ggO# coding: UTF-8<esc>
-au FileType ruby,eruby nnoremap <buffer> <leader>r ggO#!/usr/bin/env ruby<esc>
+function! AddRubyHeaders()
+  let header = [ '#!/usr/bin/env ruby', '# coding: UTF-8', '$DEBUG = true', '' ]
+  call append(0, header)
+endfunction
+au FileType ruby,eruby nnoremap <buffer> <leader>m :call AddRubyHeaders()<cr>
 nnoremap <leader>a\| :Tab /\|<CR>
 vnoremap <leader>a\| :Tab /\|<CR>
 nnoremap <Leader>a= :Tab /=<CR>
@@ -553,29 +562,8 @@ function! OpenChangedFiles()
 endfunction
 command! OpenChangedFiles :call OpenChangedFiles()
 "}}}
-" search with Ack{{{
-" TODO: Change to 'brew install the_silver_searcher'
-function! Ack(args)
-  try
-    let grepprg_bak=&grepprg
-    let grepformat_bak=&grepformat
-    let &grepprg='ack -H --nocolor --nogroup --column --output="' . "$&$'" .  '"'
-    let &grepformat="%f:%l:%c:%m"
-    let cmd='silent grep "' . escape(a:args, '|') . '" > /dev/null'
-    exe cmd
-    botright copen
-    " let @/=a:args
-    " set hlsearch
-    redraw!
-  finally
-    let &grepprg=grepprg_bak
-    let &grepformat=grepformat_bak
-  endtry
-endfunction
-
-command! -nargs=* -complete=file Ack call Ack(<q-args>)
-command! -complete=file TODOS execute 'call Ack(''^[^\w]*\b(todo|fix|xxx)\b'')'
-
+" search with Ag{{{
+command! -complete=file TODOS :Ag '^[^\w]*\b(todo|fix|xxx)\b' -i
 "}}}
 " export Fremind mindmap to text{{{
 command! FremindToText call FremindToTextFunction()
