@@ -26,6 +26,8 @@ class Hash
   end
 end
 
+Pry.config.commands.alias_command "l", "ls -M"
+
 # Use awesome print
 AwesomePrint.pry! if defined?(AwesomePrint)
 

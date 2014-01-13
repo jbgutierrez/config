@@ -28,6 +28,7 @@
 --ignore-dir=node_modules
 --ignore-dir=vendor
 --ignore-dir=bundle
+--ignore-dir=tmp
 --ignore-file=is:tags
 
 --ignore-case

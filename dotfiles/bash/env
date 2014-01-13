@@ -10,6 +10,9 @@ export PATH=/usr/local/share/npm/bin:$PATH
 # User utilities
 export PATH=./bin:~/bin:$PATH
 
+# Perl brew
+source ~/perl5/perlbrew/etc/bashrc
+
 # Adding an appropriate MANPATH variable for use with Homebrew
 export MANPATH=/usr/local/share/man:$MANPATH
 
@@ -27,6 +30,10 @@ if [ $_YAP_CYGWIN ]; then
   # colorful shell
   export LESS="-erX"
 fi
+
+# Tweaking GC settings for speed gain (http://goo.gl/Xbdc1z)
+export RUBY_GC_MALLOC_LIMIT=90000000
+export RUBY_FREE_MIN=200000
 
 if [[ "$TERM" != "screen-256color" ]] then
   tmux attach-session -t "$USER" || tmux new-session -s "$USER"
