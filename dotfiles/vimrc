@@ -304,6 +304,41 @@ endfunction
 " operation pending motion for parenthesis{{{
 onoremap p :<c-u>normal! t)vi(<cr>
 "}}}
+" testing one-off scripts {{{
+let ft_stdout_mappings = {
+      \'applescript': 'osascript',
+      \'bash': 'bash',
+      \'bc': 'bc',
+      \'haskell': 'runghc',
+      \'javascript': 'node',
+      \'lisp': 'sbcl',
+      \'nodejs': 'node',
+      \'ocaml': 'ocaml',
+      \'perl': 'perl',
+      \'php': 'php',
+      \'python': 'python',
+      \'ruby': 'ruby',
+      \'scheme': 'scheme',
+      \'sh': 'sh',
+      \'sml': 'sml',
+      \'spice': 'ngspice'
+      \}
+for ft_name in keys(ft_stdout_mappings)
+  execute 'autocmd Filetype ' . ft_name . ' nnoremap <buffer> <C-P> :write !'
+        \. ft_stdout_mappings[ft_name] . '<CR>'
+endfor
+
+let ft_execute_mappings = {
+      \'c': 'gcc -o %:r -Wall -std=c99 % && ./%:r',
+      \'erlang': 'escript %',
+      \'pascal': 'fpc % && ./%:r'
+      \}
+for ft_name in keys(ft_execute_mappings)
+  execute 'autocmd FileType ' . ft_name
+        \. ' nnoremap <buffer> <C-P> :write \| !'
+        \. ft_execute_mappings[ft_name] . '<CR>'
+endfor
+"}}}
 "}}}
 
 " Key mappings{{{
