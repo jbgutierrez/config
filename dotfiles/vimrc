@@ -204,6 +204,36 @@ set foldlevel=1
 set foldmethod=syntax
 set fillchars=fold:\ "
 set foldtext=MyFoldText() " Custom fold text function
+function! MyFoldText()
+  let line = getline(v:foldstart)
+  let number = v:foldend - v:foldstart + 1
+  let dots =  ' ... '
+  if sub =~# '{'
+    let dots =  '...} '
+  endif
+
+  let sub = substitute(line, '\/\*\*\|\*/\|{{{\d\=', '', 'g')
+" }}}
+
+  if sub =~# '^\s*$'
+   let line = getline(v:foldstart + 1)
+   let sub = substitute(line, '\/\*\|\*/\|{{{\d\=', '', 'g')
+" }}}
+  endif
+
+  let spaces = ''
+  if &expandtab == '0'
+    let ind = indent(v:foldstart) / &tabstop
+    let i = 0
+    while i < ind
+      let i = i+1
+      let spaces = spaces . ' '
+    endwhile
+  endif
+
+  let dots = sub =~# '{' ? '...} ' : ' ...  '
+  return spaces . sub . dots . '(' . number . ' lines)'
+endfunction
 
 " if has("ruby")
 "   set ballooneval
