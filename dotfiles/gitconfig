@@ -20,6 +20,8 @@
 	b = branch
 	ds = diff --stat=160,120
 	dh1 = diff HEAD~1
+	edit-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; vim `f`"
+	add-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; git add `f`"
 
 	# Fancy logging.
 	#		h = head
