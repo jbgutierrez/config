@@ -2,13 +2,17 @@
 " load vundle managed plugins{{{
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
+Bundle 'AndrewRadev/splitjoin.vim'
+Bundle 'Chiel92/vim-autoformat'
 Bundle 'Townk/vim-autoclose.git'
 Bundle 'altercation/vim-colors-solarized.git'
-" Bundle 'atweiden/vim-vmath'
 Bundle 'bcaccinolo/bclose'
 Bundle 'bling/vim-airline'
 Bundle 'ciaranm/detectindent.git'
+Bundle 'Lokaltog/vim-easymotion'
 Bundle 'duff/vim-scratch.git'
+Bundle 'chilicuil/conque'
+Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'ecomba/vim-ruby-refactoring.git'
 Bundle 'einars/js-beautify'
 Bundle 'ervandew/supertab.git'
@@ -16,14 +20,16 @@ Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular.git'
 " Bundle 'henrik/vim-indexed-search'
 Bundle 'jbgutierrez/vim-gtd.git'
+Bundle 'jelera/vim-javascript-syntax'
 Bundle 'jimmyhchan/dustjs.vim'
 Bundle 'kana/vim-textobj-user.git'
+Bundle 'luochen1990/rainbow'
 Bundle 'majutsushi/tagbar'
 Bundle 'maksimr/vim-jsbeautify.git'
 Bundle 'mattn/emmet-vim'
 " Bundle 'mileszs/ack.vim'
-Bundle 'nathanaelkane/vim-indent-guides.git'
 Bundle 'nelstrom/vim-textobj-rubyblock.git'
+Bundle 'nixon/vim-vmath'
 Bundle 'othree/javascript-libraries-syntax.vim'
 Bundle 'othree/xml.vim.git'
 Bundle 'rking/ag.vim'
@@ -32,8 +38,8 @@ Bundle 'sheerun/vim-polyglot'
 Bundle 'sjl/gundo.vim.git'
 " Bundle 'skammer/vim-css-color.git'
 Bundle 'splitjoin.vim'
-Bundle 'tomtom/tcomment_vim.git'
 Bundle 'tpope/vim-abolish'
+Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-endwise.git'
 Bundle 'tpope/vim-fugitive.git'
 Bundle 'tpope/vim-ragtag.git'
@@ -42,10 +48,10 @@ Bundle 'tpope/vim-repeat.git'
 Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-unimpaired.git'
 Bundle 'tpope/vim-vividchalk.git'
+Bundle 'tpope/vim-speeddating'
 " Bundle 'vim-scripts/Align'
 " Bundle 'vim-scripts/SQLUtilities'
 Bundle 'vim-scripts/matchit.zip'
-Bundle 'walm/jshint.vim'
 Bundle 'wincent/Command-T.git'
 "}}}
 " general configuration {{{
@@ -110,6 +116,7 @@ set ignorecase         " ignore case when searching "}}}
 " set textwidth=80
 " highlight ColorColumn ctermbg=magenta
 " call matchadd('ColorColumn', '\%81v', 100)
+call matchadd('ColorColumn', '\%81v', 100)
 set nowrap                   " don't wrap lines
 set listchars+=extends:»     " show a » when a line goes off the right edge of the screen
 set listchars+=precedes:«    " show a « when a line goes off the left edge of the screen
@@ -150,6 +157,7 @@ function! OverrideColorScheme()
   " hi DiffText     ctermfg=208
   " hi DiffText     ctermfg=166
   hi Folded       cterm=bold cterm=bold
+  hi ColorColumn ctermfg=0 ctermbg=1 guifg=White guibg=Red
 endfunction
 au ColorScheme * call OverrideColorScheme()
 
@@ -157,6 +165,7 @@ if !has("gui_running")
   set term=screen-256color
 endif
 set background=dark
+let g:solarized_termtrans = 1
 colorscheme solarized " check colorschemes at http://bytefluent.com/vivify/
 
 set nospell
@@ -263,8 +272,7 @@ au! FileType javascript inoremap <buffer> :f : function(){<esc>o<cr>},<esc>ki<ta
 au FileType javascript inoremap <buffer> :<space> : ,<left>
 au FileType javascript inoremap <buffer> f<tab> <esc>:AutoCloseOff<cr>afunction(){  }<left><esc>:AutoCloseOn<cr>i
 au FileType javascript inoremap <buffer> ;; <esc>ma$a;<esc>`aa
-au FileType javascript noremap <leader>p  :%!python -m json.tool<CR>
-au FileType * noremap <leader>! :%s#\\u[0-9a-f]*#\=eval('"'.submatch(0).'"')#eg<cr>
+" au FileType javascript noremap <leader>p  :%!python -m json.tool<CR>
 "}}}
 " csharp{{{
 au! FileType cs call CSharp()
@@ -476,7 +484,8 @@ noremap <leader>t :CommandT<cr>
 noremap <leader>tt :CommandTFlush<cr>\|:CommandT<cr>
 "}}}
 " coding utilities{{{
-au FileType ruby,eruby nnoremap <buffer> <d-r> <plug>rubyfilerun
+nnoremap <leader>p :Autoformat<cr><cr>
+nnoremap <leader>! :%s#\\u[0-9a-f]*#\=eval('"'.submatch(0).'"')#eg<cr>
 " run file in shell mode with ruby
 function! AddRubyHeaders()
   let header = [ '#!/usr/bin/env ruby', '# coding: UTF-8', '$DEBUG = true', '' ]
@@ -655,6 +664,23 @@ let g:CommandTMaxHeight=10
 let g:splitjoin_split_mapping = 'gS'
 let g:splitjoin_join_mapping  = 'gJ'
 "}}}
+" VimMath {{{
+vmap <expr>  ++  VMATH_YankAndAnalyse()
+nmap         ++  vip++"}}}
+" Surround {{{
+let b:surround_45 = "<!-- \r -->"
+let b:surround_61 = "<!--= \r -->""}}}
+" SplitJoin {{{
+let g:splitjoin_split_mapping = 'cS'
+let g:splitjoin_join_mapping  = 'cJ'"}}}
+" Rainbow {{{
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+\   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+\   'ctermfgs': ['lightgray', 'darkblue', 'darkmagenta', 'darkcyan'],
+\   'operators': '_,_',
+\   'parentheses': [['(',')'], ['\[','\]'], ['{','}']],
+\}"}}}
 "}}}
 
 " custom utility commands {{{
