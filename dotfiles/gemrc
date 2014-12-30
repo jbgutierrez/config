@@ -1,7 +1,7 @@
 backtrace: true
 benchmark: false
 bulk_threshold: 1000
-gem: --no-ri --no-rdoc
+gem: --no-ri --no-rdoc --http-proxy=$ALL_PROXY
 sources:
 - http://gems.rubyforge.org/
 - http://rubygems.org/
