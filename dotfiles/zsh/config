@@ -156,4 +156,4 @@ bindkey -M viins '^k' kill-line
 bindkey -M vicmd '^k' kill-line
 
 # ruby version manager
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi

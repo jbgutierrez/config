@@ -1,12 +1,13 @@
 # Utility
 alias reload='source ~/bin/dotfiles/bash/aliases'
-alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
 alias vimun='vim -u NONE -N'
+# alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
 alias ea='vim -f ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
 alias ee='vim ~/bin/dotfiles/bash/env'
 topcommands() {
   history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
+alias startmongo='mongod --config /usr/local/etc/mongod.conf'
 
 # GIT aliases
 alias gk='gitk --all 2>/dev/null&'
@@ -44,36 +45,6 @@ function gclone() {
   git clone git://github.com/$1/$2.git
 }
 
-# Ruby
-alias r="rake"
-
-# Rails
-alias sp='./script/plugin'
-
-sc () {
-  if [ -f ./script/rails ]; then
-    rails c $@
-  else
-    ./script/console $@
-  fi
-}
-
-sg () {
-  if [ -f ./script/rails ]; then
-    rails g $@
-  else
-    ./script/generate $@
-  fi
-}
-
-ss () {
-  if [ -f ./script/rails ]; then
-    rails s $@
-  else
-    ./script/server $@
-  fi
-}
-
 #  http://ryan.mcgeary.org/2011/02/09/vendor-everything-still-applies/
 alias b="bundle"
 alias bi="b install --path vendor"
@@ -82,35 +53,9 @@ alias be="b exec"
 alias binit="bi && b package && echo 'vendor/ruby' >> .gitignore && rbenv local 1.9.3-p194"
 alias tl='tail -f log/*.log'
 
-# TDD / BDD
-alias at='autotest'
-alias aaf='autotest -f' # Don't run all at start
-alias as="autospec"
-
 #heroku helpers
 alias hp="go heroku && git rebase master && git push heroku heroku:master --force && go master"
 alias hl="heroku logs"
-
-# Django aliases
-alias dj='python manage.py'
-alias djsp='dj startproject'   # + project_name
-alias djss='dj runserver 3000'
-alias djsdb='dj syncdb'
-alias djrt='dj sqlclear'       # + ModelName
-alias djsa='dj startapp'       # + app_name
-alias djs='dj shell'
-
-# YUICompressor
-alias yui='yuicompressor'
-
-#Google AppEngine
-alias gss='dev_appserver.py . -p 3000 -d' # --debug_imports -d'
-alias gcd='dev_appserver.py --clear_datastore .'
-alias gps='appcfg.py update .'
-
-# ObjectiveC
-alias xclean='xcodebuild -target Test clean'
-alias xbuild='scan-build -k -V xcodebuild -target Test'
 
 # Bash shortcuts
 alias less='less -r'
@@ -188,7 +133,7 @@ dict() {
 }
 
 # Shortcuts to each project folder
-alias cdprojects="cd $PROJECTS_FOLDER"
+PROJECTS_FOLDER=$HOME/Projects
 for project_path in $PROJECTS_FOLDER/*; do
   if [ -d $project_path ]; then
     subfolder=`echo $project_path | /usr/bin/sed 's/.*\///'`
@@ -241,7 +186,7 @@ alias tu='top -o cpu' # cpu
 alias tm='top -o vsize' # memory
 killnamed() {
   # Kills any process that matches a regexp passed to it
-  ps aux | grep -v "grep" | grep "$@" | awk '{print $2}' | xargs kill
+  ps aux | grep -v "grep" | grep "$@" | awk '{print $2}' | xargs kill -9
 }
 psgrep() {
   if [ ! -z $1 ] ; then
@@ -258,12 +203,13 @@ psport() {
 # Finder
 alias o='open . &'
 alias ff='open -a Firefox'
+alias chrome='open -a "Google Chrome"'
 
 # Recursively Remove .DS_Store files in OS X
 alias clean='find . -name *.DS_Store -type f -exec rm {} \;'
 
 # Instant web sharing via webrick
-alias webshare='ruby -e "require\"webrick\";w=WEBrick::HTTPServer.new(:Port=>3000,:DocumentRoot=>Dir::pwd);Signal.trap(2){w.shutdown};w.start"'
+alias webshare='ruby -run -e httpd . --port 8080 --bind-address=0.0.0.0'
 
 # Social activity
 tweet() {
