@@ -1,4 +1,4 @@
 tags
 spell
-dotfiles/vim/bundle
-dotfiles/vim/tmp
+vim/bundle
+vim/tmp

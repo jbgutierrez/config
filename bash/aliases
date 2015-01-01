@@ -1,9 +1,9 @@
 # Utility
-alias reload='source ~/bin/dotfiles/bash/aliases'
+alias reload='source ~/bin/bash/aliases'
 alias vimun='vim -u NONE -N'
 # alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
-alias ea='vim -f ~/bin/dotfiles/bash/aliases && reload' # Edit aliases
-alias ee='vim ~/bin/dotfiles/bash/env'
+alias ea='vim -f ~/bin/bash/aliases && reload' # Edit aliases
+alias ee='vim ~/bin/bash/env'
 topcommands() {
   history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }

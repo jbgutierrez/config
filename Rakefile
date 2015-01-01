@@ -1,13 +1,13 @@
 require 'rake'
-require 'erb'
 
 task :default => :install
 
 desc "install the dot files into user's home directory"
 task :install do
   replace_all = false
-  Dir['dotfiles/*'].each do |file|
-    hidden_file = File.join(ENV['HOME'], "." + file.gsub('dotfiles/', ''))
+  Dir['*'].each do |file|
+    next if file =~ /^\.|Rakefile|README|osx/
+    hidden_file = File.join(ENV['HOME'], "." + file)
     if File.exist?(hidden_file)
       if File.identical? file, hidden_file
         puts "identical #{hidden_file}"
@@ -41,7 +41,7 @@ end
 
 def link_file(file, hidden_file)
   puts "linking #{hidden_file}"
-  `ln -s "#{ENV['PWD']}/#{file}" "#{hidden_file}"`
+  `ln -fs "#{ENV['PWD']}/#{file}" "#{hidden_file}"`
 end
 
 def download_submodules

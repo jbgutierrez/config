@@ -1,6 +1,6 @@
-. ~/bin/dotfiles/zsh/env
-. ~/bin/dotfiles/zsh/config
-. ~/bin/dotfiles/zsh/aliases
+. ~/.zsh/env
+. ~/.zsh/config
+. ~/.zsh/aliases
 
 # load non-versioned and project-specific settings
 if [[ -e ~/.zshrc.local ]]; then
