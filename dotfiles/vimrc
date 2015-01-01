@@ -2,69 +2,71 @@
 " load vundle managed plugins{{{
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
+" let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
 Bundle 'AndrewRadev/splitjoin.vim'
 Bundle 'Chiel92/vim-autoformat'
 Bundle 'Townk/vim-autoclose.git'
+Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized.git'
 Bundle 'bcaccinolo/bclose'
 Bundle 'bling/vim-airline'
 Bundle 'ciaranm/detectindent.git'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'duff/vim-scratch.git'
-Bundle 'chilicuil/conque'
-Bundle 'nathanaelkane/vim-indent-guides'
+" Bundle 'duff/vim-scratch.git'
 Bundle 'ecomba/vim-ruby-refactoring.git'
+Bundle 'editorconfig/editorconfig-vim'
 Bundle 'einars/js-beautify'
 Bundle 'ervandew/supertab.git'
-Bundle 'gmarik/vundle'
 Bundle 'godlygeek/tabular.git'
-" Bundle 'henrik/vim-indexed-search'
 Bundle 'jbgutierrez/vim-gtd.git'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'jimmyhchan/dustjs.vim'
 Bundle 'kana/vim-textobj-user.git'
+Bundle 'kien/ctrlp.vim'
 Bundle 'luochen1990/rainbow'
 Bundle 'majutsushi/tagbar'
 Bundle 'maksimr/vim-jsbeautify.git'
 Bundle 'mattn/emmet-vim'
-" Bundle 'mileszs/ack.vim'
+" Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'nelstrom/vim-textobj-rubyblock.git'
-Bundle 'nixon/vim-vmath'
+" Bundle 'nixon/vim-vmath'
 Bundle 'othree/javascript-libraries-syntax.vim'
-Bundle 'othree/xml.vim.git'
 Bundle 'rking/ag.vim'
 Bundle 'scrooloose/syntastic.git'
 Bundle 'sheerun/vim-polyglot'
 Bundle 'sjl/gundo.vim.git'
 " Bundle 'skammer/vim-css-color.git'
-Bundle 'splitjoin.vim'
+Bundle 'tomtom/tcomment_vim.git'
 Bundle 'tpope/vim-abolish'
-Bundle 'tpope/vim-commentary'
+" Bundle 'tpope/vim-commentary'
+" Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-endwise.git'
 Bundle 'tpope/vim-fugitive.git'
-Bundle 'tpope/vim-ragtag.git'
+" Bundle 'tpope/vim-ragtag.git'
 Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-repeat.git'
+" Bundle 'tpope/vim-speeddating'
 Bundle 'tpope/vim-surround.git'
 Bundle 'tpope/vim-unimpaired.git'
-Bundle 'tpope/vim-vividchalk.git'
-Bundle 'tpope/vim-speeddating'
+" Bundle 'tpope/vim-vividchalk.git'
 " Bundle 'vim-scripts/Align'
 " Bundle 'vim-scripts/SQLUtilities'
 Bundle 'vim-scripts/matchit.zip'
-Bundle 'wincent/Command-T.git'
+" Bundle 'walm/jshint.vim'
+
 "}}}
 " general configuration {{{
 set nocompatible        " Use Vim defaults (much better!)
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set virtualedit=all     "allows the cursor to freely roam anywhere it likes in command mode
-set viminfo='20,\"50    " read/write a .viminfo file, don't store more
+set viminfo='20,<50,s10 " read/write a .viminfo file, don't store more
                         " than 50 lines of registers
 set history=1000        " keep 100 lines of command line history
 set undolevels=1000     " keep last 1000 undo changes
 set ruler               " show the cursor position all the time
 set nonumber            " hide line numbers
-set scrolloff=3         " leave 3 lines of breathing room
+set scrolloff=10        " leave 10 lines of breathing room
 set title               " show title
 set hidden              " allows changing of buffers without saving
 set lazyredraw          " Set lazydraws so that rendering is much faster during macros
@@ -91,7 +93,7 @@ set statusline=%F%m%r%h%w[%L]%y[%p%%][%04l,%04v]%=[%{&ff},%{\"\".(&fenc==\"\"?&e
 
 set nrformats=            " make CTRL-A and CTRL-X commands work exclusively with decimals
 set laststatus=2          " always show the last status
-set wildignore+=*.bak,*.cd,*.dll,*.doc,*.exe,*.gif,*.jpg,*.o,*.obj,*.png,*.pyc,*.xls,.tmp,bower_components,components,node_modules,tmp,vendor
+set wildignore+=*.bak,*.cd,*.dll,*.doc,*.exe,*.gif,*.jpg,*.o,*.obj,*.png,*.pyc,*.xls,.tmp,bower_components,components,node_modules,tmp,vendor,builds,nosync
 set wildmode=list:longest " turn on wild mode huge list
 set complete-=i           " don't need to scan included files
 set wildmenu              " turn on command line completion wild style"}}}
@@ -105,17 +107,13 @@ set expandtab      " To spaces to tabs 'set noexpandtab' and ':retab!'
 "}}}
 " search{{{
 " set gdefault           " global search/replace by default
-" clear the search buffer when hitting return {{{
-nnoremap <cr> :set hlsearch! hlsearch?<cr>
-au! BufReadPost quickfix nnoremap <buffer> <CR> <CR>
-nnoremap <leader><leader> <c-^>"}}}
 set incsearch hlsearch " highlight matches as you type
 set smartcase          " override ignorecase when there are uppercase characters
 set ignorecase         " ignore case when searching "}}}
 " wraping{{{
 " set textwidth=80
-" highlight ColorColumn ctermbg=magenta
-" call matchadd('ColorColumn', '\%81v', 100)
+" set colorcolumn=85
+" set formatoptions=qrn1
 call matchadd('ColorColumn', '\%81v', 100)
 set nowrap                   " don't wrap lines
 set listchars+=extends:»     " show a » when a line goes off the right edge of the screen
@@ -158,8 +156,11 @@ function! OverrideColorScheme()
   " hi DiffText     ctermfg=166
   hi Folded       cterm=bold cterm=bold
   hi ColorColumn ctermfg=0 ctermbg=1 guifg=White guibg=Red
+  " ShowMarks support, better looking SignColumn
+  hi! link SignColumn   LineNr
+  hi! link ShowMarksHLl DiffAdd
+  hi! link ShowMarksHLu DiffChange
 endfunction
-au ColorScheme * call OverrideColorScheme()
 
 if !has("gui_running")
   set term=screen-256color
@@ -167,14 +168,11 @@ endif
 set background=dark
 let g:solarized_termtrans = 1
 colorscheme solarized " check colorschemes at http://bytefluent.com/vivify/
+au ColorScheme * call OverrideColorScheme()
 
 set nospell
 set cursorcolumn
-set cursorline " highlight current line
 set clipboard+=unnamed "accessing the system clipboard
-if $TMUX == ''
-    set clipboard+=unnamed "accessing the system clipboard
-endif
 "}}}
 " mswin settings{{{
 if has('win32') || has ('win64')
@@ -185,7 +183,9 @@ if has('win32') || has ('win64')
 else
   set ffs+=mac
   let $VIMHOME='~/.vim'
-endif"}}}"}}}
+endif
+"}}}
+"}}}
 
 " Coding settings{{{
 " general{{{
@@ -198,12 +198,16 @@ set timeoutlen=500    " Shorten default keystoke waiting time
 " Auto save folds
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview"}}}
-" spaces, tabs and DOS text files{{{
-" au BufRead * silent! %s//\r/g  " never see ^M again! (DOS text files, <c-v> <c-m> )
-" au BufWrite * silent! %s/\v\s+$// " chop off unnecesary tabs and spaces"}}}
+" never see ^M again! (DOS text files, <c-v> <c-m>) {{{
+" au BufRead * silent! %s//\r/g
+" alternative:
+"   find . -name "*.rb" | xargs file | grep "CRLF" | awk -F: '{print $1}' | xargs gvim
+"   bufdo set ff=unix | w
+"}}}
 " folding{{{
 set foldlevel=1
 set foldmethod=syntax
+set foldnestmax=3
 set fillchars=fold:\ "
 set foldtext=MyFoldText() " Custom fold text function
 function! MyFoldText()
@@ -236,15 +240,13 @@ function! MyFoldText()
   let dots = sub =~# '{' ? '...} ' : ' ...  '
   return spaces . sub . dots . '(' . number . ' lines)'
 endfunction
-
-" if has("ruby")
-"   set ballooneval
-" endif
 "}}}
 " .vimrc{{{
 " When vimrc is edited, reload it
 au! BufWritePost $MYVIMRC source %
 au BufRead,BufWritePost $MYVIMRC set foldmethod=marker
+" Open vim help for word under cursor
+au FileType vim setlocal keywordprg=:help
 "}}}
 " ruby{{{
 au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
@@ -265,6 +267,8 @@ au! BufRead,BufNewFile *.haml set filetype=haml
 au! FileType css setlocal foldmethod=marker
 au FileType css setlocal foldmarker={,}
 au FileType css inoremap <buffer> :<space> : ;<left>
+" Sort CSS properties alphabetically
+com! SortCss :g#\({\n\)\@<=#.,/}/sort
 " au FileType css inoremap <buffer> <space><space>
 "}}}
 " js {{{
@@ -272,10 +276,7 @@ au! FileType javascript inoremap <buffer> :f : function(){<esc>o<cr>},<esc>ki<ta
 au FileType javascript inoremap <buffer> :<space> : ,<left>
 au FileType javascript inoremap <buffer> f<tab> <esc>:AutoCloseOff<cr>afunction(){  }<left><esc>:AutoCloseOn<cr>i
 au FileType javascript inoremap <buffer> ;; <esc>ma$a;<esc>`aa
-" au FileType javascript noremap <leader>p  :%!python -m json.tool<CR>
-"}}}
-" csharp{{{
-au! FileType cs call CSharp()
+au FileType javascript noremap <leader>p  :%!python -m json.tool<CR>
 "}}}
 " diff{{{
 au! FileType diff setlocal fdm=expr
@@ -285,9 +286,9 @@ au FileType diff setlocal foldlevel=0
 au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=diff
 "}}}
 " coffescript{{{
-let coffee_compile_on_save = 1
+let coffee_compile_on_save = 0
 " au BufWritePost *.coffee silent CoffeeCompile -b | cwindow | redraw!
-au! BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
+" au! BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
 au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 ":[RANGE] CoffeeCompile [watch|unwatch] [vert[ical]] [WINDOW-SIZE]
 "}}}
@@ -304,28 +305,6 @@ au BufReadPost * :DetectIndent
 "}}}
 " jumps to the last known position in a file just after opening it, if the '" mark is set: > {{{
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-"}}}
-" resize stacked windows {{{
-nnoremap <C-W>j <C-W>j<C-W>_
-nnoremap <C-W>k <C-W>k<C-W>_
-nnoremap <C-W>l <C-W>l<C-W>_
-nnoremap <C-W>h <C-W>h<C-W>_
-set winheight=4
-set winminheight=4
-"}}}
-" strip trailing whitespace {{{
-function! <SID>StripTrailingWhitespaces()
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  %s/\s\+$//e
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfunction
-au BufWritePre * :call <SID>StripTrailingWhitespaces()
 "}}}
 " show extra whitespace as error {{{
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -362,55 +341,21 @@ augroup END
 " operation pending motion for parenthesis{{{
 onoremap p :<c-u>normal! t)vi(<cr>
 "}}}
-" testing one-off scripts {{{
-let ft_stdout_mappings = {
-      \'applescript': 'osascript',
-      \'bash': 'bash',
-      \'bc': 'bc',
-      \'haskell': 'runghc',
-      \'javascript': 'node',
-      \'lisp': 'sbcl',
-      \'nodejs': 'node',
-      \'ocaml': 'ocaml',
-      \'perl': 'perl',
-      \'php': 'php',
-      \'python': 'python',
-      \'ruby': 'ruby',
-      \'scheme': 'scheme',
-      \'sh': 'sh',
-      \'sml': 'sml',
-      \'spice': 'ngspice'
-      \}
-for ft_name in keys(ft_stdout_mappings)
-  execute 'autocmd Filetype ' . ft_name . ' nnoremap <buffer> <C-P> :write !'
-        \. ft_stdout_mappings[ft_name] . '<CR>'
-endfor
-
-let ft_execute_mappings = {
-      \'c': 'gcc -o %:r -Wall -std=c99 % && ./%:r',
-      \'erlang': 'escript %',
-      \'pascal': 'fpc % && ./%:r'
-      \}
-for ft_name in keys(ft_execute_mappings)
-  execute 'autocmd FileType ' . ft_name
-        \. ' nnoremap <buffer> <C-P> :write \| !'
-        \. ft_execute_mappings[ft_name] . '<CR>'
-endfor
-"}}}
+" highlight current line {{{
+au WinEnter * setlocal cursorline
+au WinLeave * setlocal nocursorline"}}}
 "}}}
 
 " Key mappings{{{
-" shortcut to open a new line while in the middle of an existing one{{{
-" inoremap <buffer> <C-M> <esc>o
-"}}}
 " general{{{
 let mapleader = ","
 nnoremap <s-u> :redo<CR>            " redo
 nnoremap <leader>l :set list!<CR>   " shortcut to rapidly toggle `set list` (retab! if neccesary)
 noremap <leader>e :e $MYVIMRC<cr>   " fast editing of the .vimrc
 "}}}
-" can't be bothered to understand ESC vs <c-c> in insert mode {{{
+" can't be bothered to understand ESC vs <c-c> in insert mode (http://vim.wikia.com/wiki/Avoid_the_escape_key) {{{
 inoremap <c-c> <esc>
+inoremap ii <Esc> " press i to enter insert mode, and ii to exit.
 inoremap <esc> <nop>
 "}}}
 " make Y behave like C and D {{{
@@ -422,25 +367,11 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 "}}}
-" function keys{{{
-" F2 - List methods
-noremap <F2> :TlistToggle<CR>
-noremap <S-F2> :!/usr/local/bin/ctags -R .<CR>
-" F3 - insert timestamp
-noremap <F3> <esc>:normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
-" noremap <F3> <esc>:normal a<c-r>=strftime('%F %H:%M:%S.0 %z')<CR><esc>
-" F5 - Toggle Gundo bufferbuffer
-noremap <F5> :GundoToggle<cr>
-" F6 - Toggle scratch buffer
-noremap <F6> :call ToggleScratch()<CR>
-" F11 - delete empty lines
-noremap <F11> :call CleanFile()<CR>
-"}}}
 " change working directory{{{
 nnoremap <silent>cd :cd %:p:h<CR>:pwd<CR>
 nnoremap <silent>lcd :lcd %:p:h<CR>:pwd<CR>
 "}}}
-" easy Expansion of the Active File Directory{{{
+" easy expansion of the Active File Directory {{{
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 "}}}
 " move text around{{{
@@ -452,11 +383,6 @@ nnoremap <C-k> :m-2<CR>==
 " inoremap <C-k> <Esc>:m-2<CR>==gi
 vnoremap <C-j> :m'>+<CR>gv=gv
 vnoremap <C-k> :m-2<CR>gv=gv
-"}}}
-" " i18n translations {{{
-" vnoremap t s'gvs)i= t<esc>
-" nnoremap t cs"'vi'lohs)it<esc>
-" " nnoremap t ds"ds'viws'gvs)it<esc>
 "}}}
 " shortcuts for rails commands{{{
 " noremap <leader>m :rmodel
@@ -479,44 +405,40 @@ vnoremap <C-k> :m-2<CR>gv=gv
 nnoremap <space> za    " space - toggle current fold
 nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR>
 "}}}
-" bring up the command-t file window{{{
-noremap <leader>t :CommandT<cr>
-noremap <leader>tt :CommandTFlush<cr>\|:CommandT<cr>
-"}}}
-" coding utilities{{{
-nnoremap <leader>p :Autoformat<cr><cr>
+" evaluate unicode code points {{{
 nnoremap <leader>! :%s#\\u[0-9a-f]*#\=eval('"'.submatch(0).'"')#eg<cr>
-" run file in shell mode with ruby
+"}}}
+" add shebang and magic headers to ruby files {{{
 function! AddRubyHeaders()
   let header = [ '#!/usr/bin/env ruby', '# coding: UTF-8', '$DEBUG = true', '' ]
   call append(0, header)
 endfunction
 au FileType ruby,eruby nnoremap <buffer> <leader>m :call AddRubyHeaders()<cr>
+"}}}
+" common alignment habits {{{
 nnoremap <leader>a\| :Tab /\|<CR>
 vnoremap <leader>a\| :Tab /\|<CR>
 nnoremap <Leader>a= :Tab /=<CR>
 vnoremap <Leader>a= :Tab /=<CR>
 nnoremap <Leader>a: :Tab /:\zs<CR>
 vnoremap <Leader>a: :Tab /:\zs<CR>
-" toggle comment
-noremap <leader>c gcc
 "}}}
-" rotating among results in an ack search{{{
-noremap <C-n> :cn<CR>
-noremap <C-p> :cp<CR>
+" rotating among results in the quickfix window {{{
+noremap <c-n> :cn<CR>
+noremap <c-p> :cp<CR>
 "}}}
-" visual select las inserted text {{{
-nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+" visual select last inserted text {{{
+noremap gV `[v`]
 "}}}
 " replace selected text{{{
 " nnoremap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
-vnoremap <c-r> y:%s/<c-r>"//gc<left><left><left>
+vnoremap <c-r> y:%S/<c-r>"//gc<left><left><left>
 "}}}
 " replace text with current register without droping it{{{
 vnoremap s "_dP
 nnoremap s "_diw"0P
 "}}}
-" select in visual mode last inserted text"{{{
+" select in visual mode last inserted text {{{
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 "}}}
 " upcase/downcase last inserted word without leaving insert mode{{{
@@ -532,11 +454,11 @@ nnoremap & :&&<CR>
 xnoremap & :&&<CR>
 "}}}
 " search{{{
-function! Ack(args)
+function! Ag(args)
   try
     let grepprg_bak=&grepprg
     let grepformat_bak=&grepformat
-    let &grepprg='ack -H --nocolor --nogroup --column --output="' . "$&$'" .  '"'
+    let &grepprg='ag --vimgrep'
     let &grepformat="%f:%l:%c:%m"
     let cmd='silent grep "' . escape(a:args, '|') . '" > /dev/null'
     exe cmd
@@ -550,9 +472,14 @@ function! Ack(args)
   endtry
 endfunction
 
-command! -nargs=* -complete=file Ack call Ack(<q-args>)
-command! -complete=file TODOS execute 'call Ack(''^[^\w]*\b(todo|fix|xxx)\b'')'
+command! -nargs=* -complete=file Ag call Ag(<q-args>)
+command! -complete=file TODOS :Ag '^[^\w]*\b(todo|fix|xxx)\b' -i
 command! GREP :execute 'vimgrep '.expand('<cword>').' '.expand('%') | :copen
+"}}}
+" clear the search buffer when hitting return {{{
+nnoremap <cr> :set hlsearch! hlsearch?<cr>
+au! CmdwinEnter * nnoremap <buffer> <cr> <cr>
+au! FileType qf nnoremap <buffer> <cr> <cr>
 "}}}
 " search for selected text, forwards or backwards {{{
 vnoremap <silent> * :<C-U>
@@ -567,7 +494,7 @@ vnoremap <silent> # :<C-U>
 " switch between buffers{{{
 nnoremap <A-tab> :bn<CR>
 nnoremap <A-S-tab> :bp<CR>
-nnoremap <leader>d :bd<CR>
+nnoremap <leader>d :Bclose<CR>
 nnoremap <leader>D :bufdo bd<CR>
 "}}}
 " rename file {{{
@@ -593,10 +520,6 @@ function! CopyFile()
 endfunction
 noremap <leader>c :call CopyFile()<cr>
 "}}}
-" save file{{{
-noremap <C-s> :w<cr>
-noremap <C-S-s> :browse confirm saveas<cr>
-"}}}
 " make search results appear in the middle of the screen{{{
 nnoremap n :set hlsearch<cr>nzz
 nnoremap N :set hlsearch<cr>Nzz
@@ -609,12 +532,94 @@ nnoremap g# :set hlsearch<cr>g#zz
 nnoremap ' `
 nnoremap ` '
 "}}}
+" allow easy navigation between wrapped lines. {{{
+vmap j gj
+vmap k gk
+nmap j gj
+nmap k gk
+"}}}
+" rcodetools gem configuration {{{
+" plain annotations
+" Annotate the full buffer
+nmap <silent> <F1> mzggVG!xmpfilter -a<cr>'z
+imap <silent> <F1> <ESC><F1>
+
+" Add # => markers
+vmap <silent> <F2> !xmpfilter -m<cr>
+nmap <silent> <F2> V<F2>
+imap <silent> <F2> <ESC><F2>a
+
+" Remove # => markers
+vmap <silent> <F3> ms:call RemoveRubyEval()<cr>
+nmap <silent> <F3> V<F3>
+imap <silent> <F3> <ESC><F3>a
+
+map <silent> <F4> !xmpfilter -a<cr>
+nmap <silent> <F4> V<F4>
+imap <silent> <F4> <ESC><F4>a
+
+function! RemoveRubyEval() range
+  let begv = a:firstline
+  let endv = a:lastline
+  normal Hmt
+  set lz
+  execute ":" . begv . "," . endv . 's/\s*# \(=>\|!!\).*$//e'
+  normal 'tzt`s
+  " set nolz
+  redraw
+endfunction"}}}
+" testing one-off scripts {{{
+let ft_stdout_mappings = {
+      \'applescript': 'osascript',
+      \'bash': 'bash',
+      \'bc': 'bc',
+      \'haskell': 'runghc',
+      \'javascript': 'node',
+      \'lisp': 'sbcl',
+      \'nodejs': 'node',
+      \'ocaml': 'ocaml',
+      \'perl': 'perl',
+      \'php': 'php',
+      \'python': 'python',
+      \'ruby': 'ruby',
+      \'scheme': 'scheme',
+      \'sh': 'sh',
+      \'sml': 'sml',
+      \'spice': 'ngspice'
+      \}
+for ft_name in keys(ft_stdout_mappings)
+  execute 'autocmd Filetype ' . ft_name . ' nnoremap <buffer> <C-e> :write !'
+        \. ft_stdout_mappings[ft_name] . '<CR>'
+endfor
+
+let ft_execute_mappings = {
+      \'c': 'gcc -o %:r -Wall -std=c99 % && ./%:r',
+      \'erlang': 'escript %',
+      \'pascal': 'fpc % && ./%:r'
+      \}
+for ft_name in keys(ft_execute_mappings)
+  execute 'autocmd FileType ' . ft_name
+        \. ' nnoremap <buffer> <C-e> :write \| !'
+        \. ft_execute_mappings[ft_name] . '<CR>'
+endfor
+"}}}
+" resize stacked windows {{{
+au BufEnter * :wincmd _
+noremap <up>    <C-W>+
+noremap <down>  <C-W>-
+noremap <left>  3<C-W><
+noremap <right> 3<C-W>>
+set winheight=4
+set winminwidth=4
+set winminheight=4
+"}}}
 "}}}
 
 " plugins settings{{{
 " Airline {{{
 let g:airline_theme = 'solarized'
 let g:airline_powerline_fonts = 1
+let g:airline_inactive_collapse = 1
 "}}}
 " Syntastic {{{
 let g:syntastic_error_symbol='✗'
@@ -657,9 +662,6 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 " Fugitive {{{
 autocmd BufReadPost fugitive://* set bufhidden=delete
 "}}}
-" Command-T{{{
-let g:CommandTMaxHeight=10
-"}}}
 " SplitJoin {{{
 let g:splitjoin_split_mapping = 'gS'
 let g:splitjoin_join_mapping  = 'gJ'
@@ -680,7 +682,13 @@ let g:rainbow_conf = {
 \   'ctermfgs': ['lightgray', 'darkblue', 'darkmagenta', 'darkcyan'],
 \   'operators': '_,_',
 \   'parentheses': [['(',')'], ['\[','\]'], ['{','}']],
-\}"}}}
+\}
+"}}}
+" CtrlP {{{
+let g:ctrlp_map = '<leader>t'
+let g:ctrlp_mruf_relative = 1
+let g:ctrlp_cmd = 'CtrlPMixed'
+"}}}
 "}}}
 
 " custom utility commands {{{
@@ -710,9 +718,6 @@ function! OpenChangedFiles()
   endfor
 endfunction
 command! OpenChangedFiles :call OpenChangedFiles()
-"}}}
-" search with Ag{{{
-command! -complete=file TODOS :Ag '^[^\w]*\b(todo|fix|xxx)\b' -i
 "}}}
 " export Fremind mindmap to text{{{
 command! FremindToText call FremindToTextFunction()
@@ -817,17 +822,6 @@ function! Entities()
   silent %s/\&yacute;/ý/eg
   silent %s/\&yuml;/ÿ/eg
 endfunction"}}}
-" cleanFile{{{
-function! CleanFile()
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  silent! gg
-  silent! %s/\v\s+$//e
-  silent! :g/\v^\n{2,}/d
-  let @/=_s
-  call cursor(l, c)
-endfunction"}}}
 " preserve{{{
 function! Preserve(command)
   " Preparation: save last search, and cursor position.
@@ -865,32 +859,6 @@ function! DiffFoldLevel()
     return '='
   endif
 endfunction "}}}
-" fold Baloon{{{
-function! FoldSpellBalloon()
-  let foldStart = foldclosed(v:beval_lnum )
-  let foldEnd = foldclosedend(v:beval_lnum)
-  let lines = []
-  " Detect if we are in a fold
-  if foldStart < 0
-    " Detect if we are on a misspelled word
-    let lines = spellsuggest( spellbadword(v:beval_text)[ 0 ], 5, 0 )
-  else
-    " we are in a fold
-    let numLines = foldEnd - foldStart + 1
-    " if we have too many lines in fold, show only the first 14
-    " and the last 14 lines
-    if ( numLines > 31 )
-      let lines = getline( foldStart, foldStart + 14 )
-      let lines += [ '-- Snipped ' . ( numLines - 30 ) . ' lines --' ]
-      let lines += getline( foldEnd - 14, foldEnd )
-    else
-      "less than 30 lines, lets show all of them
-      let lines = getline( foldStart, foldEnd )
-    endif
-  endif
-  " return result
-  return join( lines, has( "balloon_multiline" ) ? "\n" : " " )
-endfunction"}}}
 " remap the tab key to do autocompletion or indentation depending on the{{{
 " context (from http://vim.wikia.com/wiki/Smart_mapping_for_tab_completion)
 " inoremap <tab> <c-r>=Smart_TabComplete()<CR>
@@ -1000,8 +968,7 @@ function! s:AbbrAsk(abbr,expansion)
   let answer = confirm("Use the abbreviation '" . a:abbr . "'?", "&Yes\n&No", 1)
   return answer == 1 ? a:expansion : a:abbr
 endfunction
-ia <expr> addr <SID>AbbrAsk('addr', "your full address here")
-ia <expr> lorem <SID>AbbrAsk('lorem', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')
+ia <expr> lorem <sid>AbbrAsk('lorem', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')
 "}}}
 " generate doc comment template{{{
 function! GenerateDOCComment()
@@ -1047,7 +1014,7 @@ endfunction
 function! JsCssCompress()
   let fileName = expand('<afile>:t')
 
-  if fileName =~ '.min.' || fileName !~ '\d\.\d'
+  if fileName =~ '.min.'
     return
   end
 
@@ -1096,10 +1063,21 @@ function! JsCssCompress()
   endif
 endfunction
 
-autocmd FileWritePost,BufWritePost *.coffee :call JsCssCompress()
-autocmd FileWritePost,BufWritePost *.js :call JsCssCompress()
-autocmd FileWritePost,BufWritePost *.css :call JsCssCompress()
-autocmd FileWritePost,BufWritePost *.scss :call JsCssCompress()
+" function! JsCssCompress()
+"   let path = expand('<afile>')
+"   let expr = '~/bin/coffee-builder.coffee '.path
+"   let msg = system(expr)
+"   if v:shell_error
+"     echo 'could not compile '.path.':'.msg
+"   else
+"     " echom msg
+"   endif
+" endfunction
+
+autocmd FileWritePost,BufWritePost *.coffee :call JsCssCompress() | e | set ft=coffee
+autocmd FileWritePost,BufWritePost *.js :call JsCssCompress() | e | set ft=javascript
+autocmd FileWritePost,BufWritePost *.css :call JsCssCompress() | e | set ft=css
+autocmd FileWritePost,BufWritePost *.scss :call JsCssCompress() | e | set ft=scss
 autocmd FileWritePost,BufWritePost *.less :call JsCssCompress()
 command! JsCssCompress call JsCssCompress()
 "}}}
@@ -1122,21 +1100,86 @@ function! Stringify() range
 endfunction
 vmap <leader>s :call Stringify()<CR>
 "}}}
+" extract variable name {{{
+function! ExtractProperty()
+  let a_save = @a
+  try
+    " Replace selected text with the variable name
+    let properties_file = expand('%:r').'.properties'
+    if filereadable(properties_file)
+      normal! gv"ay
+      let value       = @a
+      let key         = substitute(value, ".*", "\\U\\0", "")
+      let key         = substitute(key, '\W\+', "_", "g")
+      if len(key) > 20
+        let hash = system('md5 -qs '.key)
+        let key = key[0:20-5]."_".hash[0:5]
+      endif
+      let key         = input("Key name: ", key)
+      let replacement = "<%- t('" . key . "') %>"
+      let language    = expand('%:r:e')
+      let new_line    = [ key.'='.value ]
+
+      let @a = replacement
+      normal gv
+      normal "_x"aP
+
+      let lines=readfile(properties_file, 'b')
+      if !empty(lines) && empty(lines[-1])
+        call remove(lines, -1)
+      endif
+      call writefile(lines+new_line, properties_file, 'b')
+
+    endif
+  finally
+    let @a = a_save
+  endtry
+endfunction
+vnoremap <leader>t :call ExtractProperty()<cr>
+"}}}
+" strip trailing whitespace {{{
+function! StripTrailingWhitespaces()
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  %s/\s\+$//e
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+" au BufWritePre * :call StripTrailingWhitespaces()
+"}}}
+" insert time stamp {{{
+command! Timestamp :normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
+"}}}
 "}}}
 
-" finally, load local project configs {{{
+" debugging hooks {{{
+" load local project configs {{{
 if filereadable('.vimrc.local')
   source .vimrc.local
 endif
 "}}}
-
-" find . -name "*.rb" | xargs file | grep "CRLF" | awk -F: '{print $1}' | xargs gvim
-" bufdo set ff=unix | w
-"
-" Debug slow code
+" slow code {{{
 " :profile start profile.log
 " :profile func *
 " :profile file *
 " " At this point do slow actions
 " :profile pause
 " :noautocmd qall!
+" }}}
+" export mappings {{{
+function! ExportMappings()
+  redir! > vim_maps.txt
+  map
+  map!
+  au
+  au!
+  redir END
+endfunction
+"}}}
+"}}}
+
+set shell=bash
