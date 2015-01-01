@@ -55,3 +55,5 @@
 	enabled = true # To record any merge conflict resolutions and reuse them automatically
 [branch]
 	autosetuprebase = always # To default all new branches to fetch and rebase - not merge
+[credential]
+	helper = osxkeychain
