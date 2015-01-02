@@ -297,7 +297,7 @@ au! FileType make   setlocal noexpandtab
 au! FileType python setlocal noexpandtab
 "}}}
 " load templates{{{
-au BufNewFile * silent! 0r $VIMHOME/personal/%:e.tpl
+au BufNewFile * silent! 0r $VIMHOME/templates/%:e.tpl
 "}}}
 " guess indent from buffer {{{
 let g:detectindent_preferred_indent=2

@@ -1,39 +1,49 @@
 #!/bin/bash
 # This script creates a new bash script, sets permissions and more
+TEMPLATES_DIR="$HOME/.vim/templates"
+name="$1"
+template=$2
 
-if [[ ! $1 ]]; then
-  echo "Missing argument"
+if [[ ! $name ]]; then
+  echo "Missing script name. Please run create_script name [template]"
   exit 1
 fi
 
-scriptname="$1"
-dir="${HOME}/bin"
-filename="${dir}/${scriptname}"
+if [[ ! $template ]]; then
+  template=sh
+fi
+
+dir="${HOME}/.bin"
+filename="${dir}/${name}"
 
 if [[ -e $filename ]]; then
-  echo "File ${filename} already exists"
-  exit 1
-fi
-
-if type "$scriptname" > /dev/null 2>&1; then
-  echo "There is already a command with name ${scriptname}"
-  exit 1
-fi
-
-if [[ ! -d $dir ]]; then
-  if mkdir "$dir"; then
-    echo "created ${dir}"
-  else
-    echo "Could not create ${dir}."
+  printf "WARNING: File ${filename} already exists (press any key to continue) "
+  read -r -s -n 1
+else
+  if type "$name" > /dev/null 2>&1; then
+    echo "There is already a command with name ${name}"
     exit 1
   fi
-fi
 
-echo '#!/bin/bash -x' > "$filename"
-chmod u+x "$filename"
+  if [[ ! -d $dir ]]; then
+    if mkdir "$dir"; then
+      echo "${dir} created"
+    else
+      echo "Could not create ${dir}."
+      exit 1
+    fi
+  fi
+
+  [[ ! -e "$TEMPLATES_DIR/$template.tpl" ]] && echo "There's no template for $template at $TEMPLATES_DIR/$template.tpl" && exit 1
+
+  cp $TEMPLATES_DIR/$template.tpl $filename
+  chmod u+x "$filename"
+fi
 
 if [[ $EDITOR ]]; then
   $EDITOR "$filename"
 else
   echo "Script created; not starting editor because \$EDITOR is not set."
 fi
+
+exit 0
