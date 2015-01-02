@@ -21,7 +21,7 @@ export VIMHOME=~/.vim
 export RUBY_GC_MALLOC_LIMIT=90000000
 export RUBY_GC_HEAP_FREE_SLOTS=200000
 
-if [[ "$TERM" != "screen-256color" ]] then
+if [[ "$TERM" != "screen-256color" ]]; then
   tmux attach-session -t "$USER" || tmux new-session -s "$USER"
   exit
 fi
