@@ -5,7 +5,7 @@ name="$1"
 template=$2
 
 if [[ ! $name ]]; then
-  echo "Missing script name. Please run create_script name [template]"
+  echo "Missing script name. Please run create_script name [template]" >&2
   exit 1
 fi
 
@@ -22,7 +22,7 @@ if [[ -e $filename ]]; then
 else
   if type "$name" > /dev/null 2>&1; then
     echo "There is already a command with name ${name}"
-    exit 1
+    exit 1 >&2
   fi
 
   if [[ ! -d $dir ]]; then
@@ -30,11 +30,11 @@ else
       echo "${dir} created"
     else
       echo "Could not create ${dir}."
-      exit 1
+      exit 1 >&2
     fi
   fi
 
-  [[ ! -e "$TEMPLATES_DIR/$template.tpl" ]] && echo "There's no template for $template at $TEMPLATES_DIR/$template.tpl" && exit 1
+  [[ ! -e "$TEMPLATES_DIR/$template.tpl" ]] && echo "There's no template for $template at $TEMPLATES_DIR/$template.tpl" >&2 && exit 1
 
   cp $TEMPLATES_DIR/$template.tpl $filename
   chmod u+x "$filename"
