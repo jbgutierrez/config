@@ -1,5 +1,6 @@
 #!/bin/bash
-# This script creates a new bash script, sets permissions and more
+# This script lets your create/edit scripts based on pre-cooked templates
+
 TEMPLATES_DIR="$HOME/.vim/templates"
 name="$1"
 template=$2
