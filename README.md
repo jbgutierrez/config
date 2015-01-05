@@ -9,11 +9,11 @@ I am running on Mac OS X, but it will likely work on Linux as well.
 Run the following commands in your terminal.
 
 ```bash
+$ chsh -s $(which zsh)
 $ git clone https://github.com/jbgutierrez/config.git
 $ rake
-$ osx.sh
+$ ./osx.sh
 $ vim -c "BundleInstall" -c "bufdo :q"
-$ chsh -s /bin/zsh (optional)
 ```
 
 ### Vim Plugin updates
