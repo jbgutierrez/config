@@ -3,48 +3,20 @@
 
 TEMPLATES_DIR="$HOME/.vim/templates"
 name="$1"
-template=$2
+[[ $name ]] || { echo "Missing script name. Please run create_script name [template]" >&2; exit 1; }
 
-if [[ ! $name ]]; then
-  echo "Missing script name. Please run create_script name [template]" >&2
-  exit 1
-fi
-
-if [[ ! $template ]]; then
-  template=sh
-fi
-
-dir="${HOME}/.bin"
-filename="${dir}/${name}"
-
+filename="$HOME/.bin/$name"
 if [[ -e $filename ]]; then
-  printf "WARNING: File ${filename} already exists (press any key to continue) "
-  read -r -s -n 1
+  read -r -s -n 1 -p "WARNING: File $filename already exists (press any key to continue) "
 else
-  if type "$name" > /dev/null 2>&1; then
-    echo "There is already a command with name ${name}"
-    exit 1 >&2
-  fi
-
-  if [[ ! -d $dir ]]; then
-    if mkdir "$dir"; then
-      echo "${dir} created"
-    else
-      echo "Could not create ${dir}."
-      exit 1 >&2
-    fi
-  fi
-
-  [[ ! -e "$TEMPLATES_DIR/$template.tpl" ]] && echo "There's no template for $template at $TEMPLATES_DIR/$template.tpl" >&2 && exit 1
-
-  cp $TEMPLATES_DIR/$template.tpl $filename
+  template="$2"
+  [[ $template ]] || template=sh
+  type "$name" > /dev/null 2>&1 && { echo "There is already a command with name $name" >&2; exit 1; }
+  [[ -e "$TEMPLATES_DIR/$template.tpl" ]] || { echo "There's no template for $template at $TEMPLATES_DIR/$template.tpl" >&2; exit 1; }
+  cp "$TEMPLATES_DIR/$template.tpl" "$filename"
   chmod u+x "$filename"
 fi
 
-if [[ $EDITOR ]]; then
-  $EDITOR "$filename"
-else
-  echo "Script created; not starting editor because \$EDITOR is not set."
-fi
+$EDITOR "$filename"
 
 exit 0
