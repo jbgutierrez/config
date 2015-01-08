@@ -1,19 +1,30 @@
 #!/usr/bin/env bash
-# This script lets you resize images in batches with imagemagick
-
+# This script lets you resize images in batches with different compression tools
 usage(){
-  echo -e "Usage: resize file_or_folder [options]\n\nOPTIONS:\n  -w --widths     Defaults to 2560 1920 1024 560\n  -q --quality    Defaults to 75\n  -a --adjust     Only files within the adjusted date will be resized. See 'man date' val[ymwdHMS]. Defaults to 1m.\n" >&2
+  echo "Usage: resize file_or_folder [options]"
+  echo ""
+  echo "OPTIONS:"
+  echo "  -w --widths     Defaults to 2560 1920 1024 560"
+  echo "  -q --quality    Defaults to 75"
+  echo "  -a --adjust     Only files within the adjusted date will be resized. See 'man date' val[ymwdHMS]. Defaults to 1m"
+  echo "  -t --tool       Compression tool: jpegoptim, mozjpeg or imagemagick (default)"
+  echo "  -r --rescan     Losslessly shrink JPEG file with JPEGrescan. Defaults to 0"
+  echo ""
   exit 1
 }
+
+files=$1
+[[ -e $files ]] || usage
 
 type "convert" > /dev/null 2>&1 || { echo "Please install imagemagick first" >&2; exit 1; }
 [[ $# -ge 1 ]] || usage
 
 adjust="1m"
 dir="resized"
-files=$1
 quality=75
 widths="2560 1920 1024 560"
+tool='imagemagick'
+rescan=0
 
 while [[ $# > 1 ]]; do
   shift && key="$1"
@@ -21,18 +32,12 @@ while [[ $# > 1 ]]; do
   [[ ! $value ]] && break;
 
   case $key in
-    -w|--widths)
-      widths="$1"
-      ;;
-    -q|--quality)
-      quality="$1"
-      ;;
-    -a|--adjust)
-      adjust="$1"
-      ;;
-    *)
-      usage
-      ;;
+    -w|--widths)  widths="$1"  ;;
+    -q|--quality) quality="$1" ;;
+    -a|--adjust)  adjust="$1"  ;;
+    -t|--tool)    tool="$1"    ;;
+    -r|--rescan)  rescan="$1"  ;;
+    *)            usage        ;;
   esac
 done
 
@@ -42,12 +47,21 @@ if [[ -d $files ]]; then
   files=`find . -newermt "$timestamp" -d 1 -name '*.jpg'`
 fi
 
-mkdir -p $dir || { echo "Could not create ${dir}." >&2; exit 1; }
+mkdir -p $dir || { echo "Could not create $dir." >&2; exit 1; }
 
 for file in $files; do
   for width in $widths; do
-    resized_file="${file/.jpg/}_${width}.jpg"
-    echo "resizing $resized_file"
-    `convert -quality $quality -resize $width $file $dir/$resized_file`
+    resized_file="${file/.jpg/}_${tool}_q${quality}_w${width}.jpg"
+    echo "generating $resized_file"
+    case $tool in
+      "jpegoptim")   `convert -resize $width $file jpg:- | jpegoptim -q -p -f --max=$quality --strip-all --stdout --stdin > $dir/$resized_file` ;;
+      "mozjpeg")     `convert -resize $width $file png:- | cjpeg -quality $quality -optimize -dct float -outfile $dir/$resized_file`            ;;
+      "imagemagick") `convert -quality $quality -resize $width $file $dir/$resized_file`                                                        ;;
+    esac
+    if [[ $rescan -ne 0 ]]; then
+      optimized_file="${file/.jpg/}_${tool}+rescan_q${quality}_w${width}.jpg"
+      echo "generating $optimized_file"
+      `jpegrescan -q -s -i $dir/$resized_file $dir/$optimized_file`
+    fi
   done
 done
