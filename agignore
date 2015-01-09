@@ -1,0 +1,12 @@
+.ideas
+.sass-cache
+bower_components
+bundle
+components
+log
+node_modules
+nosync
+tags
+tmp
+vendor
+tags
