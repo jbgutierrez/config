@@ -1,23 +1,27 @@
 #!/usr/bin/env bash
 # This script lets you resize images in batches with different compression tools
 usage(){
-  echo "Usage: resize file_or_folder [options]"
-  echo ""
-  echo "OPTIONS:"
-  echo "  -w --widths     Defaults to 2560 1920 1024 560"
-  echo "  -q --quality    Defaults to 75"
-  echo "  -a --adjust     Only files within the adjusted date will be resized. See 'man date' val[ymwdHMS]. Defaults to 1m"
-  echo "  -t --tool       Compression tool: jpegoptim, mozjpeg or imagemagick (default)"
-  echo "  -r --rescan     Losslessly shrink JPEG file with JPEGrescan. Defaults to 0"
-  echo ""
+  cat <<END
+usage: resize FILE_OR_FOLDER [options]
+
+  The options are as follows:
+
+    -w widths     (default: 2560 1920 1024 560)
+    -q quality    (default: 75)
+    -a adjust     Only files within the adjusted date will be resized. See 'man date' val[ymwdHMS] (default 1m)
+    -t tool       Compression tool: jpegoptim, mozjpeg or imagemagick (default: imagemagick)
+    -r            Losslessly shrink JPEG file with JPEGrescan (default: 0)
+
+END
   exit 1
 }
 
-files=$1
-[[ -e $files ]] || usage
-
 type "convert" > /dev/null 2>&1 || { echo "Please install imagemagick first" >&2; exit 1; }
-[[ $# -ge 1 ]] || usage
+[[ $# -ge 1 ]] || { echo -e "Incorrect number of parameters\n" >&2; usage; }
+
+files=$1
+[[ -e $files ]] || { echo -e "resize: $files: No such file or directory\n" >&2; usage; }
+shift
 
 adjust="1m"
 dir="resized"
@@ -26,18 +30,16 @@ widths="2560 1920 1024 560"
 tool='imagemagick'
 rescan=0
 
-while [[ $# > 1 ]]; do
-  shift && key="$1"
-  shift && value="$1"
-  [[ ! $value ]] && break;
-
-  case $key in
-    -w|--widths)  widths="$1"  ;;
-    -q|--quality) quality="$1" ;;
-    -a|--adjust)  adjust="$1"  ;;
-    -t|--tool)    tool="$1"    ;;
-    -r|--rescan)  rescan="$1"  ;;
-    *)            usage        ;;
+while getopts ":w:q:a:t:r" opt; do
+  case $opt in
+    a)  adjust=$OPTARG  ;;
+    q)  quality=$OPTARG ;;
+    r)  rescan=1        ;;
+    t)  tool=$OPTARG    ;;
+    w)  widths=$OPTARG  ;;
+    --) break           ;;
+    :)  echo -e "Option -${OPTARG} is missing an argument\n" >&2; usage ;;
+    \?) echo -e "Unknown option: -${OPTARG}\n" >&2; usage               ;;
   esac
 done
 
@@ -58,7 +60,7 @@ for file in $files; do
       "mozjpeg")     `convert -resize $width $file png:- | cjpeg -quality $quality -optimize -dct float -outfile $dir/$resized_file`            ;;
       "imagemagick") `convert -quality $quality -resize $width $file $dir/$resized_file`                                                        ;;
     esac
-    if [[ $rescan -ne 0 ]]; then
+    if (( $rescan )); then
       optimized_file="${file/.jpg/}_${tool}+rescan_q${quality}_w${width}.jpg"
       echo "generating $optimized_file"
       `jpegrescan -q -s -i $dir/$resized_file $dir/$optimized_file`
