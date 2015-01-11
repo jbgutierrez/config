@@ -1,18 +1,47 @@
 #!/bin/bash
 # This script lets your create/edit scripts based on pre-cooked templates
+usage(){
+  cat <<END
+usage: create_script NAME [options]
 
-TEMPLATES_DIR="$HOME/.vim/templates"
-name="$1"
-[[ $name ]] || { echo "Missing script name. Please run create_script name [template]" >&2; exit 1; }
+  The options are as follows:
 
-filename="$HOME/.bin/$name"
+    -t           Template to use
+    -l           Create the script locally rather than globally
+    -f           Attempt to create the script regardless of the command's existance
+
+END
+  exit 1
+}
+
+[[ $# -ge 1 ]] || { echo -e "Incorrect number of parameters\n" >&2; usage; }
+
+name=$1
+[[ $name ]] || { echo "Missing script name." >&2; usage; }
+shift
+
+TEMPLATES_DIR=$HOME/.vim/templates
+
+template=sh
+force=0
+filename=$HOME/.bin/$name
+
+while getopts ":t:lf" opt; do
+  case $opt in
+    t)  template=$OPTARG ;;
+    l)  filename=$name   ;;
+    f)  force=1          ;;
+    --) break            ;;
+    :)  echo -e "Option -${OPTARG} is missing an argument\n" >&2; usage ;;
+    \?) echo -e "Unknown option: -${OPTARG}\n" >&2; usage               ;;
+  esac
+done
+
 if [[ -e $filename ]]; then
-  read -r -s -n 1 -p "WARNING: File $filename already exists (press any key to continue) "
+  (( $force )) || read -r -s -n 1 -p "WARNING: File $filename already exists (press any key to continue) "
 else
-  template="$2"
-  [[ $template ]] || template=sh
-  type "$name" > /dev/null 2>&1 && { echo "There is already a command with name $name" >&2; exit 1; }
-  [[ -e "$TEMPLATES_DIR/$template.tpl" ]] || { echo "There's no template for $template at $TEMPLATES_DIR/$template.tpl" >&2; exit 1; }
+  (( ! $force )) && type $name > /dev/null 2>&1 && { echo "There is already a command with name $name" >&2; exit 1; }
+  [[ ! -e "$TEMPLATES_DIR/$template.tpl" ]] && { echo "There's no template for $template at $TEMPLATES_DIR/$template.tpl" >&2; exit 1; }
   cp "$TEMPLATES_DIR/$template.tpl" "$filename"
   chmod u+x "$filename"
 fi
