@@ -5,7 +5,8 @@ task :default => :install
 desc "install the dot files into user's home directory"
 task :install do
   replace_all = false
-  Dir['*'].each do |file|
+  files=`git ls-tree head --name-only`.split(/\n/)
+  files.each do |file|
     next if file =~ /^\.|Rakefile|README|osx/
     hidden_file = File.join(ENV['HOME'], "." + file)
     if File.exist?(hidden_file)
