@@ -23,7 +23,7 @@ files=$1
 [[ -e $files ]] || { echo -e "resize: $files: No such file or directory\n" >&2; usage; }
 shift
 
-adjust="1m"
+adjust=""
 dir="resized"
 quality=75
 widths="2560 1920 1024 560"
@@ -45,8 +45,12 @@ done
 
 if [[ -d $files ]]; then
   cd $files
-  timestamp=`date -j -v-$adjust +"%Y/%m/%d %H:%M"`
-  files=`find . -newermt "$timestamp" -d 1 -name '*.jpg'`
+  if [[ -n $adjust  ]]; then
+    timestamp=`date -j -v-$adjust +"%Y/%m/%d %H:%M"`
+    files=`find . -newermt "$timestamp" -d 1 -name '*.jpg'`
+  else
+    files=`find . -d 1 -name '*.jpg'`
+  fi
 fi
 
 mkdir -p $dir || { echo "Could not create $dir." >&2; exit 1; }
