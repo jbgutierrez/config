@@ -594,6 +594,7 @@ endfor
 
 let ft_execute_mappings = {
       \'c': 'gcc -o %:r -Wall -std=c99 % && ./%:r',
+      \'coffee': 'coffee %',
       \'erlang': 'escript %',
       \'pascal': 'fpc % && ./%:r'
       \}
@@ -1011,7 +1012,12 @@ function! GenerateUnicode(first, last)
 endfunction
 "}}}
 " compress scripts and css files{{{
+let g:js_css_compress_disabled = 0
 function! JsCssCompress()
+  if g:js_css_compress_disabled
+    return
+  endif
+
   let fileName = expand('<afile>:t')
 
   if fileName =~ '.min.'
