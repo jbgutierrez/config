@@ -1223,6 +1223,8 @@ function! ExportMappings()
   redir END
 endfunction
 "}}}
+" learn vim-script"{{{
+" :help vim-script-intro"}}}
 "}}}
 
 set shell=bash
