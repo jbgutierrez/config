@@ -1160,6 +1160,43 @@ endfunction
 " insert timestamp {{{
 command! Timestamp :normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
 "}}}
+" extract dust partials {{{
+function! ExtractDustPartial() range abort
+  let fname = expand('%')
+  let pname = input('Partial name: ', fnamemodify(fname, ":r"), 'file')
+  if pname != '' && pname != fname
+
+    let buf = @@
+    let ai = &ai
+    let &ai = 0
+    set splitright
+
+    let first = a:firstline
+    let last = a:lastline
+    let range = first.",".last
+    let spaces = matchstr(getline(first),'^\s*')
+    let partial = fnamemodify(pname,":r:s/views\|templates//")
+    let replacement = "{> \"".partial."\" /}"
+
+    silent! exe range."yank"
+    silent! exe "norm! :".first.",".last."change\<cr>".spaces.replacement."\<cr>.\<cr>"
+
+    vnew
+    silent! put
+    0delete
+    if spaces != ""
+      silent! exe '%substitute/^'.spaces.'//'
+    endif
+    silent! exe "w! ".pname
+
+    let &ai = ai
+    let @@ = buf
+    set nosplitright
+    wincmd h
+  endif
+endfunction
+vnoremap <leader>x :call ExtractDustPartial()<CR>
+"}}}
 "}}}
 
 " debugging hooks {{{
