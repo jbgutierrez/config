@@ -1157,7 +1157,7 @@ function! StripTrailingWhitespaces()
 endfunction
 " au BufWritePre * :call StripTrailingWhitespaces()
 "}}}
-" insert time stamp {{{
+" insert timestamp {{{
 command! Timestamp :normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
 "}}}
 "}}}
