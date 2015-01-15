@@ -1166,11 +1166,6 @@ function! ExtractPartial() range abort
   let pname = input('Partial name: ', fnamemodify(fname, ":r"), 'file')
   if pname != '' && pname != fname
 
-    let buf = @@
-    let ai = &ai
-    let &ai = 0
-    set splitright
-
     let first = a:firstline
     let last = a:lastline
     let range = first.",".last
@@ -1178,25 +1173,28 @@ function! ExtractPartial() range abort
     let partial = fnamemodify(pname,":r:s/views\|templates//")
     let extension = fnamemodify(pname, ":e")
 
-    if extension == "dust"
-      let replacement = "{> \"".partial."\" /}"
-    elseif extension == "haml"
-      let replacement = "= render '".partial."'"
-    elseif extension ==  "slim"
-      let replacement = "== render '".partial."'"
-    elseif extension ==  "erb" || extension == "html"
-      let replacement = "<%= render '".partial."' %>"
-    elseif extension ==  "css"
-      let replacement = "@import url('".partial."');"
-    elseif extension ==  "scss"
-      let replacement = "@import '".partial."';"
-    elseif extension ==  "sass"
-      let replacement = "@import '".partial."'"
-    else
+    let templates = {
+          \   'css'  : "@import url('%s');" ,
+          \   'dust' : '{> "%s" /}'         ,
+          \   'erb'  : "<%= render '%s' %>" ,
+          \   'haml' : "= render '%s'"      ,
+          \   'html' : "<%= render '%s' %>" ,
+          \   'sass' : "@import '%s'"       ,
+          \   'scss' : "@import '%s';"      ,
+          \   'slim' : "== render '%s'"
+          \ }
+    if ! has_key(templates, extension)
       echoerr "Unsupported file type"
       return
     endif
+    let template = templates[extension]
 
+    let buf = @@
+    let ai = &ai
+    let &ai = 0
+    set splitright
+
+    let replacement = printf(template, partial)
     silent! exe range."yank"
     silent! exe "norm! :".first.",".last."change\<cr>".spaces.replacement."\<cr>.\<cr>"
 
