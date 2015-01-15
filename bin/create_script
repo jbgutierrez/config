@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script lets your create/edit scripts based on pre-cooked templates
-usage(){
+usage() {
   cat <<END
 usage: create_script NAME [options]
 
@@ -11,13 +11,18 @@ usage: create_script NAME [options]
     -f           Attempt to create the script regardless of the command's existance
 
 END
-  exit 1
 }
 
-[[ $# -ge 1 ]] || { echo -e "Incorrect number of parameters\n" >&2; usage; }
+error() {
+  echo -e "error: $1\n"
+  usage
+  exit $2
+} >&2
+
+[[ $# -ge 1 ]] || error "incorrect number of parameters" 1
 
 name=$1
-[[ $name ]] || { echo "Missing script name." >&2; usage; }
+[[ $name ]] || error "missing script name." 1
 shift
 
 TEMPLATES_DIR=$HOME/.vim/templates
@@ -32,16 +37,16 @@ while getopts ":t:lf" opt; do
     l)  filename=$name   ;;
     f)  force=1          ;;
     --) break            ;;
-    :)  echo -e "Option -${OPTARG} is missing an argument\n" >&2; usage ;;
-    \?) echo -e "Unknown option: -${OPTARG}\n" >&2; usage               ;;
+    :)  error "option -${OPTARG} is missing an argument" 1;;
+    \?) error "unknown option: -${OPTARG}" 1;;
   esac
 done
 
 if [[ -e $filename ]]; then
   (( $force )) || read -r -s -n 1 -p "WARNING: File $filename already exists (press any key to continue) "
 else
-  (( ! $force )) && type $name > /dev/null 2>&1 && { echo "There is already a command with name $name" >&2; exit 1; }
-  [[ ! -e "$TEMPLATES_DIR/$template.tpl" ]] && { echo "There's no template for $template at $TEMPLATES_DIR/$template.tpl" >&2; exit 1; }
+  (( ! $force )) && type $name > /dev/null 2>&1 && error "there is already a command with name $name" 1
+  [[ ! -e "$TEMPLATES_DIR/$template.tpl" ]] && error "there's no template for $template at $TEMPLATES_DIR/$template.tpl" 1
   cp "$TEMPLATES_DIR/$template.tpl" "$filename"
   chmod u+x "$filename"
 fi
