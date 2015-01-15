@@ -1014,7 +1014,7 @@ endfunction
 " compress scripts and css files{{{
 let g:js_css_compress_disabled = 0
 function! JsCssCompress()
-  if g:js_css_compress_disabled
+  if exists("b:js_css_compress_disabled") ? b:js_css_compress_disabled : g:js_css_compress_disabled
     return
   endif
 
