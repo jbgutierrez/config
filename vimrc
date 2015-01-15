@@ -1160,8 +1160,8 @@ endfunction
 " insert timestamp {{{
 command! Timestamp :normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
 "}}}
-" extract dust partials {{{
-function! ExtractDustPartial() range abort
+" extract partials {{{
+function! ExtractPartial() range abort
   let fname = expand('%')
   let pname = input('Partial name: ', fnamemodify(fname, ":r"), 'file')
   if pname != '' && pname != fname
@@ -1176,7 +1176,26 @@ function! ExtractDustPartial() range abort
     let range = first.",".last
     let spaces = matchstr(getline(first),'^\s*')
     let partial = fnamemodify(pname,":r:s/views\|templates//")
-    let replacement = "{> \"".partial."\" /}"
+    let extension = fnamemodify(pname, ":e")
+
+    if extension == "dust"
+      let replacement = "{> \"".partial."\" /}"
+    elseif extension == "haml"
+      let replacement = "= render '".partial."'"
+    elseif extension ==  "slim"
+      let replacement = "== render '".partial."'"
+    elseif extension ==  "erb" || extension == "html"
+      let replacement = "<%= render '".partial."' %>"
+    elseif extension ==  "css"
+      let replacement = "@import url('".partial."');"
+    elseif extension ==  "scss"
+      let replacement = "@import '".partial."';"
+    elseif extension ==  "sass"
+      let replacement = "@import '".partial."'"
+    else
+      echoerr "Unsupported file type"
+      return
+    endif
 
     silent! exe range."yank"
     silent! exe "norm! :".first.",".last."change\<cr>".spaces.replacement."\<cr>.\<cr>"
@@ -1195,7 +1214,7 @@ function! ExtractDustPartial() range abort
     wincmd h
   endif
 endfunction
-vnoremap <leader>x :call ExtractDustPartial()<CR>
+vnoremap <leader>x :call ExtractPartial()<CR>
 "}}}
 "}}}
 
