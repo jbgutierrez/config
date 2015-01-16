@@ -719,8 +719,10 @@ let g:detectindent_preferred_indent=2
 au BufReadPost * :DetectIndent
 "}}}
 "}}}
-" vim-json {{{
-let g:vim_json_syntax_conceal = 0
+" ExtractPartial {{{
+let g:extract_partials_templates = {
+      \ 'coffee': 'coffee %'
+      \ }
 "}}}
 "}}}
 
