@@ -19,6 +19,7 @@ Bundle 'editorconfig/editorconfig-vim'
 Bundle 'einars/js-beautify'
 Bundle 'ervandew/supertab.git'
 Bundle 'godlygeek/tabular.git'
+Bundle 'jbgutierrez/vim-partial.git'
 Bundle 'jbgutierrez/vim-gtd.git'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'jimmyhchan/dustjs.vim'
@@ -1156,60 +1157,6 @@ endfunction
 "}}}
 " insert timestamp {{{
 command! Timestamp :normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
-"}}}
-" extract partials {{{
-function! ExtractPartial() range abort
-  let fname = expand('%')
-  let pname = input('Partial name: ', fnamemodify(fname, ":r"), 'file')
-  if pname != '' && pname != fname
-
-    let first = a:firstline
-    let last = a:lastline
-    let range = first.",".last
-    let spaces = matchstr(getline(first),'^\s*')
-    let partial = fnamemodify(pname,":r:s/views\|templates//")
-    let extension = fnamemodify(pname, ":e")
-
-    let templates = {
-          \   'css'  : "@import url('%s');" ,
-          \   'dust' : '{> "%s" /}'         ,
-          \   'erb'  : "<%= render '%s' %>" ,
-          \   'haml' : "= render '%s'"      ,
-          \   'html' : "<%= render '%s' %>" ,
-          \   'sass' : "@import '%s'"       ,
-          \   'scss' : "@import '%s';"      ,
-          \   'slim' : "== render '%s'"
-          \ }
-    if ! has_key(templates, extension)
-      echoerr "Unsupported file type"
-      return
-    endif
-    let template = templates[extension]
-
-    let buf = @@
-    let ai = &ai
-    let &ai = 0
-    set splitright
-
-    let replacement = printf(template, partial)
-    silent! exe range."yank"
-    silent! exe "norm! :".first.",".last."change\<cr>".spaces.replacement."\<cr>.\<cr>"
-
-    vnew
-    silent! put
-    0delete
-    if spaces != ""
-      silent! exe '%substitute/^'.spaces.'//'
-    endif
-    silent! exe "w! ".pname
-
-    let &ai = ai
-    let @@ = buf
-    set nosplitright
-    wincmd h
-  endif
-endfunction
-vnoremap <leader>x :call ExtractPartial()<CR>
 "}}}
 "}}}
 
