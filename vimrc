@@ -673,9 +673,6 @@ nmap         ++  vip++"}}}
 " Surround {{{
 let b:surround_45 = "<!-- \r -->"
 let b:surround_61 = "<!--= \r -->""}}}
-" SplitJoin {{{
-let g:splitjoin_split_mapping = 'cS'
-let g:splitjoin_join_mapping  = 'cJ'"}}}
 " Rainbow {{{
 let g:rainbow_active = 1
 let g:rainbow_conf = {
