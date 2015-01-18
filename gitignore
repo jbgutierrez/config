@@ -3,6 +3,7 @@
 .bundle
 .sass-cache
 TODO
+TODO.gtd
 bower_components
 components
 config/*.yml
