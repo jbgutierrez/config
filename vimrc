@@ -1166,13 +1166,10 @@ if filereadable('.vimrc.local')
   source .vimrc.local
 endif
 "}}}
-" slow code {{{
-" :profile start profile.log
-" :profile func *
-" :profile file *
-" " At this point do slow actions
-" :profile pause
-" :noautocmd qall!
+" profile slow code {{{
+" vim --startuptime startuptime.log
+command! StartProfile :profile start /tmp/profile.log | profile func * | profile file *<CR>
+command! StopProfile :profile pause | e /tmp/profile.log
 " }}}
 " export mappings {{{
 function! ExportMappings()
