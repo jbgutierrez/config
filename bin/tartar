@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+usage() {
+  cat <<END
+usage: tartar file [dir]
+
+description
+-----------
+tartar tries to handle compression commands in an intelligent way
+
+- tartar file; will uncompress the file in current directory
+- tartar file dir; will compress the directory dir into file
+
+note that compression algorithm will be infered by the input file extension
+
+END
+}
+
+error() {
+  echo -e "error: $1\n"
+  usage
+  exit $2
+} >&2
+
+debug() {
+  return
+  echo -e "debug: $1\n"
+} >&2
+
+file=$1
+dir=$2
+operation=
+
+[ $# -eq 1 ] || [ $# -eq 2 ] || error "incorrect number of parameters" 1
+
+if [[ -n $dir ]]; then
+  [[ -d $dir ]] || error "$dir not found" 1
+  [[ ! -f $file ]] || error "$file exists" 1
+  operation="c"
+else
+  [[ -f $file ]] || error "$file not found" 1
+  operation="x"
+fi
+
+case $file in
+  *.tgz|*.gz|*.gzip)
+    zip="z"
+    debug "Using gzip";;
+  *.bz|*.bz2|*.bzip|*.bzip2)
+    zip="j"
+    debug "Using bzip2";;
+  *.Z)
+    zip="Z"
+    debug "Using compress";;
+  *.tar)
+    zip=""
+    debug "No compression used";;
+  *)
+    error "Unknown extension: $file" 1;;
+esac
+
+command="tar ${operation}${zip}f $file"
+[[ $dir ]] && command="$command $dir"
+
+! $command && error "error: tar exited with status $?" 1
+
+exit 0
