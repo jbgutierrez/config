@@ -454,6 +454,16 @@ nnoremap <leader>d viwu
 nnoremap & :&&<CR>
 xnoremap & :&&<CR>
 "}}}
+" always add the current file's directory to the path and tags list if not {{{
+" already there. add it to the beginning to speed up searches.
+let s:default_path = escape(&path, '\ ') " store default value of 'path'
+autocmd BufRead *
+      \ let s:tempPath=escape(escape(expand("%:p:h"), ' '), '\ ') |
+      \ exec "set path-=".s:tempPath |
+      \ exec "set path-=".s:default_path |
+      \ exec "set path^=".s:tempPath |
+      \ exec "set path^=".s:default_path
+"}}}
 " search{{{
 function! Ag(args)
   try
