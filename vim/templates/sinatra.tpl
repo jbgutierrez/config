@@ -4,15 +4,18 @@ require 'bundler/setup'
 
 require "sinatra/base"
 require "sinatra/reloader"
+require 'sinatra/contrib'
 require "haml"
 require "json"
 
 # PWD = File.dirname(__FILE__)
 class Server < Sinatra::Application
+  register Sinatra::Contrib::All
   # set :public_folder, PWD
   # set :views, PWD
   set :haml, format: :html5
   enable :inline_templates
+  enable :cross_origin
 
   configure :development do
     disable :protection
@@ -26,20 +29,11 @@ class Server < Sinatra::Application
     end
   end
 
-  helpers do
-    def json object
-      logger.info object.to_json
-      content_type :json
-      object.to_json
-    end
-  end
-
   get '/' do
     locals = { message: 'Hello World!' }
-    if request.xhr?
-      json locals
-    else
-      haml :index, locals: locals
+    respond_to do |format|
+      format.html { haml :index, locals: locals, layout: !request.xhr? }
+      format.json { locals.to_json }
     end
   end
 
@@ -59,8 +53,10 @@ __END__
     %meta{:content => "", :name => "description"}/
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}/
     %link{:href => "https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.css", :rel => "stylesheet"}/
-    %link{:href => "main.css", :rel => "stylesheet"}/
-    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"}
+    %link{:href => "app.css", :rel => "stylesheet"}/
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"}/
+    - if content_for? :head
+      = yield_content :head
   %body
     /[if lt IE 8]
       <p class="browserupgrade">
@@ -69,8 +65,12 @@ __END__
       your experience.
       </p>
     = yield
-    %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"}
-    %script{:src => "main.js"}
+    %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"}/
+    %script{:src => "app.js"}/
 
 @@ index
+
+- content_for :head do
+  %link{:href => "index.css", :rel => "stylesheet"}/
+
 %div= message
