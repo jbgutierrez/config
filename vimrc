@@ -67,7 +67,8 @@ set viminfo='20,<50,s10 " read/write a .viminfo file, don't store more
 set history=1000        " keep 100 lines of command line history
 set undolevels=1000     " keep last 1000 undo changes
 set ruler               " show the cursor position all the time
-set nonumber            " hide line numbers
+set number              " show line numbers
+set relativenumber      " show line numbers relative to the current line
 set scrolloff=10        " leave 10 lines of breathing room
 set title               " show title
 set hidden              " allows changing of buffers without saving
