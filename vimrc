@@ -38,6 +38,7 @@ Bundle 'scrooloose/syntastic.git'
 Bundle 'sheerun/vim-polyglot'
 Bundle 'sjl/gundo.vim.git'
 " Bundle 'skammer/vim-css-color.git'
+Bundle 'greyblake/vim-preview'
 Bundle 'tomtom/tcomment_vim.git'
 Bundle 'tpope/vim-abolish'
 " Bundle 'tpope/vim-commentary'
@@ -579,7 +580,7 @@ function! RemoveRubyEval() range
   " set nolz
   redraw
 endfunction"}}}
-" testing one-off scripts {{{
+" testing one-off scripts and markup files {{{
 let ft_stdout_mappings = {
       \'applescript': 'osascript',
       \'bash': 'bash',
@@ -599,7 +600,7 @@ let ft_stdout_mappings = {
       \'spice': 'ngspice'
       \}
 for ft_name in keys(ft_stdout_mappings)
-  execute 'autocmd Filetype ' . ft_name . ' nnoremap <buffer> <C-e> :write !'
+  execute 'autocmd Filetype ' . ft_name . ' nnoremap <buffer> <c-e> :write !'
         \. ft_stdout_mappings[ft_name] . '<CR>'
 endfor
 
@@ -614,6 +615,7 @@ for ft_name in keys(ft_execute_mappings)
         \. ' nnoremap <buffer> <C-e> :write \| !'
         \. ft_execute_mappings[ft_name] . '<CR>'
 endfor
+nmap <c-e> :Preview<CR>
 "}}}
 " resize stacked windows {{{
 au BufEnter * :wincmd _
