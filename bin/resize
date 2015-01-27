@@ -11,6 +11,7 @@ usage: resize FILE_OR_FOLDER [options]
     -a adjust     Only files within the adjusted date will be resized. See 'man date' val[ymwdHMS] (default 1m)
     -t tool       Compression tool: jpegoptim, mozjpeg or imagemagick (default: imagemagick)
     -r            Losslessly shrink JPEG file with JPEGrescan (default: 0)
+    -d            Attach info to filename
 
 END
   exit 1
@@ -32,10 +33,12 @@ quality=75
 widths="2560 1920 1024 560"
 tool='imagemagick'
 rescan=0
+debug=0
 
-while getopts ":w:q:a:t:r" opt; do
+while getopts ":w:q:a:t:rd" opt; do
   case $opt in
     a)  adjust=$OPTARG  ;;
+    d)  debug=1         ;;
     q)  quality=$OPTARG ;;
     r)  rescan=1        ;;
     t)  tool=$OPTARG    ;;
@@ -60,7 +63,10 @@ mkdir -p $dir || { echo "Could not create $dir." >&2; exit 1; }
 
 for file in $files; do
   for width in $widths; do
-    resized_file="${file/.jpg/}_${tool}_q${quality}_w${width}.jpg"
+    resized_file="${file/.jpg/}_${width}.jpg"
+    if (( $debug )); then
+      resized_file="${file/.jpg/}_${tool}_q${quality}_w${width}.jpg"
+    fi
     echo "generating $resized_file"
     case $tool in
       "jpegoptim")   `convert -resize $width $file jpg:- | jpegoptim -q -p -f --max=$quality --strip-all --stdout --stdin > $dir/$resized_file` ;;
@@ -68,9 +74,13 @@ for file in $files; do
       "imagemagick") `convert -quality $quality -resize $width $file $dir/$resized_file`                                                        ;;
     esac
     if (( $rescan )); then
-      optimized_file="${file/.jpg/}_${tool}+rescan_q${quality}_w${width}.jpg"
-      echo "generating $optimized_file"
-      `jpegrescan -q -s -i $dir/$resized_file $dir/$optimized_file`
+      optimized_file=$resized_file
+      if (( $debug )); then
+        optimized_file="${file/.jpg/}_${tool}+rescan_q${quality}_w${width}.jpg"
+      fi
+      echo "optimizing $optimized_file"
+      `mv $dir/$resized_file /tmp`
+      `jpegrescan -q -s -i /tmp/$resized_file $dir/$optimized_file`
     fi
   done
 done
