@@ -19,9 +19,12 @@ END
 type "convert" > /dev/null 2>&1 || { echo "Please install imagemagick first" >&2; exit 1; }
 [[ $# -ge 1 ]] || { echo -e "Incorrect number of parameters\n" >&2; usage; }
 
-files=$1
-[[ -e $files ]] || { echo -e "resize: $files: No such file or directory\n" >&2; usage; }
-shift
+files=''
+while [[ ! $1 =~ ^\- ]]; do
+  [[ -e $1 ]] || { echo -e "resize: $1: No such file or directory\n" >&2; usage; }
+  files="$files $1"
+  shift
+done
 
 adjust=""
 dir="resized"
