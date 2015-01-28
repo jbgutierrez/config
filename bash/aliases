@@ -71,6 +71,10 @@ alias md='mkdir -p'
 cdh(){
   cd "$home/$1"
 }
+# Change working directory to the top-most Finder window location
+cdfinder() {
+  cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
+}
 alias c='clear'
 alias ..='cd ..'   # up one dir
 alias cd..='cd ..'   # up one dir
