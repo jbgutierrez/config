@@ -203,8 +203,36 @@ psport() {
   sudo lsof -i :$1
 }
 
-# Finder
-alias o='open . &'
+# `o` with no arguments opens the current directory in Finder, otherwise opens
+# the given location
+o() {
+  if [ $# -eq 0 ]; then
+    open .;
+  else
+    open "$@";
+  fi;
+}
+
+# `e` with no arguments opens the current directory in Vim, otherwise
+# opens the given location
+e() {
+  if [ $# -eq 0 ]; then
+    vim .;
+  else
+    vim "$@";
+  fi;
+}
+
+# `s` with no arguments opens the current directory in Sublime Text, otherwise
+# opens the given location
+esubl() {
+  if [ $# -eq 0 ]; then
+    subl .;
+  else
+    subl "$@";
+  fi;
+}
+
 alias ff='open -a Firefox'
 alias chrome='open -a "Google Chrome"'
 
