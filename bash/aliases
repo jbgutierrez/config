@@ -86,7 +86,9 @@ take() {
 }
 alias q='exit'
 
-alias treef="tree . -I '*node_modules*|*output*|*components*|*vendor*'"
+tre() {
+  tree -aC -I '.git|node_modules|output|components|vendor|bower_components' --dirsfirst "$@" | less -FRX;
+}
 
 # start/stop postgresql
 alias postgres_start='pg_ctl -d /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
