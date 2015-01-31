@@ -242,7 +242,11 @@ alias chrome='open -a "Google Chrome"'
 alias clean='find . -name *.DS_Store -type f -exec rm {} \;'
 
 # Instant web sharing via webrick
-alias webshare='ruby -run -e httpd . --port 8080 --bind-address=0.0.0.0'
+webshare() {
+  port=8080
+  (( $1 )) && port=$1
+  ruby -run -e httpd . --port $port --bind-address=0.0.0.0
+}
 
 # Social activity
 tweet() {
