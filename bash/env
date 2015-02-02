@@ -17,6 +17,9 @@ export PATH=.:./bin:~/.bin:$PATH
 # Perl brew
 # source ~/perl5/perlbrew/etc/bashrc
 
+# Heroku Toolbelt
+export PATH=/usr/local/heroku/bin:$PATH
+
 # Adding an appropriate MANPATH variable for use with Homebrew
 export MANPATH=/usr/local/share/man:$MANPATH
 
