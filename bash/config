@@ -61,8 +61,3 @@ complete -o default -o nospace -F rakecomplete rake
 # alias ls='ls -F --color=tty --show-control-chars'
 # export LANG="es_ES"
 # export OUTPUT_CHARSET="es_ES"
-
-# Ruby version manager
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
-export PATH=./bin:~/bin:$PATH
