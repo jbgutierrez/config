@@ -8,17 +8,17 @@ export EDITOR='vim -f'
 # Adding an appropriate PATH variable for use with Homebrew
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
-# Adding an appropriate PATH variable for use with npm packages
-export PATH=/usr/local/share/npm/bin:$PATH
-
-# User utilities
-export PATH=.:./bin:~/.bin:$PATH
-
 # Perl brew
 # source ~/perl5/perlbrew/etc/bashrc
 
 # Heroku Toolbelt
 export PATH=/usr/local/heroku/bin:$PATH
+
+# npm modules
+export PATH=~/node_modules/.bin:./node_modules/.bin:$PATH
+
+# User utilities
+export PATH=.:./bin:~/.bin:$PATH
 
 # Adding an appropriate MANPATH variable for use with Homebrew
 export MANPATH=/usr/local/share/man:$MANPATH
