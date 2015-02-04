@@ -31,3 +31,8 @@ export RUBY_GC_HEAP_FREE_SLOTS=200000
 
 # Ruby version manager
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+# Node version manager
+export NVM_SYMLINK_CURRENT=1
+export NVM_DIR="/Users/jbgutierrez/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
