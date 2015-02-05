@@ -34,5 +34,5 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 # Node version manager
 export NVM_SYMLINK_CURRENT=1
-export NVM_DIR="/Users/jbgutierrez/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+export NVM_DIR=~/.nvm
+[ -s $NVM_DIR/nvm.sh ] && . $NVM_DIR/nvm.sh
