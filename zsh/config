@@ -1,133 +1,46 @@
-# show elapsed time if command took more than X seconds
-REPORTTIME=10
+export ZSH=~/.oh-my-zsh
 
-# ask to complete if top of list would scroll off screen
-LISTMAX=0
+REPORTTIME=10 # show elapsed time if command took more than X seconds
+LISTMAX=0     # ask to complete if top of list would scroll off screen
+KEYTIMEOUT=1  # reduce delay between mode changes from 0.4 (default) to 0.1 seconds
+WORDCHARS=${WORDCHARS//[&=\/;\!#%\{]} # make CTRL-W delete after other chars, not just spaces
 
-# reduce delay between mode changes from 0.4 (default) to 0.1 seconds
-KEYTIMEOUT=1
+# Path to your oh-my-zsh installation.
+ZSH_THEME="kolo"
 
-# command history configuration
-HISTFILE=$HOME/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
+# wc -l **/*.zsh | sort -n | tail -c 3000
+plugins=(
+  brew
+  frontend-search
+  git
+  history-substring-search
+  node
+  npm
+  osx
+  sudo
+  tmux
+)
 
-# make CTRL-W delete after other chars, not just spaces
-WORDCHARS=${WORDCHARS//[&=\/;\!#%\{]}
-
-# make with the pretty colors
-autoload -U colors; colors
-
-for COLOR in RED GREEN YELLOW MAGENTA; do
-  eval PR_$COLOR='%{$fg[${(L)COLOR}]%}'
-  eval PR_BRIGHT_$COLOR='%{$fg_bold[${(L)COLOR}]%}'
-done
-PR_RESET="%{${reset_color}%}";
-
-PROMPT='${PR_MAGENTA}$(date +%H:%M) %~ $(git_info)${PR_RESET}
-→ '
-RPROMPT='%U${PR_WHITE}$(git_log)%u${PR_RESET}${vi_mode}'
-
-vi_ins_mode=""
-vi_cmd_mode="[CMD]"
-vi_mode=$vi_ins_mode
-
-zle-keymap-select() {
-  vi_mode="${${KEYMAP/vicmd/${vi_cmd_mode}}/(main|viins)/${vi_ins_mode}}"
-  zle reset-prompt
-}
-zle -N zle-keymap-select
-
-zle-line-finish() {
-  vi_mode=$vi_ins_mode
-}
-zle -N zle-line-finish
-
-# turn on command substitution in the prompt
-setopt prompt_subst
-
-refresh_git_status() {
-  unstaged=false staged=false stashed=false
-  if [[ $(git diff --ignore-submodules=dirty --cached --name-status 2>/dev/null ) != "" ]]; then
-    staged=true
-  fi
-  if [[ $(git diff --ignore-submodules=dirty --name-status 2>/dev/null ) != "" ]]; then
-    unstaged=true
-  fi
-  if [[ $(git stash list) != "" ]]; then
-    stashed=true
-  fi
-}
-
-git_info() {
-  branch_name=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
-  if [[ ${branch_name} != "" ]]; then
-    refresh_git_status
-    status_color=${PR_GREEN}
-    if ${staged}; then
-      status_color=${PR_YELLOW}
-      if ${unstaged}; then
-        branch_name+=${PR_RED}' + unstaged data'
-      fi
-    elif ${unstaged}; then
-      status_color=${PR_RED}
-    fi
-    if ${stashed}; then
-      branch_name+=${PR_RED}' + stashed commit'
-    fi
-    echo "${status_color}[${branch_name}${status_color}] "
-  fi
-}
-
-git_log() {
-  git log --pretty=format:"%h - %ar : %s" -n 1 2> /dev/null
-}
-
-# show a message with the exit code when a command returns with a non-zero exit code
-setopt print_exit_value
+files=(
+  oh-my-zsh.sh
+  lib/history.zsh
+  lib/completion.zsh
+  lib/directories.zsh
+  lib/misc.zsh
+)
+for file in $files; do source $ZSH/$file; done
 
 # don't want to be corrected
 unsetopt correct
 unsetopt correctall
 
-setopt                                       \
-  append_history                             \
-  extended_history                           \
-  hist_expire_dups_first                     \
-  hist_ignore_dups                           \
-  hist_ignore_space                          \
-  hist_verify                                \
-  inc_append_history                         \
-  share_history
+setopt              \
+  extended_glob     \
+  prompt_subst      \
+  autocd            \
+  print_exit_value
 
-# globbing on steroids
-setopt extended_glob
-
-# other tabbing options
-# setopt no_auto_menu
-# setopt bash_auto_list
-
-# quote pasted URLs
-autoload url-quote-magic
-zle -N self-insert url-quote-magic
-
-# load completions for Ruby, Git, etc.
-autoload compinit; compinit
-
-# multiple move
-autoload zmv
-
-# typing a directory name as a command changes into it
-setopt autocd
-
-# make cd push the old directory onto the directory stack
-setopt autopushd
-
-# completion for kill-like commands
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm -w -w"
-zstyle ':completion:*:ssh:*' tag-order hosts users
-zstyle ':completion:*:ssh:*' group-order hosts-domain hosts-host users hosts-ipaddr
+autoload zmv # multiple move
 
 # Vi mode
 bindkey -v
@@ -139,9 +52,9 @@ bindkey '^N' down-history
 # ctrl-w removed word backwards
 bindkey '^w' backward-kill-word
 
-# ctrl-r starts searching history backward
-bindkey '^r' history-incremental-search-backward
-bindkey '^f' history-incremental-search-forward
+# ctrl-r starts searching patterns on history backwards
+bindkey '^r' history-incremental-pattern-search-backward
+bindkey '^f' history-incremental-pattern-search-forward
 
 # undo/redo
 bindkey -M vicmd 'u' undo
@@ -154,6 +67,10 @@ bindkey -M viins '^e' end-of-line
 bindkey -M vicmd '^e' end-of-line
 bindkey -M viins '^k' kill-line
 bindkey -M vicmd '^k' kill-line
+
+# bind k and j for VI mode
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 
 # ruby version manager
 if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
