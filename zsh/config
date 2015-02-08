@@ -6,7 +6,8 @@ KEYTIMEOUT=1  # reduce delay between mode changes from 0.4 (default) to 0.1 seco
 WORDCHARS=${WORDCHARS//[&=\/;\!#%\{]} # make CTRL-W delete after other chars, not just spaces
 
 # Path to your oh-my-zsh installation.
-ZSH_THEME="kolo"
+ZSH_THEME="jbgutierrez"
+ZSH_CUSTOM=~/.zsh
 
 # wc -l **/*.zsh | sort -n | tail -c 3000
 plugins=(
