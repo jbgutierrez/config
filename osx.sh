@@ -32,6 +32,15 @@ defaults write NSGlobalDomain KeyRepeat -int 0
 echo "Set a shorter Delay until key repeat"
 defaults write NSGlobalDomain InitialKeyRepeat -int 12
 
+echo "Disable gatekeeper"
+sudo spctl --master-disable
+sudo defaults write /var/db/SystemPolicy-prefs.plist enabled -string no
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+echo "Require password immediately after sleep"
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 0
+
 echo "###############################################################################"
 echo "# Finder                                                                      #"
 echo "###############################################################################"
@@ -56,6 +65,28 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
 echo "Show the ~/Library folder"
 chflags nohidden ~/Library
+
+echo "Default to using expanded save view"
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+
+echo "Remove duplicates in the Open With menu"
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
+
+echo "Allow text selection in Quick Look/Preview in Finder by default"
+defaults write com.apple.finder QLEnableTextSelection -bool true
+
+echo "###############################################################################"
+echo "# Trackpad, mouse, keyboard, Bluetooth accessories, and input"
+echo "###############################################################################"
+
+echo "Enabling full keyboard access for all controls (e.g. enable Tab in modal dialogs)"
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+echo "Disable press-and-hold for keys in favor of a key repeat"
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+echo "Disable auto correct"
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
 echo "###############################################################################"
 echo "# Dock                                                                        #"
@@ -88,6 +119,7 @@ sudo tmutil disablelocal
 
 echo "Remove the auto-hiding Dock delay"
 defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -float 1
 
 echo "Automatically hide and show the Dock"
 defaults write com.apple.dock autohide -bool true
@@ -97,7 +129,7 @@ echo "# Spotlight                                                               
 echo "###############################################################################"
 
 echo "Hide Spotlight tray-icon (and subsequent helper)"
-echo "sudo chmod 600 /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search"
+sudo chmod 600 /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search
 echo "Disable Spotlight indexing for any volume that gets mounted and has not yet"
 echo "been indexed before."
 echo "Use `sudo mdutil -i off "/Volumes/foo"` to stop indexing any volume."
@@ -129,6 +161,21 @@ sudo mdutil -i on / > /dev/null
 echo "Rebuild the index from scratch"
 sudo mdutil -E / > /dev/null
 
+
+echo "###############################################################################"
+echo "# Safari                                                                      #"
+echo "###############################################################################"
+defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
+defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
+echo "###############################################################################"
+echo "# Xcode License"
+echo "###############################################################################"
+
+sudo xcodebuild -license
 
 echo "###############################################################################"
 echo "# Activity Monitor                                                            #"
