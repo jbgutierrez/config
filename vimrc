@@ -149,7 +149,8 @@ set guioptions-=R
 set guioptions-=l
 set guioptions-=R
 
-function! OverrideColorScheme()
+function! TweekColorScheme()
+  " tweek default highlighting groups (:help highlight-groups)
   hi Pmenu        ctermbg=238
   " hi DiffAdd      ctermbg=151
   " hi DiffChange   ctermbg=187
@@ -160,18 +161,18 @@ function! OverrideColorScheme()
   hi Folded       cterm=bold cterm=bold
   hi ColorColumn ctermfg=0 ctermbg=1 guifg=White guibg=Red
   " ShowMarks support, better looking SignColumn
-  hi! link SignColumn   LineNr
-  hi! link ShowMarksHLl DiffAdd
-  hi! link ShowMarksHLu DiffChange
+  hi clear SignColumn
+  hi link ShowMarksHLl DiffAdd
+  hi link ShowMarksHLu DiffChange
 endfunction
 
-if !has("gui_running")
-  set term=screen-256color
-endif
+set term=screen-256color
 set background=dark
+hi clear
+syntax reset
+au! ColorScheme * call TweekColorScheme()
 let g:solarized_termtrans = 1
-colorscheme solarized " check colorschemes at http://bytefluent.com/vivify/
-au ColorScheme * call OverrideColorScheme()
+let g:colors_name = 'solarized' " check colorschemes at http://bytefluent.com/vivify/
 
 set nospell
 set cursorcolumn
@@ -310,12 +311,11 @@ au BufReadPost * :DetectIndent
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 "}}}
 " show extra whitespace as error {{{
-highlight ExtraWhitespace ctermbg=red guibg=red
 augroup WhitespaceMatch
   " Remove ALL autocommands for the WhitespaceMatch group.
   autocmd!
-  autocmd BufWinEnter * let w:whitespace_match_number =
-        \ matchadd('ExtraWhitespace', '\s\+$')
+  hi ExtraWhitespace ctermbg=red guibg=red
+  autocmd BufWinEnter * let w:whitespace_match_number = matchadd('ExtraWhitespace', '\s\+$')
   autocmd InsertEnter * call s:ToggleWhitespaceMatch('i')
   autocmd InsertLeave * call s:ToggleWhitespaceMatch('n')
 augroup END
