@@ -57,3 +57,5 @@
 	autosetuprebase = always # To default all new branches to fetch and rebase - not merge
 [credential]
 	helper = osxkeychain
+[github]
+	user = jbgutierrez

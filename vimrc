@@ -23,12 +23,14 @@ Bundle 'jbgutierrez/vim-partial.git'
 Bundle 'jbgutierrez/vim-gtd.git'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'jimmyhchan/dustjs.vim'
+Bundle 'mattn/webapi-vim'
 Bundle 'kana/vim-textobj-user.git'
 Bundle 'kien/ctrlp.vim'
 Bundle 'luochen1990/rainbow'
 Bundle 'majutsushi/tagbar'
 Bundle 'maksimr/vim-jsbeautify.git'
 Bundle 'mattn/emmet-vim'
+Bundle 'mattn/gist-vim'
 " Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'nelstrom/vim-textobj-rubyblock.git'
 " Bundle 'nixon/vim-vmath'
@@ -676,6 +678,13 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 "}}}
 " Fugitive {{{
 autocmd BufReadPost fugitive://* set bufhidden=delete
+"}}}
+" Gist {{{
+let g:gist_clip_command = 'pbcopy'
+let g:gist_show_privates = 1
+let g:gist_detect_filetype = 1
+let g:gist_post_private = 1
+map <leader>p :Gist -c<CR>
 "}}}
 " SplitJoin {{{
 let g:splitjoin_split_mapping = 'gS'
