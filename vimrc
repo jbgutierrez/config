@@ -20,6 +20,7 @@ Bundle 'einars/js-beautify'
 Bundle 'ervandew/supertab.git'
 Bundle 'godlygeek/tabular.git'
 Bundle 'jbgutierrez/vim-partial.git'
+Bundle 'gregsexton/gitv'
 Bundle 'jbgutierrez/vim-gtd.git'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'jimmyhchan/dustjs.vim'
@@ -668,6 +669,11 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 "}}}
 " Fugitive {{{
 autocmd BufReadPost fugitive://* set bufhidden=delete
+"}}}
+" Gitv {{{
+nmap <leader>gv :Gitv --all<cr>
+nmap <leader>gV :Gitv! --all<cr>
+vmap <leader>gV :Gitv! --all<cr>
 "}}}
 " Gist {{{
 let g:gist_clip_command = 'pbcopy'
