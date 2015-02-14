@@ -47,6 +47,7 @@ Bundle 'tpope/vim-abolish'
 " Bundle 'tpope/vim-commentary'
 " Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-endwise.git'
+Bundle 'tpope/vim-eunuch'
 Bundle 'tpope/vim-fugitive.git'
 " Bundle 'tpope/vim-ragtag.git'
 Bundle 'tpope/vim-rails.git'
@@ -502,29 +503,6 @@ nnoremap <A-tab> :bn<CR>
 nnoremap <A-S-tab> :bp<CR>
 nnoremap <leader>d :Bclose<CR>
 nnoremap <leader>D :bufdo bd<CR>
-"}}}
-" rename file {{{
-function! RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
-    redraw!
-  endif
-endfunction
-noremap <leader>n :call RenameFile()<cr>
-"}}}
-" copy file{{{
-function! CopyFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    redraw!
-  endif
-endfunction
-noremap <leader>c :call CopyFile()<cr>
 "}}}
 " make search results appear in the middle of the screen{{{
 nnoremap n :set hlsearch<cr>nzz
@@ -1175,6 +1153,17 @@ endfunction
 "}}}
 " insert timestamp {{{
 command! Timestamp :normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
+"}}}
+" copy file{{{
+function! s:copy()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    redraw!
+  endif
+endfunction
+command! Copy call s:copy()
 "}}}
 "}}}
 
