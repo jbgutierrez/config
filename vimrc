@@ -19,9 +19,10 @@ Bundle 'editorconfig/editorconfig-vim'
 Bundle 'einars/js-beautify'
 Bundle 'ervandew/supertab.git'
 Bundle 'godlygeek/tabular.git'
-Bundle 'jbgutierrez/vim-partial.git'
 Bundle 'gregsexton/gitv'
+Bundle 'greyblake/vim-preview'
 Bundle 'jbgutierrez/vim-gtd.git'
+Bundle 'jbgutierrez/vim-partial.git'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'jimmyhchan/dustjs.vim'
 Bundle 'mattn/webapi-vim'
@@ -41,7 +42,6 @@ Bundle 'scrooloose/syntastic.git'
 Bundle 'sheerun/vim-polyglot'
 Bundle 'sjl/gundo.vim.git'
 " Bundle 'skammer/vim-css-color.git'
-Bundle 'greyblake/vim-preview'
 Bundle 'tomtom/tcomment_vim.git'
 Bundle 'tpope/vim-abolish'
 " Bundle 'tpope/vim-commentary'
@@ -80,6 +80,7 @@ set lazyredraw          " Set lazydraws so that rendering is much faster during 
 set showmode            " I like to know which mode I am in at times
 set showcmd             " show the command being typed
 set showmatch           " show matching brackets
+set matchtime=0         " don't blick when matching"
 set list                " show whitespace
 set listchars=tab:▸\ ,eol:¬,trail:.  "use the same symbols as TextMate for tabstops and EOLs
 set hidden
@@ -274,7 +275,6 @@ au! FileType javascript inoremap <buffer> :f : function(){<esc>o<cr>},<esc>ki<ta
 au FileType javascript inoremap <buffer> :<space> : ,<left>
 au FileType javascript inoremap <buffer> f<tab> <esc>:AutoCloseOff<cr>afunction(){  }<left><esc>:AutoCloseOn<cr>i
 au FileType javascript inoremap <buffer> ;; <esc>ma$a;<esc>`aa
-au FileType javascript noremap <leader>p  :%!python -m json.tool<CR>
 "}}}
 " diff{{{
 au! FileType diff setlocal fdm=expr
@@ -1164,6 +1164,9 @@ function! s:copy()
   endif
 endfunction
 command! Copy call s:copy()
+"}}}
+" JSONPretty {{{
+command! JSONPretty %!python -m json.tool
 "}}}
 "}}}
 
