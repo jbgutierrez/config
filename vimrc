@@ -580,6 +580,8 @@ endfor
 
 let ft_execute_mappings = {
       \'c': 'gcc -o %:r -Wall -std=c99 % && ./%:r',
+      \'cpp': 'xcrun g++ % -o %:r && ./%:r',
+      \'java': 'javac % && java %:r',
       \'coffee': 'coffee %',
       \'erlang': 'escript %',
       \'pascal': 'fpc % && ./%:r'
