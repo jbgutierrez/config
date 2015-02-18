@@ -87,7 +87,7 @@ take() {
 alias q='exit'
 
 tre() {
-  tree -aC -I '.git|node_modules|output|components|vendor|bower_components' --dirsfirst "$@" | less -FRX;
+  tree -aC -I '.git|node_modules|output|components|vendor|bower_components|.sass-cache' --dirsfirst "$@" | less -FRX;
 }
 
 # start/stop postgresql
