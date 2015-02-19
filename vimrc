@@ -692,6 +692,8 @@ let g:rainbow_conf = {
 let g:ctrlp_map = '<leader>t'
 let g:ctrlp_mruf_relative = 1
 let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+let g:ctrlp_use_caching = 0 " ag is fast enough that CtrlP doesn't need to cache
 "}}}
 " Unimpaired {{{
 nmap < [
