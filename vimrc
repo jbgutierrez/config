@@ -690,6 +690,14 @@ let g:ctrlp_map = '<leader>t'
 let g:ctrlp_mruf_relative = 1
 let g:ctrlp_cmd = 'CtrlPMixed'
 "}}}
+" Unimpaired {{{
+nmap < [
+nmap > ]
+omap < [
+omap > ]
+xmap < [
+xmap > ]
+"}}}
 "}}}
 
 " custom utility commands {{{
