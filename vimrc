@@ -611,8 +611,14 @@ let g:airline_powerline_fonts = 1
 let g:airline_inactive_collapse = 1
 "}}}
 " Syntastic {{{
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'"}}}
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+let g:syntastic_warning_symbol='⚠'
+"}}}
 " Tag List{{{
 let Tlist_Show_Menu=1
 let Tlist_GainFocus_On_ToggleOpen = 1      " Focus on the taglist when its toggled
