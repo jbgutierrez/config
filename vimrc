@@ -37,7 +37,6 @@ Bundle 'mattn/webapi-vim'
 Bundle 'nelstrom/vim-textobj-rubyblock.git'
 " Bundle 'nixon/vim-vmath'
 Bundle 'othree/javascript-libraries-syntax.vim'
-Bundle 'rking/ag.vim'
 Bundle 'scrooloose/syntastic.git'
 Bundle 'sheerun/vim-polyglot'
 Bundle 'sjl/gundo.vim.git'
@@ -460,28 +459,12 @@ autocmd BufRead *
       \ exec "set path^=".s:tempPath |
       \ exec "set path^=".s:default_path
 "}}}
-" search{{{
-function! Ag(args)
-  try
-    let grepprg_bak=&grepprg
-    let grepformat_bak=&grepformat
-    let &grepprg='ag --vimgrep'
-    let &grepformat="%f:%l:%c:%m"
-    let cmd='silent grep "' . escape(a:args, '|') . '" > /dev/null'
-    exe cmd
-    botright copen
-    " let @/=a:args
-    " set hlsearch
-    redraw!
-  finally
-    let &grepprg=grepprg_bak
-    let &grepformat=grepformat_bak
-  endtry
-endfunction
-
-command! -nargs=* -complete=file Ag call Ag(<q-args>)
+" faster grepping with ag {{{
+set grepprg=ag\ --vimgrep
+set grepformat=%f:%l:%c:%m
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 command! -complete=file TODOS :Ag '^[^\w]*\b(todo|fix|xxx)\b' -i
-command! GREP :execute 'vimgrep '.expand('<cword>').' '.expand('%') | :copen
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 "}}}
 " clear the search buffer when hitting return {{{
 nnoremap <cr> :set hlsearch! hlsearch?<cr>
