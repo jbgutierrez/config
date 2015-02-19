@@ -136,7 +136,9 @@ set enc=utf-8 nobomb
 set fileformats+=mac
 " set enc=iso-8859-1"}}}
 " spell checking{{{
-set spell spelllang=en " Z= to show suggestions
+set spell spelllang=en " Z= to show suggestions and zg to add words to the dictionary
+autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
+autocmd FileType gitcommit setlocal spell
 set spellsuggest=5"}}}
 " file backups{{{
 set nobackup      " Don't make a backup before overwriting a file.
