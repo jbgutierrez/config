@@ -507,6 +507,7 @@ nnoremap <A-tab> :bn<CR>
 nnoremap <A-S-tab> :bp<CR>
 nnoremap <leader>d :Bclose<CR>
 nnoremap <leader>D :bufdo bd<CR>
+nnoremap <leader><leader> :b#<CR>
 "}}}
 " make search results appear in the middle of the screen{{{
 nnoremap n :set hlsearch<cr>nzz
