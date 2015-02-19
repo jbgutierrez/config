@@ -283,7 +283,7 @@ au! FileType diff setlocal fdm=expr
 au FileType diff setlocal fde=DiffFoldLevel()
 au FileType diff setlocal fdc=1
 au FileType diff setlocal foldlevel=0
-au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=diff
+au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=gitcommit
 "}}}
 " coffescript{{{
 let coffee_compile_on_save = 0
