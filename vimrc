@@ -301,10 +301,6 @@ au! FileType python setlocal noexpandtab
 " load templates{{{
 au BufNewFile * silent! 0r $VIMHOME/templates/%:e.tpl
 "}}}
-" guess indent from buffer {{{
-let g:detectindent_preferred_indent=2
-au BufReadPost * :DetectIndent
-"}}}
 " jumps to the last known position in a file just after opening it, if the '" mark is set: > {{{
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 "}}}
@@ -702,6 +698,12 @@ omap < [
 omap > ]
 xmap < [
 xmap > ]
+"}}}
+" DetectIndent {{{
+" guess indent from buffer {{{
+let g:detectindent_preferred_indent=2
+au BufReadPost * :DetectIndent
+"}}}
 "}}}
 "}}}
 
