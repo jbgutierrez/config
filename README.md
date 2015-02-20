@@ -13,7 +13,7 @@ $ chsh -s $(which zsh)
 $ git clone https://github.com/jbgutierrez/config.git
 $ rake
 $ ./osx.sh
-$ vim -c "BundleInstall" -c "bufdo :q"
+$ vim +BundleInstall +qall
 ```
 
 ### Vim Plugin updates
