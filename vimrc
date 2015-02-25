@@ -511,6 +511,9 @@ nnoremap g# :set hlsearch<cr>g#zz
 nnoremap ' `
 nnoremap ` '
 "}}}
+" start an external command with a single bang {{{
+nnoremap ! :!
+"}}}
 " allow easy navigation between wrapped lines. {{{
 vmap j gj
 vmap k gk
