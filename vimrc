@@ -12,6 +12,7 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized.git'
 Bundle 'bcaccinolo/bclose'
 Bundle 'bling/vim-airline'
+Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'ciaranm/detectindent.git'
 " Bundle 'duff/vim-scratch.git'
 Bundle 'ecomba/vim-ruby-refactoring.git'
@@ -392,12 +393,8 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 " move text around{{{
 vnoremap <S-Tab> <gv
 vnoremap <Tab> >gv
-nnoremap <C-j> :m+<CR>==
-nnoremap <C-k> :m-2<CR>==
-" inoremap <C-j> <Esc>:m+<CR>==gi
-" inoremap <C-k> <Esc>:m-2<CR>==gi
-vnoremap <C-j> :m'>+<CR>gv=gv
-vnoremap <C-k> :m-2<CR>gv=gv
+vnoremap <c-j> :m'>+<cr>gv=gv
+vnoremap <c-k> :m-2<cr>gv=gv
 "}}}
 " shortcuts for rails commands{{{
 " noremap <leader>m :rmodel
