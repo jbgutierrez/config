@@ -661,6 +661,7 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 "}}}
 " Gitv {{{
+let g:Gitv_OpenHorizontal=1
 nmap <leader>gv :Gitv --all<cr>
 nmap <leader>gV :Gitv! --all<cr>
 vmap <leader>gV :Gitv! --all<cr>
