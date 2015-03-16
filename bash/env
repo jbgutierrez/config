@@ -43,3 +43,6 @@ export ARCHFLAGS="-arch x86_64"
 # Colorize source code
 export LESS=" -R"
 export LESSOPEN='|~/.bin/lessfilter %s'
+
+# Search for local and shared tex packages
+export TEXINPUTS=.:.tex//:~/.tex//:
