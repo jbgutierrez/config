@@ -53,9 +53,9 @@ bindkey '^N' down-history
 # ctrl-w removed word backwards
 bindkey '^w' backward-kill-word
 
-# ctrl-r starts searching patterns on history backwards
-bindkey '^r' history-incremental-pattern-search-backward
-bindkey '^f' history-incremental-pattern-search-forward
+# history searching
+bindkey '^r' history-incremental-search-backward
+bindkey '^f' history-incremental-search-forward
 
 # undo/redo
 bindkey -M vicmd 'u' undo
