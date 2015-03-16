@@ -90,6 +90,7 @@ take() {
   cd "$1"
 }
 alias q='exit'
+alias x='exit'
 
 tre() {
   tree -aC -I '.git|node_modules|output|components|vendor|bower_components|.sass-cache' --dirsfirst "$@" | less -FRX;
