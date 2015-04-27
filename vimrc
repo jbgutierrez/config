@@ -111,6 +111,7 @@ set wildmenu              " turn on command line completion wild style"}}}
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
+set shiftround     " round indent to multiple of 'shiftwidth'
 set smartindent    " use smart indentation over autoindent
 set smarttab       " smart tabulatin and backspace
 set expandtab      " To spaces to tabs 'set noexpandtab' and ':retab!'
