@@ -45,7 +45,7 @@ Bundle 'tomtom/tcomment_vim.git'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-bundler'
 " Bundle 'tpope/vim-commentary'
-" Bundle 'tpope/vim-dispatch'
+Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-endwise.git'
 Bundle 'tpope/vim-eunuch'
 Bundle 'tpope/vim-fugitive.git'
@@ -256,6 +256,15 @@ au FileType vim setlocal keywordprg=:help
 au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 au FileType ruby,eruby let g:rubycomplete_rails = 1
 au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+au FileType ruby
+     \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
+     \ if expand('%') =~# '_test\.rb$' |
+     \   let b:dispatch = 'testrb %' |
+     \ elseif expand('%') =~# '_spec\.rb$' |
+     \   let b:dispatch = 'rspec %' |
+     \ elseif !exists('b:dispatch') |
+     \   let b:dispatch = 'ruby -wc %' |
+     \ endif
 "}}}
 " XML{{{
 au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
