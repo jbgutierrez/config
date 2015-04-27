@@ -35,6 +35,11 @@ alias gresolve='git add -u && git rebase --continue'
 alias glmodules='git submodule foreach "(git checkout master; git pull)"'
 alias gcontributors='git shortlog -s -n'
 
+# npm aliases
+alias n="npm install && npm shrinkwrap"
+alias ng="npm list -g --depth=0 2>/dev/null"
+alias nl="npm list --depth=0 2>/dev/null"
+
 garchive() {
   git archive master | bzip2 >source-tree.tar.bz2
 }
