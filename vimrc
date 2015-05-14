@@ -621,6 +621,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_error_symbol='✗'
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 let g:syntastic_warning_symbol='⚠'
+let g:syntastic_scss_checkers = ['scss_lint']
 "}}}
 " Tag List{{{
 let Tlist_Show_Menu=1
