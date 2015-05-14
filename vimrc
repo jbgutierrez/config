@@ -17,6 +17,7 @@ Bundle 'ciaranm/detectindent.git'
 Bundle 'ecomba/vim-ruby-refactoring.git'
 Bundle 'editorconfig/editorconfig-vim'
 Bundle 'einars/js-beautify'
+Bundle 'elzr/vim-json'
 Bundle 'ervandew/supertab.git'
 Bundle 'godlygeek/tabular.git'
 Bundle 'gregsexton/gitv'
@@ -303,6 +304,11 @@ let coffee_compile_on_save = 0
 " au! BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
 au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 ":[RANGE] CoffeeCompile [watch|unwatch] [vert[ical]] [WINDOW-SIZE]
+"}}}
+" json {{{
+au BufNewFile,BufReadPost *.json  set filetype=json | :NoMatchParen
+au FileType setl noshowmatch nohlsearch nocursorcolumn norelativenumber nocursorline nowrap synmaxcol=100
+" foldmethod=syntax formatoptions=tcq2l
 "}}}
 " file types that require explicit tabs, and not spaces{{{
 au! FileType make   setlocal noexpandtab
@@ -707,6 +713,9 @@ xmap > ]
 let g:detectindent_preferred_indent=2
 au BufReadPost * :DetectIndent
 "}}}
+"}}}
+" vim-json {{{
+let g:vim_json_syntax_conceal = 0
 "}}}
 "}}}
 
