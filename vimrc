@@ -141,8 +141,8 @@ set fileformats+=mac
 " set enc=iso-8859-1"}}}
 " spell checking{{{
 set spell spelllang=en " Z= to show suggestions and zg to add words to the dictionary
-autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
-autocmd FileType gitcommit setlocal spell
+au BufRead,BufNewFile *.md,*.txt setlocal spell
+au FileType gitcommit setlocal spell
 set spellsuggest=5"}}}
 " file backups{{{
 set nobackup      " Don't make a backup before overwriting a file.
@@ -251,7 +251,7 @@ endfunction
 "}}}
 " .vimrc{{{
 " When vimrc is edited, reload it
-au! BufWritePost $MYVIMRC source %
+au BufWritePost $MYVIMRC source %
 au BufRead,BufWritePost $MYVIMRC set foldmethod=marker
 " Open vim help for word under cursor
 au FileType vim setlocal keywordprg=:help
@@ -275,13 +275,13 @@ au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 let g:xml_syntax_folding=1
 "}}}
 " Java{{{
-au! FileType java setlocal foldmethod=syntax
+au FileType java setlocal foldmethod=syntax
 "}}}
 " haml{{{
-au! BufRead,BufNewFile *.haml set filetype=haml
+au BufRead,BufNewFile *.haml set filetype=haml
 "}}}
 " css{{{
-au! FileType css setlocal foldmethod=marker
+au FileType css setlocal foldmethod=marker
 au FileType css setlocal foldmarker={,}
 au FileType css inoremap <buffer> :<space> : ;<left>
 " Sort CSS properties alphabetically
@@ -289,13 +289,13 @@ com! SortCss :g#\({\n\)\@<=#.,/}/sort
 " au FileType css inoremap <buffer> <space><space>
 "}}}
 " js {{{
-au! FileType javascript inoremap <buffer> :f : function(){<esc>o<cr>},<esc>ki<tab>
+au FileType javascript inoremap <buffer> :f : function(){<esc>o<cr>},<esc>ki<tab>
 au FileType javascript inoremap <buffer> :<space> : ,<left>
 au FileType javascript inoremap <buffer> f<tab> <esc>:AutoCloseOff<cr>afunction(){  }<left><esc>:AutoCloseOn<cr>i
 au FileType javascript inoremap <buffer> ;; <esc>ma$a;<esc>`aa
 "}}}
 " diff{{{
-au! FileType diff setlocal fdm=expr
+au FileType diff setlocal fdm=expr
 au FileType diff setlocal fde=DiffFoldLevel()
 au FileType diff setlocal fdc=1
 au FileType diff setlocal foldlevel=0
@@ -304,7 +304,7 @@ au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=gitcommit
 " coffescript{{{
 let coffee_compile_on_save = 0
 " au BufWritePost *.coffee silent CoffeeCompile -b | cwindow | redraw!
-" au! BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
+" au BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
 au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 ":[RANGE] CoffeeCompile [watch|unwatch] [vert[ical]] [WINDOW-SIZE]
 "}}}
@@ -314,8 +314,8 @@ au FileType setl noshowmatch nohlsearch nocursorcolumn norelativenumber nocursor
 " foldmethod=syntax formatoptions=tcq2l
 "}}}
 " file types that require explicit tabs, and not spaces{{{
-au! FileType make   setlocal noexpandtab
-au! FileType python setlocal noexpandtab
+au FileType make   setlocal noexpandtab
+au FileType python setlocal noexpandtab
 "}}}
 " load templates{{{
 au BufNewFile * silent! 0r $VIMHOME/templates/%:e.tpl
@@ -326,11 +326,11 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " show extra whitespace as error {{{
 augroup WhitespaceMatch
   " Remove ALL autocommands for the WhitespaceMatch group.
-  autocmd!
+  au!
   hi ExtraWhitespace ctermbg=red guibg=red
-  autocmd BufWinEnter * let w:whitespace_match_number = matchadd('ExtraWhitespace', '\s\+$')
-  autocmd InsertEnter * call s:ToggleWhitespaceMatch('i')
-  autocmd InsertLeave * call s:ToggleWhitespaceMatch('n')
+  au BufWinEnter * let w:whitespace_match_number = matchadd('ExtraWhitespace', '\s\+$')
+  au InsertEnter * call s:ToggleWhitespaceMatch('i')
+  au InsertLeave * call s:ToggleWhitespaceMatch('n')
 augroup END
 
 function! s:ToggleWhitespaceMatch(mode)
@@ -346,12 +346,12 @@ endfunction
 "}}}
 " open any file with a pre-existing swapfile in readonly mode"{{{
 augroup NoSimultaneousEdits
-    autocmd!
-    autocmd SwapExists * let v:swapchoice = 'o'
-    autocmd SwapExists * echohl ErrorMsg
-    autocmd SwapExists * echo 'Duplicate edit session (readonly)'
-    autocmd SwapExists * echohl None
-    autocmd SwapExists * sleep 2
+  au!
+  au SwapExists * let v:swapchoice = 'o'
+  au SwapExists * echohl ErrorMsg
+  au SwapExists * echo 'Duplicate edit session (readonly)'
+  au SwapExists * echohl None
+  au SwapExists * sleep 2
 augroup END
 "}}}
 " operation pending motion for parenthesis{{{
@@ -468,7 +468,7 @@ xnoremap & :&&<CR>
 " always add the current file's directory to the path and tags list if not {{{
 " already there. add it to the beginning to speed up searches.
 let s:default_path = escape(&path, '\ ') " store default value of 'path'
-autocmd BufRead *
+au BufRead *
       \ let s:tempPath=escape(escape(expand("%:p:h"), ' '), '\ ') |
       \ exec "set path-=".s:tempPath |
       \ exec "set path-=".s:default_path |
@@ -484,8 +484,8 @@ nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 "}}}
 " clear the search buffer when hitting return {{{
 nnoremap <cr> :set hlsearch! hlsearch?<cr>
-au! CmdwinEnter * nnoremap <buffer> <cr> <cr>
-au! FileType qf nnoremap <buffer> <cr> <cr>
+au CmdwinEnter * nnoremap <buffer> <cr> <cr>
+au FileType qf nnoremap <buffer> <cr> <cr>
 "}}}
 " search for selected text, forwards or backwards {{{
 vnoremap <silent> * :<C-U>
@@ -575,7 +575,7 @@ let ft_stdout_mappings = {
       \'spice': 'ngspice'
       \}
 for ft_name in keys(ft_stdout_mappings)
-  execute 'autocmd Filetype ' . ft_name . ' nnoremap <buffer> <c-e> :write !'
+  execute 'au Filetype ' . ft_name . ' nnoremap <buffer> <c-e> :write !'
         \. ft_stdout_mappings[ft_name] . '<CR>'
 endfor
 
@@ -588,7 +588,7 @@ let ft_execute_mappings = {
       \'pascal': 'fpc % && ./%:r'
       \}
 for ft_name in keys(ft_execute_mappings)
-  execute 'autocmd FileType ' . ft_name
+  execute 'au FileType ' . ft_name
         \. ' nnoremap <buffer> <C-e> :write \| !'
         \. ft_execute_mappings[ft_name] . '<CR>'
 endfor
@@ -651,14 +651,14 @@ function! ToggleScratch()
 endfunction
 "}}}
 " JsBeautify {{{
-autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+au FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
 " for html
-autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+au FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
 " for css or scss
-autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+au FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 "}}}
 " Fugitive {{{
-autocmd BufReadPost fugitive://* set bufhidden=delete
+au BufReadPost fugitive://* set bufhidden=delete
 "}}}
 " Gitv {{{
 let g:Gitv_OpenHorizontal=1
@@ -1111,11 +1111,11 @@ endfunction
 "   endif
 " endfunction
 
-autocmd FileWritePost,BufWritePost *.coffee :call JsCssCompress() | e | set ft=coffee
-autocmd FileWritePost,BufWritePost *.js :call JsCssCompress() | e | set ft=javascript
-autocmd FileWritePost,BufWritePost *.css :call JsCssCompress() | e | set ft=css
-autocmd FileWritePost,BufWritePost *.scss :call JsCssCompress() | e | set ft=scss
-autocmd FileWritePost,BufWritePost *.less :call JsCssCompress()
+au FileWritePost,BufWritePost *.coffee :call JsCssCompress() | e | set ft=coffee
+au FileWritePost,BufWritePost *.js :call JsCssCompress() | e | set ft=javascript
+au FileWritePost,BufWritePost *.css :call JsCssCompress() | e | set ft=css
+au FileWritePost,BufWritePost *.scss :call JsCssCompress() | e | set ft=scss
+au FileWritePost,BufWritePost *.less :call JsCssCompress()
 command! JsCssCompress call JsCssCompress()
 "}}}
 " stringify html templates {{{
