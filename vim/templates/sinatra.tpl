@@ -14,6 +14,7 @@ class Server < Sinatra::Application
   # set :public_folder, PWD
   # set :views, PWD
   set :haml, format: :html5
+  set :port, ENV['PORT'] || 4567
   enable :inline_templates
   enable :cross_origin
 
