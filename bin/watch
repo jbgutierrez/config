@@ -51,7 +51,7 @@ while [[ true ]]; do
   now=$(date +"%s")
   [[ ! -z "$last_run" ]] || last_run=$now
   diff=$((last_run-now-1))
-  files=$(find "$file_or_folder -d $depth -name $pattern -type f -mtime ${diff}s")
+  files=$(find "$file_or_folder" -d "$depth" -name "$pattern" -type f -mtime "${diff}s")
   last_run=$(date +"%s")
   if [[ $files == "" ]] ; then
     debug "nothing changed"
