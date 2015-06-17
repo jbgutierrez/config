@@ -179,6 +179,7 @@ endfunction
 
 set term=screen-256color
 set background=dark
+if $ITERM_PROFILE == 'Solarized Light' | set background=light | endif
 hi clear
 syntax reset
 au! ColorScheme * call TweekColorScheme()
