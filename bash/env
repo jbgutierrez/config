@@ -37,6 +37,9 @@ export NVM_SYMLINK_CURRENT=1
 export NVM_DIR=~/.nvm
 [ -s $NVM_DIR/nvm.sh ] && . $NVM_DIR/nvm.sh
 
+# io.js REPL history
+NODE_REPL_HISTORY_FILE='~/.iojs_history'
+
 # Set architecture flags
 export ARCHFLAGS="-arch x86_64"
 
