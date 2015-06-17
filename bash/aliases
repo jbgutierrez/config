@@ -35,6 +35,11 @@ alias gresolve='git add -u && git rebase --continue'
 alias glmodules='git submodule foreach "(git checkout master; git pull)"'
 alias gcontributors='git shortlog -s -n'
 
+md2pdf() {
+  base=${1/.md/}
+  pandoc $base.md -s --highlight-style tango -o $base.pdf && open $base.pdf
+}
+
 # npm aliases
 alias n="npm install && npm shrinkwrap"
 alias ng="npm list -g --depth=0 2>/dev/null"
