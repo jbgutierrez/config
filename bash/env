@@ -1,10 +1,3 @@
-if [[ "$TERM" != "screen-256color" ]]; then
-  tmux attach-session -t "$USER" || tmux new-session -s "$USER"
-  exit
-fi
-
-export EDITOR='vim -f'
-
 # Adding an appropriate PATH variable for use with Homebrew
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
@@ -19,6 +12,13 @@ export PATH=~/node_modules/.bin:./node_modules/.bin:$PATH
 
 # User utilities
 export PATH=.:./bin:~/.bin:$PATH
+
+if [[ "$TERM" != "screen-256color" ]]; then
+  tmux attach-session -t "$USER" || tmux new-session -s "$USER"
+  exit
+fi
+
+export EDITOR='vim -f'
 
 # Adding an appropriate MANPATH variable for use with Homebrew
 export MANPATH=/usr/local/share/man:$MANPATH
