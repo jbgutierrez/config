@@ -685,8 +685,9 @@ let g:splitjoin_join_mapping  = 'gJ'
 vmap <expr>  ++  VMATH_YankAndAnalyse()
 nmap         ++  vip++"}}}
 " Surround {{{
-let b:surround_45 = "<!-- \r -->"
-let b:surround_61 = "<!--= \r -->""}}}
+let g:surround_45 = "<% \r %>"
+let g:surround_61 = "<%= \r %>"
+"}}}
 " Rainbow {{{
 let g:rainbow_active = 1
 let g:rainbow_conf = {
