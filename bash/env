@@ -13,7 +13,7 @@ export PATH=~/node_modules/.bin:./node_modules/.bin:$PATH
 # User utilities
 export PATH=.:./bin:~/.bin:$PATH
 
-if [[ "$TERM" != "screen-256color" ]]; then
+if (type tmux > /dev/null 2>&1) && [[ "$TERM" != "screen-256color" ]]; then
   tmux attach-session -t "$USER" || tmux new-session -s "$USER"
   exit
 fi
