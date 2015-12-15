@@ -621,6 +621,8 @@ let g:syntastic_error_symbol='✗'
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_scss_checkers = ['scss_lint']
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_jsxhint_exec = 'jsx-jshint-wrapper'
 "}}}
 " Tag List{{{
 let Tlist_Show_Menu=1
@@ -721,6 +723,9 @@ let g:extract_partials_templates = {
       \ 'coffee': 'coffee %'
       \ }
 "}}}
+" vim-jsx {{{
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+" }}}
 "}}}
 
 " custom utility commands {{{
