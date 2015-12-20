@@ -1,0 +1,140 @@
+#!/usr/bin/env ruby
+# coding: UTF-8
+#
+# This script pre-processes diagrams embedded in pandoc markdown
+#
+#   Usage:
+#
+#     pandoc_diagrams input.md | pandoc -o output.pdf
+#
+#   Reference:
+#
+#     * http://pandoc.org
+#     * http://blockdiag.com
+#     * http://ditaa.sourceforge.net
+#     * http://www.graphviz.org
+#     * https://github.com/christiangoltz/shaape
+#
+
+require 'digest'
+require 'tempfile'
+
+class Snippet
+
+  def initialize cmd, name, attrs
+    @lines = ""
+    @cmd = cmd
+    @name = name
+    @attrs = attrs
+  end
+
+  def << (line)
+    @lines << line
+  end
+
+  def capture_output
+    old_stdout = STDOUT.clone
+    pipe_r, pipe_w = IO.pipe
+    pipe_r.sync    = true
+    output         = ""
+    reader = Thread.new do
+      begin
+        loop do
+          output << pipe_r.readpartial(1024)
+        end
+      rescue EOFError
+      end
+    end
+    STDOUT.reopen pipe_w
+    yield
+  ensure
+    STDOUT.reopen old_stdout
+    pipe_w.close
+    reader.join
+    return output
+  end
+
+  def to_s
+    md5 = Digest::MD5.hexdigest @lines
+    image_file = "#{md5}.png"
+    capture_output { compile md5 } unless File.exist? image_file
+    "![#{@name}](#{image_file})"
+  end
+
+  def compile basename
+    Tempfile.open do |f|
+      f.write @lines
+      f.close
+      image_file = "#{basename}.png"
+      shellout f.path, image_file
+    end
+  end
+
+  def shellout
+    fail "Abstract implementation!"
+  end
+
+  def self.create line
+    match_data = line.match /\[(.*)\]\{(.*)\}/
+    return nil unless match_data
+    name = match_data[1]
+    attrs = match_data[2].split /\s/
+    type = attrs.shift
+    klass = {
+      ditaa: DitaaSnippet,
+      blockdiag: BlockdiagSnippet, # simple block-diagram image generator
+      seqdiag: BlockdiagSnippet, # simple sequence-diagram image generator
+      actdiag: BlockdiagSnippet, # simple activity-diagram image generator
+      nwdiag: BlockdiagSnippet, # simple network-diagram image generators
+      dot: DotSnippet, # filter for drawing directed graphs
+      neato: DotSnippet, # filter for drawing undirected graphs
+      twopi: DotSnippet, # filter for radial layouts of graphs
+      circo: DotSnippet, # filter for circular layout of graphs
+      fdp: DotSnippet, # filter for drawing undirected graphs
+      sfdp: DotSnippet, # filter for drawing large undirected graphs
+      patchwork: DotSnippet # filter for tree maps
+    }[type.to_sym]
+    klass.new type, name, attrs if klass
+  end
+
+end
+
+class BlockdiagSnippet < Snippet
+  def shellout input, output
+    args = @attrs.concat %W[#{input} -o #{output} --no-transparency -a]
+    system @cmd, *args
+  end
+end
+
+class DitaaSnippet < Snippet
+  def shellout input, output
+    args = %W[-jar #{ENV['HOME']}/.bin/vendor/ditaa0_9.jar #{input} #{output}].concat @attrs
+    system 'java', *args
+  end
+end
+
+class DotSnippet < Snippet
+  def shellout input, output
+    args = @attrs.concat %W[-Tpng #{input} -o #{output}]
+    system @cmd, *args
+  end
+end
+
+snippet = nil
+ARGF.each_line do |line|
+  if line =~ /^~~~~/ .. line =~ /^~~~~/
+    if snippet
+      puts snippet
+      snippet = nil
+    else
+      snippet = Snippet.create line
+      puts line unless snippet
+    end
+  else
+    if snippet
+      snippet << line
+    else
+      puts line
+    end
+  end
+end
