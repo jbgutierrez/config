@@ -62,7 +62,7 @@ class Snippet
   end
 
   def compile basename
-    Tempfile.open do |f|
+    Tempfile.open("#{basename}.dot") do |f|
       f.write @lines
       f.close
       image_file = "#{basename}.png"
