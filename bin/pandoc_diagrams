@@ -10,6 +10,7 @@
 #   Reference:
 #
 #     * http://pandoc.org
+#     * http://plantuml.com
 #     * http://blockdiag.com
 #     * http://ditaa.sourceforge.net
 #     * http://www.graphviz.org
@@ -62,7 +63,7 @@ class Snippet
   end
 
   def compile basename
-    Tempfile.open("#{basename}.dot") do |f|
+    Tempfile.open(basename) do |f|
       f.write @lines
       f.close
       image_file = "#{basename}.png"
@@ -82,6 +83,7 @@ class Snippet
     type = attrs.shift
     klass = {
       ditaa: DitaaSnippet,
+      plantuml: PlantUMLSnippet,
       blockdiag: BlockdiagSnippet, # simple block-diagram image generator
       seqdiag: BlockdiagSnippet, # simple sequence-diagram image generator
       actdiag: BlockdiagSnippet, # simple activity-diagram image generator
@@ -117,6 +119,14 @@ class DotSnippet < Snippet
   def shellout input, output
     args = @attrs.concat %W[-Tpng #{input} -o #{output}]
     system @cmd, *args
+  end
+end
+
+class PlantUMLSnippet < Snippet
+  def shellout input, output
+    args = %W[-jar #{ENV['HOME']}/.bin/vendor/plantuml.jar #{input}].concat @attrs
+    system 'java', *args
+    `mv #{input}.png #{output}`
   end
 end
 
