@@ -16,6 +16,7 @@ packages=(
   automake
   cloc
   ctags
+  direnv
   git
   gnuplot
   graphviz

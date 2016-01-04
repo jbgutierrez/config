@@ -75,3 +75,6 @@ bindkey -M vicmd 'j' history-substring-search-down
 
 # ruby version manager
 if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
+
+# direnv setup
+eval "$(direnv hook zsh)"
