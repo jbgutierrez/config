@@ -271,6 +271,9 @@ au FileType ruby
      \   let b:dispatch = 'ruby -wc %' |
      \ endif
 "}}}
+" elixir {{{
+au! BufWritePost *test.exs :!mix test
+"}}}
 " XML{{{
 au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 let g:xml_syntax_folding=1
