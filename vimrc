@@ -605,6 +605,9 @@ set winheight=4
 set winminwidth=4
 set winminheight=4
 "}}}
+" allow saving of files as sudo when I forgot to start vim using sudo. {{{
+cmap w!! w !sudo tee > /dev/null %
+"}}}
 "}}}
 
 " plugins settings{{{
