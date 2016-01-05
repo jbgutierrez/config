@@ -61,24 +61,25 @@ for package in "${packages[@]}"; do
 done
 
 packages=(
-  compass
-  middleman
   activesupport
+  awesome_print
   bundler
   compass
+  haml
   mechanize
+  middleman
   mongoid
   nokogiri
   redcarpet
+  rerun
   sinatra
   sinatra-contrib
   sinatra-partial
   sinatra-reloader
-  haml
 )
 
-rbenv install 2.2.2
-rbenv global 2.2.2
+rbenv install 2.2.3
+rbenv global 2.2.3
 for package in "${packages[@]}"; do
   gem install $package;
 done
