@@ -27,6 +27,7 @@ class Snippet
     @cmd = cmd
     @name = name
     @attrs = attrs
+    @ext = "png"
   end
 
   def << (line)
@@ -57,7 +58,7 @@ class Snippet
 
   def to_s
     md5 = Digest::MD5.hexdigest @lines
-    image_file = "#{md5}.png"
+    image_file = "#{md5}.#{@ext}"
     capture_output { compile md5 } unless File.exist? image_file
     "![#{@name}](#{image_file})"
   end
@@ -66,7 +67,7 @@ class Snippet
     Tempfile.open(basename) do |f|
       f.write @lines
       f.close
-      image_file = "#{basename}.png"
+      image_file = "#{basename}.#{@ext}"
       shellout f.path, image_file
     end
   end
@@ -116,9 +117,14 @@ class DitaaSnippet < Snippet
 end
 
 class DotSnippet < Snippet
+  def initialize(*)
+    super
+    @ext = "pdf"
+  end
   def shellout input, output
-    args = @attrs.concat %W[-Tpng #{input} -o #{output}]
+    args = @attrs.concat %W[-Tsvg #{input} -o /tmp/#{output}]
     system @cmd, *args
+    `cairosvg /tmp/#{output} -o #{output}`
   end
 end
 
@@ -126,7 +132,7 @@ class PlantUMLSnippet < Snippet
   def shellout input, output
     args = %W[-jar #{ENV['HOME']}/.bin/vendor/plantuml.jar #{input}].concat @attrs
     system 'java', *args
-    `mv #{input}.png #{output}`
+    `mv #{input}.#{@ext} #{output}`
   end
 end
 
