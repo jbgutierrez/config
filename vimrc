@@ -487,8 +487,14 @@ au BufRead *
 set grepprg=ag\ --vimgrep
 set grepformat=%f:%l:%c:%m
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-command! -complete=file TODOS :Ag '^[^\w]*\b(todo|fix|xxx)\b' -i
+command! -complete=file TODOS :Ag '^[^\w]*\b(idea|fixme|note|todo|optimize|hack|review|refactor|xxx)\b' -i
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+"}}}
+" adds custom Todo keywords {{{
+au FileType *
+      \ for language in [ 'coffee', 'css', 'elixir', 'erlang', 'javaScript', 'java', 'javascript', 'less', 'python', 'ruby', 'sass' ] |
+      \   exe "syn keyword ".language."Todo IDEA FIXME NOTE TODO OPTIMIZE HACK REVIEW REFACTOR XXX contained" |
+      \ endfor
 "}}}
 " clear the search buffer when hitting return {{{
 nnoremap <cr> :set hlsearch! hlsearch?<cr>
