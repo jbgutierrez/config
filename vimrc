@@ -7,6 +7,10 @@ Bundle 'gmarik/vundle'
 
 Bundle 'AndrewRadev/splitjoin.vim'
 Bundle 'Chiel92/vim-autoformat'
+" Bundle 'JamshedVesuna/vim-markdown-preview'
+Bundle 'Shougo/neomru.vim'
+Bundle 'Shougo/unite.vim'
+Bundle 'Shougo/vimproc.vim'
 Bundle 'Townk/vim-autoclose.git'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized.git'
@@ -30,8 +34,7 @@ Bundle 'jbgutierrez/vim-cloud-buffer.git'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'jimmyhchan/dustjs.vim'
 Bundle 'kana/vim-textobj-user.git'
-Bundle 'kien/ctrlp.vim'
-Bundle 'luochen1990/rainbow'
+" Bundle 'luochen1990/rainbow'
 Bundle 'majutsushi/tagbar'
 Bundle 'maksimr/vim-jsbeautify.git'
 Bundle 'mattn/emmet-vim'
@@ -704,12 +707,10 @@ let g:rainbow_conf = {
 \   'parentheses': [['(',')'], ['\[','\]'], ['{','}']],
 \}
 "}}}
-" CtrlP {{{
-let g:ctrlp_map = '<leader>t'
-let g:ctrlp_mruf_relative = 1
-let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""' " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-let g:ctrlp_use_caching = 0 " ag is fast enough that CtrlP doesn't need to cache
+" CtrlP replacement{{{
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+nno <leader>t :<C-u>Unite file_mru file_rec/async:! -start-insert -buffer-name=files<CR>
+nno <leader>cd :<C-u>Unite directory_mru directory -start-insert -buffer-name=cd -default-action=cd<CR>
 "}}}
 " Unimpaired {{{
 nmap < [
