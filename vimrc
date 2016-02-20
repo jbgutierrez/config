@@ -499,8 +499,8 @@ noremap <c-p> :cp<CR>
 noremap gV `[v`]
 "}}}
 " replace selected text{{{
-" nnoremap <c-r> yiw:%s/<c-r>"//gc<left><left><left>
-vnoremap <c-r> y:%S/<c-r>"//gc<left><left><left>
+vnoremap <c-r> "9y:%S/<c-r>"//gc<left><left><left>
+noremap <leader>r :%S/<c-r><c-w>//gc<left><left><left>
 "}}}
 " replace text with current register without droping it{{{
 vnoremap s "_dP
