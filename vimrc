@@ -1257,10 +1257,9 @@ command! JSONPretty %!python -m json.tool
 "}}}
 
 " debugging hooks {{{
-" load local project configs {{{
-if filereadable('.vimrc.local')
-  source .vimrc.local
-endif
+" load .vimrc or .vimrc.local project configs {{{
+set exrc " Enable per-directory .vimrc files.
+if filereadable('.vimrc.local') | source .vimrc.local | endif
 "}}}
 " profile slow code {{{
 " vim --startuptime startuptime.log
