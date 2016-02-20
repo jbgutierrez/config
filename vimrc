@@ -130,9 +130,16 @@ set incsearch hlsearch " highlight matches as you type
 set smartcase          " override ignorecase when there are uppercase characters
 set ignorecase         " ignore case when searching "}}}
 " wraping{{{
-" set textwidth=80
-" set colorcolumn=85
-" set formatoptions=qrn1
+set textwidth=80
+set colorcolumn=85
+" formatting lines {{{
+set formatoptions=tqw " See the help under formatoptions for details
+set formatoptions+=n  " Recognize numbered lists
+set formatoptions+=2  " Use indent from 2nd line of a paragraph
+set formatoptions+=l  " Don't break lines that are already long
+set formatoptions+=1  " Break before 1-letter words
+set formatoptions+=j  " Delete comment character when joining commented lines, so two lines of comment becomes one line when joining, without comment mark.
+"}}}
 call matchadd('ColorColumn', '\%81v', 100)
 set nowrap                   " don't wrap lines
 set listchars+=extends:»     " show a » when a line goes off the right edge of the screen
