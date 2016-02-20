@@ -735,7 +735,7 @@ let g:rainbow_conf = {
 " CtrlP replacement{{{
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 nno <leader>t :<C-u>Unite file_rec/async:! file_mru -start-insert -buffer-name=files<CR>
-nno <leader>s :<C-u>Unite line -buffer-name=lines<CR>
+nno <leader>s :<C-u>Unite line -buffer-name=lines -start-insert<CR>
 nno <leader>cd :<C-u>Unite directory_mru directory -start-insert -buffer-name=cd -default-action=cd<CR>
 "}}}
 " Unimpaired {{{
