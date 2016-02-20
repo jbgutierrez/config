@@ -1261,6 +1261,9 @@ command! Copy call s:copy()
 " JSONPretty {{{
 command! JSONPretty %!python -m json.tool
 "}}}
+" Easily changing between Windows and POSIX file paths
+command! ToPosix :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>
+command! ToWindows :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>
 "}}}
 
 " debugging hooks {{{
