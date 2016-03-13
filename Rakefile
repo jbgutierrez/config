@@ -33,6 +33,7 @@ task :install do
     end
   end
   download_submodules
+  link_neovim_files
 end
 
 def replace_file(file, hidden_file)
@@ -48,4 +49,10 @@ end
 def download_submodules
   `git submodule init`
   `git submodule update`
+end
+
+def link_neovim_files
+  `mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}`
+  `ln -s ~/.vim $XDG_CONFIG_HOME/nvim`
+  `ln -s ~/.vimrc $XDG_CONFIG_HOME/nvim/init.vim`
 end

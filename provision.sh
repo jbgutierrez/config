@@ -5,6 +5,7 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 taps=(
   homebrew/dupes
+  neovim/neovim
 )
 
 for tap in "${taps[@]}"; do
@@ -44,6 +45,8 @@ packages=(
 for package in "${packages[@]}"; do
   brew install $package;
 done
+
+brew install --HEAD neovim
 
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.26.0/install.sh | bash
 nvm install stable
