@@ -1231,6 +1231,11 @@ function! StripTrailingWhitespaces()
 endfunction
 " au BufWritePre * :call StripTrailingWhitespaces()
 "}}}
+" squeeze multiple adjacent empty lines {{{
+function! SqueezeMultipleAdjacentEmptyLines()
+  %!cat -s
+endfunction
+"}}}
 " insert timestamp {{{
 command! Timestamp :normal a<c-r>=strftime('%F %H:%M:%S')<CR><esc>
 "}}}
