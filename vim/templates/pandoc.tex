@@ -139,6 +139,13 @@ $if(graphics)$
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 $endif$
+% Add shaded background to quotes
+\usepackage{framed}
+\usepackage{xcolor}
+\let\oldquote=\quote
+\let\endoldquote=\endquote
+\colorlet{shadecolor}{gray!15}
+\renewenvironment{quote}{\begin{shaded*}\begin{oldquote}}{\end{oldquote}\end{shaded*}}
 $if(links-as-notes)$
 % Make links footnotes instead of hotlinks:
 \renewcommand{\href}[2]{#2\footnote{\url{#1}}}
