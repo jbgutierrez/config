@@ -1123,7 +1123,7 @@ function! JsCssCompress()
     " endif
 
     let minFileName = partialName.".min.".extension
-    let expr = 'java -jar ~/bin/vendor/yuicompressor-2.4.7/build/yuicompressor-2.4.7.jar '.path.'/'.partialName.'.'.extension.' > '.shellescape(path.'/'.minFileName).' &'
+    let expr = 'java -jar ~/.bin/vendor/yuicompressor-2.4.8.jar '.path.'/'.partialName.'.'.extension.' > '.shellescape(path.'/'.minFileName).' &'
     cal system(expr)
     " let data = system(expr)
     " let lines = [data]
