@@ -262,18 +262,66 @@ au BufRead,BufWritePost $MYVIMRC set foldmethod=marker
 au FileType vim setlocal keywordprg=:help
 "}}}
 " ruby{{{
-au FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-au FileType ruby,eruby let g:rubycomplete_rails = 1
-au FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-au FileType ruby
-     \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
-     \ if expand('%') =~# '_test\.rb$' |
-     \   let b:dispatch = 'testrb %' |
-     \ elseif expand('%') =~# '_spec\.rb$' |
-     \   let b:dispatch = 'rspec %' |
-     \ elseif !exists('b:dispatch') |
-     \   let b:dispatch = 'ruby -wc %' |
-     \ endif
+augroup RubyAuto
+  au!
+  function! RubyFileType()
+    let g:rubycomplete_buffer_loading = 1
+    let g:rubycomplete_rails = 1
+    let g:rubycomplete_classes_in_global = 1
+
+    let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
+    if expand('%') =~# '_test\.rb$' |
+      let b:dispatch = 'testrb %' |
+    elseif expand('%') =~# '_spec\.rb$' |
+      let b:dispatch = 'rspec %' |
+    elseif !exists('b:dispatch') |
+      let b:dispatch = 'ruby -wc %' |
+    endif
+
+    " add shebang and magic headers to ruby files {{{
+    function! AddRubyHeaders()
+      let header = [ '#!/usr/bin/env ruby', '# coding: UTF-8', '$DEBUG = true', '' ]
+      call append(0, header)
+    endfunction
+    nnoremap <buffer> <leader>m :call AddRubyHeaders()<cr>
+    "}}}
+    " rcodetools gem configuration {{{
+    " plain annotations
+    " Annotate the full buffer
+    nmap <silent> <F1> mzggVG!xmpfilter -a<cr>'z
+    imap <silent> <F1> <ESC><F1>
+
+    " Add # => markers
+    vmap <silent> <F2> !xmpfilter -m<cr>
+    nmap <silent> <F2> V<F2>
+    imap <silent> <F2> <ESC><F2>a
+    nmap <silent> <leader>r !xmpfilter -m<cr>
+
+    " Remove # => markers
+    vmap <silent> <F3> ms:call RemoveRubyEval()<cr>
+    nmap <silent> <F3> V<F3>
+    imap <silent> <F3> <ESC><F3>a
+    nmap <silent> <leader>R ms:call RemoveRubyEval()<cr>
+
+    map <silent> <F4> !xmpfilter -a<cr>
+    nmap <silent> <F4> V<F4>
+    imap <silent> <F4> <ESC><F4>a
+
+    function! RemoveRubyEval() range
+      let begv = a:firstline
+      let endv = a:lastline
+      normal Hmt
+      set lz
+      execute ":" . begv . "," . endv . 's/\s*# \(=>\|!!\).*$//e'
+      normal 'tzt`s
+      set nolz
+      redraw
+    endfunction"}}}
+
+  endfunction
+
+  au FileType ruby,eruby call RubyFileType()
+augroup END
 "}}}
 " elixir {{{
 au! BufWritePost *test.exs :!mix test
@@ -428,13 +476,6 @@ nnoremap <s-space> @=((foldclosed('.') == -1) ? 'za' : 'zA')<CR>
 " evaluate unicode code points {{{
 nnoremap <leader>! :%s#\\u[0-9a-f]*#\=eval('"'.submatch(0).'"')#eg<cr>
 "}}}
-" add shebang and magic headers to ruby files {{{
-function! AddRubyHeaders()
-  let header = [ '#!/usr/bin/env ruby', '# coding: UTF-8', '$DEBUG = true', '' ]
-  call append(0, header)
-endfunction
-au FileType ruby,eruby nnoremap <buffer> <leader>m :call AddRubyHeaders()<cr>
-"}}}
 " common alignment habits {{{
 nnoremap <leader>a\| :Tab /\|<CR>
 vnoremap <leader>a\| :Tab /\|<CR>
@@ -539,36 +580,6 @@ vmap k gk
 nmap j gj
 nmap k gk
 "}}}
-" rcodetools gem configuration {{{
-" plain annotations
-" Annotate the full buffer
-nmap <silent> <F1> mzggVG!xmpfilter -a<cr>'z
-imap <silent> <F1> <ESC><F1>
-
-" Add # => markers
-vmap <silent> <F2> !xmpfilter -m<cr>
-nmap <silent> <F2> V<F2>
-imap <silent> <F2> <ESC><F2>a
-
-" Remove # => markers
-vmap <silent> <F3> ms:call RemoveRubyEval()<cr>
-nmap <silent> <F3> V<F3>
-imap <silent> <F3> <ESC><F3>a
-
-map <silent> <F4> !xmpfilter -a<cr>
-nmap <silent> <F4> V<F4>
-imap <silent> <F4> <ESC><F4>a
-
-function! RemoveRubyEval() range
-  let begv = a:firstline
-  let endv = a:lastline
-  normal Hmt
-  set lz
-  execute ":" . begv . "," . endv . 's/\s*# \(=>\|!!\).*$//e'
-  normal 'tzt`s
-  " set nolz
-  redraw
-endfunction"}}}
 " testing one-off scripts and markup files {{{
 let ft_stdout_mappings = {
       \'applescript': 'osascript',
