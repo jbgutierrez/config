@@ -752,6 +752,18 @@ let g:extract_partials_templates = {
 " vim-jsx {{{
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 " }}}
+" Goyo {{{
+function! <sid>writer()
+  :Goyo 60%
+  setlocal nocursorcolumn
+  setlocal nocursorline
+  setlocal wrap
+  setlocal showbreak=
+  setlocal nolist
+endfunction
+
+command! Writer :call s:writer()
+"}}}
 "}}}
 
 " custom utility commands {{{
