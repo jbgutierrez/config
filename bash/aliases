@@ -123,6 +123,13 @@ farchive() {
   done
 }
 
+movie2gif() {
+  base=${1/.mp4/}
+  width=$2
+  [ ! -z $width ] || {{ width=-1 }}
+  ffmpeg -ss 00:00:00.000 -t 10 -i $base.mp4 -vf scale=$width:-1 -r 10 $base.gif
+}
+
 js2coffeeDir() {
   echo -n "Remove original js files [N]:"
   read remove_files
