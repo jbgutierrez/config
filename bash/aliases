@@ -248,6 +248,7 @@ esubl() {
 
 alias ff='open -a Firefox'
 alias chrome='open -a "Google Chrome"'
+alias chrome-dev='open -a "Google Chrome" --args --js-flags="--expose-gc" --disable-extensions -incognito --always-enable-dev-tools --enable-precise-memory-info'
 
 # Recursively Remove .DS_Store files in OS X
 alias clean='find . -name *.DS_Store -type f -exec rm {} \;'
