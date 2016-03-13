@@ -102,8 +102,8 @@ tre() {
 }
 
 # start/stop postgresql
-alias postgres_start='pg_ctl -d /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
-alias postgres_stop='pg_ctl -d /usr/local/var/postgres stop -s -m fast'
+alias postgres_start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
+alias postgres_stop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
 
 # curl for useragents
 alias iecurl="curl -H \"User-Agent: Mozilla/5.0 (Windows; U; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)\""
