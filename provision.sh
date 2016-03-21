@@ -48,6 +48,27 @@ done
 
 brew install --HEAD neovim
 
+packages=(
+  cheatsheet
+  clipmenu
+  firefox
+  freemind
+  google-chrome
+  handbrake
+  handbrakecli
+  spectacle
+  sublime-text
+  unrarx
+  virtualbox
+  virtualbox-extension-pack
+  wireshark
+  iterm2
+)
+
+for package in "${packages[@]}"; do
+  brew cask install $package;
+done
+
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.26.0/install.sh | bash
 nvm install stable
 nvm use stable
