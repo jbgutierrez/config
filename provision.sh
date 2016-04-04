@@ -77,6 +77,7 @@ nvm alias default stable
 packages=(
   coffee
   express
+  js2coffee
   meanjs
   webpack
 )
