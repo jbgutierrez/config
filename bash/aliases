@@ -37,7 +37,7 @@ alias gcontributors='git shortlog -s -n'
 
 md2pdf() {
   base=${1/.md/}
-  pandoc $base.md -s --highlight-style tango -o $base.pdf && open $base.pdf
+  pandoc $base.md -s --highlight-style tango -o $base.pdf --toc && open $base.pdf
 }
 
 # npm aliases
