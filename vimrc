@@ -1268,6 +1268,7 @@ command! ToWindows :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>
 
 " debugging hooks {{{
 " load .vimrc or .vimrc.local project configs {{{
+if filereadable($MYVIMRC . '.local') | exe 'source ' . $MYVIMRC . '.local' | endif
 set exrc " Enable per-directory .vimrc files.
 if filereadable('.vimrc.local') | source .vimrc.local | endif
 "}}}
