@@ -18,6 +18,7 @@ packages=(
   cloc
   ctags
   direnv
+  fzf
   git
   gnuplot
   graphviz

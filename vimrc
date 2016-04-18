@@ -34,7 +34,10 @@ Bundle 'jbgutierrez/vim-gtd.git'
 Bundle 'jbgutierrez/vim-partial.git'
 Bundle 'jelera/vim-javascript-syntax'
 Bundle 'jimmyhchan/dustjs.vim'
+Bundle 'junegunn/fzf'
+Bundle 'junegunn/fzf.vim'
 Bundle 'kana/vim-textobj-user.git'
+Bundle 'karlbright/qfdo.vim'
 " Bundle 'luochen1990/rainbow'
 Bundle 'majutsushi/tagbar'
 Bundle 'maksimr/vim-jsbeautify.git'
@@ -111,7 +114,7 @@ set statusline=%F%m%r%h%w[%L]%y[%p%%][%04l,%04v]%=[%{&ff},%{\"\".(&fenc==\"\"?&e
 
 set nrformats=            " make CTRL-A and CTRL-X commands work exclusively with decimals
 set laststatus=2          " always show the last status
-set wildignore+=*.bak,*.cd,*.dll,*.doc,*.exe,*.gif,*.jpg,*.o,*.obj,*.png,*.pyc,*.xls,.tmp,bower_components,components,node_modules,tmp,vendor,builds,nosync
+set wildignore+=*.bak,*.cd,*.dll,*.doc,*.exe,*.gif,*.jpg,*.o,*.obj,*.png,*.pyc,*.xls,.tmp,bower_components,node_modules,tmp,vendor,builds,nosync
 set wildmode=list:longest " turn on wild mode huge list
 set complete-=i           " don't need to scan included files
 set wildmenu              " turn on command line completion wild style"}}}
@@ -534,7 +537,6 @@ au BufRead *
 " faster grepping with ag {{{
 set grepprg=ag\ --vimgrep
 set grepformat=%f:%l:%c:%m
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 command! -complete=file TODOS :Ag '^[^\w]*\b(idea|fixme|note|todo|optimize|hack|review|refactor|xxx)\b' -i
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 "}}}
@@ -733,10 +735,10 @@ let g:rainbow_conf = {
 \}
 "}}}
 " CtrlP replacement{{{
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nno <leader>t :<C-u>Unite file_rec/async:! file_mru -start-insert -buffer-name=files<CR>
-nno <leader>s :<C-u>Unite line -buffer-name=lines -start-insert<CR>
-nno <leader>cd :<C-u>Unite directory_mru directory -start-insert -buffer-name=cd -default-action=cd<CR>
+set rtp+=/usr/local/opt/fzf
+imap <c-x><c-l> <plug>(fzf-complete-line)
+nno <leader>t :let $FZF_DEFAULT_COMMAND='ag -g ""'<cr>:FZF<cr>
+nno <leader><leader>t :let $FZF_DEFAULT_COMMAND='ag -u -g ""'<cr>:FZF<cr>
 "}}}
 " Unimpaired {{{
 nmap < [

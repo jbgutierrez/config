@@ -5,7 +5,6 @@
 TODO
 TODO.gtd
 bower_components
-components
 config/*.yml
 db/*.sqlite3
 log/*.log
