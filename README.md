@@ -13,7 +13,7 @@ $ chsh -s $(which zsh)
 $ git clone https://github.com/jbgutierrez/config.git
 $ rake
 $ ./osx.sh
-$ vim +BundleInstall +qall
+$ vim +PlugInstall +qall
 ```
 
 Install Command Line Tools, try running `xcode-select --install` on
