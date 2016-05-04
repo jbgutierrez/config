@@ -547,7 +547,7 @@ au BufRead *
 " faster grepping with ag {{{
 set grepprg=ag\ --vimgrep
 set grepformat=%f:%l:%c:%m
-command! -complete=file TODOS :Ag '^[^\w]*\b(idea|fixme|note|todo|optimize|hack|review|refactor|xxx)\b' -i
+command! TODOS :grep '\b(idea\|fix\|workaround\|fixme\|note\|todo\|optimize\|hack\|review\|refactor\|xxx)\b' -i --ignore=*.json
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 "}}}
 " adds custom Todo keywords {{{
