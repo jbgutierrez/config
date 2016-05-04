@@ -79,6 +79,10 @@ packages=(
   coffee
   express
   js2coffee
+  jshint
+  jslint
+  eslint
+  uglifyjs
   meanjs
   webpack
 )
@@ -99,6 +103,7 @@ packages=(
   nokogiri
   redcarpet
   rerun
+  scss-lint
   sinatra
   sinatra-contrib
   sinatra-partial
