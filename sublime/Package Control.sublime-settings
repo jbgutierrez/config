@@ -1,0 +1,18 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"CoffeeScript",
+		"EditorConfig",
+		"GitGutter",
+		"JSONLint",
+		"Package Control",
+		"Pretty JSON",
+		"SCSS",
+		"SublimeOnSaveBuild",
+		"TodoReview"
+	]
+}
