@@ -1,0 +1,24 @@
+{
+  "exclude_folders": [
+    "*svn*",
+    "*git*",
+    "*node_modules*",
+    "*versions*",
+    "*nosync*",
+    "*vendor*",
+    "*builds*",
+    "*dicts*"
+  ],
+  "case_sensitive": true,
+  "patterns": {
+    "TODO": "(TODO|IDEA|REFACTOR)[\\s]*?:?[\\s]*(?P<todo>.*)$",
+    "NOTE": "(NOTE|HACK)[\\s]*?:?[\\s]*(?P<note>.*)$",
+    "FIXME": "(FIX|FIXME|XXX)[\\s]*?:?[\\s]*(?P<fixme>.*)$",
+    "WORKAROUND": "(WORKAROUND|OPTIMIZE)[\\s]*?:?[\\s]*(?P<workaround>.*)$"
+  },
+  "exclude_files": [
+    "*.sublime-workspace",
+    "*.sublime-project",
+    "*.json"
+  ]
+}
