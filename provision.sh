@@ -32,7 +32,6 @@ packages=(
   openssl
   pandoc
   rbenv
-  reattach-to-user-namespace
   rsync
   ruby-build
   shellcheck
