@@ -1,8 +1,8 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
 #
 # Attach or create tmux session named the same as current directory.
 
-session_name="$(basename "$PWD" | tr . -)"
+session_name="$(basename "$PWD")"
 
 not_in_tmux() {
   [ -z "$TMUX" ]
