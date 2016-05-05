@@ -13,11 +13,13 @@ for tap in "${taps[@]}"; do
 done
 
 packages=(
+  appdelete
   autoconf
   automake
   cloc
   ctags
   direnv
+  disk-inventory-x
   fzf
   git
   gnuplot
@@ -57,13 +59,13 @@ packages=(
   google-chrome
   handbrake
   handbrakecli
+  iterm2
   spectacle
   sublime-text
   unrarx
   virtualbox
   virtualbox-extension-pack
   wireshark
-  iterm2
 )
 
 for package in "${packages[@]}"; do
@@ -101,6 +103,7 @@ packages=(
   middleman
   mongoid
   nokogiri
+  pry
   redcarpet
   rerun
   scss-lint
