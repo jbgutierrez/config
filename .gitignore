@@ -1,5 +1,8 @@
-tags
 spell
-vim/bundle
-vim/tmp
 sublime/Package Control*
+tags
+vim/autoload/plug.vim
+vim/bundle
+vim/init.vim*
+vim/plugged/
+vim/tmp
