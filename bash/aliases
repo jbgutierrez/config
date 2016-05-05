@@ -164,6 +164,7 @@ for project_path in $PROJECTS_FOLDER/*; do
     alias "cd$subfolder"="cd $project_path"
     alias "e$subfolder"="vim $project_path"
     alias "o$subfolder"="open $project_path"
+    alias "s$subfolder"="subl $project_path"
   fi
 done
 
@@ -203,6 +204,7 @@ extract () {
     echo "'$1' is not a valid file"
   fi
 }
+
 
 
 # Processes
