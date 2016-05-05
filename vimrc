@@ -204,7 +204,10 @@ function! TweekColorScheme()
   hi link ShowMarksHLu DiffChange
 endfunction
 
-set term=screen-256color
+if !has('nvim')
+  set term=screen-256color
+endif
+
 set background=dark
 if $ITERM_PROFILE == 'Solarized Light' | set background=light | endif
 hi clear

@@ -1,8 +1,9 @@
 # Utility
 alias reload='source ~/.bash/aliases'
-alias vimun='vim -u NONE -N'
-alias ea='vim -f ~/.bash/aliases && reload' # Edit aliases
-alias ee='vim ~/.bash/env'
+alias vim='nvim'
+alias vimun='nvim -u NONE -N'
+alias ea='nvim -f ~/.bash/aliases && reload' # Edit aliases
+alias ee='nvim ~/.bash/env'
 topcommands() {
   history | awk '{a[$2]++}END{for(i in a){print a[i] " " i}}' | sort -rn | head
 }
@@ -237,9 +238,9 @@ o() {
 # opens the given location
 e() {
   if [ $# -eq 0 ]; then
-    vim .;
+    nvim .;
   else
-    vim "$@";
+    nvim "$@";
   fi;
 }
 

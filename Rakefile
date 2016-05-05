@@ -52,7 +52,8 @@ def download_submodules
 end
 
 def link_neovim_files
-  `mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}`
-  `ln -s ~/.vim $XDG_CONFIG_HOME/nvim`
-  `ln -s ~/.vimrc $XDG_CONFIG_HOME/nvim/init.vim`
+  `mkdir -p $HOME/.config`
+  `ln -fs ~/.vim $HOME/.config/nvim`
+  `ln -fs ~/.vimrc $HOME/.config/nvim/init.vim`
+  `ln -fs ~/.vimrc.local $HOME/.config/nvim/init.vim.local`
 end
