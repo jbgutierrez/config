@@ -17,8 +17,10 @@ Plug 'Chiel92/vim-autoformat'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim'
+Plug 'SirVer/ultisnips'
 Plug 'Townk/vim-autoclose'
 Plug 'airblade/vim-gitgutter'
+Plug 'Valloric/YouCompleteMe'
 Plug 'altercation/vim-colors-solarized'
 Plug 'bcaccinolo/bclose'
 Plug 'christoomey/vim-tmux-navigator'
@@ -28,10 +30,12 @@ Plug 'ecomba/vim-ruby-refactoring'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'einars/js-beautify'
 Plug 'elzr/vim-json'
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 Plug 'godlygeek/tabular'
 Plug 'gregsexton/gitv'
 Plug 'greyblake/vim-preview'
+Plug 'honza/vim-snippets'
+" Plug 'isRuslan/vim-es6'
 Plug 'jbgutierrez/vim-babel'
 Plug 'jbgutierrez/vim-cloud-buffer'
 Plug 'jbgutierrez/vim-gtd'
@@ -787,6 +791,15 @@ endfunction
 
 command! Writer :call s:writer()
 "}}}
+" UltiSnips {{{
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
+" If you want :UltiSnipsEdit to split your window.
+" let g:UltiSnipsEditSplit="vertical"
+"}}}
 "}}}
 
 " custom utility commands {{{
@@ -957,26 +970,6 @@ function! DiffFoldLevel()
     return '='
   endif
 endfunction "}}}
-" remap the tab key to do autocompletion or indentation depending on the{{{
-" context (from http://vim.wikia.com/wiki/Smart_mapping_for_tab_completion)
-" inoremap <tab> <c-r>=Smart_TabComplete()<CR>
-function! Smart_TabComplete()
-  let line = getline('.')                         " curline
-  let substr = strpart(line, -1, col('.')+1)      " from start to cursor
-  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
-  if (strlen(substr)==0)                          " nothing to match on empty string
-    return "\<tab>"
-  endif
-  let has_period = match(substr, '\.') != -1      " position of period, if any
-  let has_slash = match(substr, '\/') != -1       " position of slash, if any
-  if (!has_period && !has_slash)
-    return "\<C-X>\<C-P>"                         " existing text matching
-  elseif ( has_slash )
-    return "\<C-X>\<C-F>"                         " file matching
-  else
-    return "\<C-X>\<C-O>"                         " plugin matching
-  endif
-endfunction"}}}
 " autoformat cucumber tables (from https://gist.github.com/287147) {{{
 inoremap <silent>  <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 function! s:align()
