@@ -165,6 +165,7 @@ for project_path in $PROJECTS_FOLDER/*; do
     alias "e$subfolder"="vim $project_path"
     alias "o$subfolder"="open $project_path"
     alias "s$subfolder"="subl $project_path"
+    alias "t$subfolder"="tat $project_path"
   fi
 done
 
