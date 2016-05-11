@@ -22,7 +22,7 @@ select from the menu "Xcode" - "Open Developer Tool" - "More Developer
 Tools" to open the developer site, download the installer for your OS
 version and run it.
 
-Then run `provision.sh` to install development tools, interpreters, etc.
+Then run `provision-*.sh` to install development tools, interpreters, etc.
 
 ```bash
 $ ./provision.sh
@@ -30,6 +30,6 @@ $ ./provision.sh
 
 ### Vim Plugin updates
 
-Remember to run :BundleUpdate from time to time to keep vim plugins up-to-date.
+Remember to run :PlugInstall from time to time to keep vim plugins up-to-date.
 
 Enjoy.

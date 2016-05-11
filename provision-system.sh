@@ -13,13 +13,11 @@ for tap in "${taps[@]}"; do
 done
 
 packages=(
-  appdelete
   autoconf
   automake
   cloc
   ctags
   direnv
-  disk-inventory-x
   fzf
   git
   gnuplot
@@ -51,8 +49,10 @@ done
 brew install --HEAD neovim
 
 packages=(
+  appdelete
   cheatsheet
   clipmenu
+  disk-inventory-x
   firefox
   freemind
   google-chrome
@@ -70,52 +70,3 @@ packages=(
 for package in "${packages[@]}"; do
   brew cask install $package;
 done
-
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.26.0/install.sh | bash
-nvm install stable
-nvm use stable
-nvm alias default stable
-
-packages=(
-  coffee
-  coffeelint
-  eslint
-  express
-  js2coffee
-  jshint
-  jslint
-  meanjs
-  uglifyjs
-  webpack
-)
-
-for package in "${packages[@]}"; do
-  npm install $package -g;
-done
-
-packages=(
-  activesupport
-  awesome_print
-  bundler
-  compass
-  haml
-  mechanize
-  middleman
-  mongoid
-  nokogiri
-  pry
-  redcarpet
-  rerun
-  scss-lint
-  sinatra
-  sinatra-contrib
-  sinatra-partial
-  sinatra-reloader
-)
-
-rbenv install 2.2.3
-rbenv global 2.2.3
-for package in "${packages[@]}"; do
-  gem install $package;
-done
-rbenv rehash
