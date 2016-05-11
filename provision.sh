@@ -78,13 +78,14 @@ nvm alias default stable
 
 packages=(
   coffee
+  coffeelint
+  eslint
   express
   js2coffee
   jshint
   jslint
-  eslint
-  uglifyjs
   meanjs
+  uglifyjs
   webpack
 )
 
