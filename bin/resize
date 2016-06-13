@@ -52,7 +52,12 @@ if [[ -d $files ]]; then
     timestamp=`date -j -v-$adjust +"%Y/%m/%d %H:%M"`
     files=`find . -newermt "$timestamp" -d 1 -name '*.jpg'`
   else
-    files=`find . -d 1 -name '*.jpg'`
+    touch_last_resize=1
+    if [[ -f '.last-resize-run' ]]; then
+      files=`find . -newer .last-resize-run -name '*.jpg'`
+    else
+      files=`find . -d 1 -name '*.jpg'`
+    fi
   fi
 fi
 
@@ -81,3 +86,7 @@ for file in $files; do
     fi
   done
 done
+
+if (( $touch_last_resize )); then
+  touch .last-resize-run
+fi
