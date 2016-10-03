@@ -461,10 +461,10 @@ inoremap <esc> <nop>
 nnoremap Y y$
 "}}}
 " moving around split windows{{{
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
+" nnoremap <c-j> <c-w>j
+" nnoremap <c-k> <c-w>k
+" nnoremap <c-h> <c-w>h
+" nnoremap <c-l> <c-w>l
 "}}}
 " change working directory{{{
 nnoremap <silent>cd :cd %:p:h<CR>:pwd<CR>
