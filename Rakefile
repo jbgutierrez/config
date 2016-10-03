@@ -34,6 +34,7 @@ task :install do
   end
   download_submodules
   link_neovim_files
+  link_sublime_folder
 end
 
 def replace_file(file, hidden_file)
@@ -44,6 +45,10 @@ end
 def link_file(file, hidden_file)
   puts "linking #{hidden_file}"
   `ln -fs "#{ENV['PWD']}/#{file}" "#{hidden_file}"`
+end
+
+def link_sublime_folder
+  link_file 'sublime', '$HOME/Library/Application Support/Sublime Text 2/Packages/User'
 end
 
 def download_submodules
