@@ -18,7 +18,7 @@ if (type tmux > /dev/null 2>&1) && [ -t 0 ] && [ ! -n "$TMUX" ]; then
     exit
 fi
 
-export EDITOR=nvim
+export EDITOR=vim
 
 # Adding an appropriate MANPATH variable for use with Homebrew
 export MANPATH=/usr/local/share/man:$MANPATH
