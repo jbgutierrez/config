@@ -25,6 +25,7 @@ packages=(
   httperf
   imagemagick
   jq
+  libcairo2-dev
   macvim
   node
   openssl
@@ -39,6 +40,7 @@ packages=(
   tmux
   tree
   wget
+  wordnet
   zsh-lovers
 )
 
@@ -59,6 +61,8 @@ packages=(
   handbrake
   handbrakecli
   iterm2
+  macdown
+  pixelstick
   spectacle
   sublime-text
   unrarx

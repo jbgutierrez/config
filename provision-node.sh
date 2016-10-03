@@ -16,6 +16,7 @@ packages=(
   meanjs
   uglifyjs
   webpack
+  bower
 )
 
 for package in "${packages[@]}"; do
