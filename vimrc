@@ -386,9 +386,19 @@ au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=gitcommit
 "}}}
 " coffescript{{{
 let coffee_compile_on_save = 0
-" au BufWritePost *.coffee silent CoffeeCompile -b | cwindow | redraw!
-" au BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
-au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
+augroup coffee
+  autocmd!
+  au FileType coffee let g:surround_{char2nr("#")} = "#{\r}"
+  au FileType coffee nnoremap <buffer> <leader>l :normal ysiw#<cr>
+  au FileType coffee vmap <buffer> <leader>l S#
+  au FileType coffee nnoremap <buffer> <leader>' :normal ysiw'<cr>
+  au FileType coffee nnoremap <buffer> <leader>" :normal ysiw"<cr>
+  au FileType coffee nnoremap <buffer> <leader>"" :normal cs'"<cr>
+  au FileType coffee nnoremap <buffer> <leader>'' :normal cs"'<cr>
+  " au BufWritePost *.coffee silent CoffeeCompile -b | cwindow | redraw!
+  " au BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
+  au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
+augroup END
 ":[RANGE] CoffeeCompile [watch|unwatch] [vert[ical]] [WINDOW-SIZE]
 "}}}
 " json {{{
