@@ -22,11 +22,12 @@ require 'tempfile'
 
 class Snippet
 
-  def initialize cmd, name, attrs
+  def initialize cmd, name, attrs, remaining
     @lines = ""
     @cmd = cmd
     @name = name
     @attrs = attrs
+    @remaining = remaining
     @ext = "png"
   end
 
@@ -60,7 +61,7 @@ class Snippet
     md5 = Digest::MD5.hexdigest @lines
     image_file = "#{md5}.#{@ext}"
     capture_output { compile md5 } unless File.exist? image_file
-    "![#{@name}](#{image_file})"
+    "![#{@name}](#{image_file})#{@remaining}"
   end
 
   def compile basename
@@ -77,10 +78,11 @@ class Snippet
   end
 
   def self.create line
-    match_data = line.match /\[(.*)\]\{(.*)\}/
+    match_data = line.match /\[(.*)\]\{(.*?)\}(.*)/
     return nil unless match_data
     name = match_data[1]
     attrs = match_data[2].split /\s/
+    remaining = match_data[3]
     type = attrs.shift
     klass = {
       ditaa: DitaaSnippet,
@@ -97,7 +99,7 @@ class Snippet
       sfdp: DotSnippet, # filter for drawing large undirected graphs
       patchwork: DotSnippet # filter for tree maps
     }[type.to_sym]
-    klass.new type, name, attrs if klass
+    klass.new type, name, attrs, remaining if klass
   end
 
 end
