@@ -1112,11 +1112,11 @@ function! GenerateUnicode(first, last)
 endfunction
 "}}}
 " compress scripts and css files{{{
-let g:js_css_compress_disabled = 0
-function! JsCssCompress()
-  if exists("b:js_css_compress_disabled") ? b:js_css_compress_disabled : g:js_css_compress_disabled
-    return
-  endif
+let g:js_css_compress_enabled = 0
+function! JsCssCompress(bang) abort
+  if a:bang | let b:js_css_compress_enabled = 1 | end
+  let enabled = exists("b:js_css_compress_enabled") ? b:js_css_compress_enabled : g:js_css_compress_enabled
+  if !enabled | return | end
 
   let fileName = expand('<afile>:t')
 
@@ -1169,23 +1169,12 @@ function! JsCssCompress()
   endif
 endfunction
 
-" function! JsCssCompress()
-"   let path = expand('<afile>')
-"   let expr = '~/bin/coffee-builder.coffee '.path
-"   let msg = system(expr)
-"   if v:shell_error
-"     echo 'could not compile '.path.':'.msg
-"   else
-"     " echom msg
-"   endif
-" endfunction
+au! FileWritePost,BufWritePost *.coffee :call JsCssCompress(0)
+au! FileWritePost,BufWritePost *.js :call JsCssCompress(0)
+au! FileWritePost,BufWritePost *.css :call JsCssCompress(0)
+au! FileWritePost,BufWritePost *.scss :call JsCssCompress(0)
 
-au FileWritePost,BufWritePost *.coffee :call JsCssCompress() | e | set ft=coffee
-au FileWritePost,BufWritePost *.js :call JsCssCompress() | e | set ft=javascript
-au FileWritePost,BufWritePost *.css :call JsCssCompress() | e | set ft=css
-au FileWritePost,BufWritePost *.scss :call JsCssCompress() | e | set ft=scss
-au FileWritePost,BufWritePost *.less :call JsCssCompress()
-command! JsCssCompress call JsCssCompress()
+command! -nargs=? -bang JsCssCompress call JsCssCompress(<bang>0)
 "}}}
 " stringify html templates {{{
 function! Stringify() range
