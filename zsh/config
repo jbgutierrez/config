@@ -11,6 +11,7 @@ ZSH_CUSTOM=~/.zsh
 
 # wc -l **/*.zsh | sort -n | tail -c 3000
 plugins=(
+  zsh-autosuggestions
   brew
   frontend-search
   git
@@ -30,6 +31,9 @@ files=(
   lib/misc.zsh
 )
 for file in $files; do source $ZSH/$file; done
+
+# Color autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 
 # don't want to be corrected
 unsetopt correct
