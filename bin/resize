@@ -9,7 +9,7 @@ usage: resize FILE_OR_FOLDER [options]
     -w widths     (default: 2560 1920 1024 560)
     -q quality    (default: 75)
     -a adjust     Only files within the adjusted date will be resized. See 'man date' val[ymwdHMS] (default 1m)
-    -t tool       Compression tool: jpegoptim, mozjpeg or imagemagick (default: imagemagick)
+    -t tool       Compression tool: jpegoptim, mozjpeg, mogrify or imagemagick (default: imagemagick)
     -r            Losslessly shrink JPEG file with JPEGrescan (default: 0)
     -d            Attach info to filename
 
@@ -46,6 +46,7 @@ while getopts ":w:q:a:t:rd" opt; do
   esac
 done
 
+# find *newsl* -newermt "-180 minutes" -type f | open
 if [[ -d $files ]]; then
   cd $files
   if [[ -n $adjust  ]]; then
@@ -73,7 +74,8 @@ for file in $files; do
     case $tool in
       "jpegoptim")   `convert -resize $width $file jpg:- | jpegoptim -q -p -f --max=$quality --strip-all --stdout --stdin > $dir/$resized_file` ;;
       "mozjpeg")     `convert -resize $width $file png:- | cjpeg -quality $quality -optimize -dct float -outfile $dir/$resized_file`            ;;
-      "imagemagick") `convert -quality $quality -resize $width $file $dir/$resized_file`                                                        ;;
+      "imagemagick") `convert -quality $quality -resize $width $file $dir/$resized_file`                      ;;
+      "mogrify")     `mogrify -write $dir/$resized_file -thumbnail $width -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality $quality -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -interlace none -colorspace sRGB $file`;;
     esac
     if (( $rescan )); then
       optimized_file=$resized_file
