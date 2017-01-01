@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+contents = STDIN.read
+puts contents.gsub(/\{\{(.*?.md)\}\}/) { |tokens| File.read $1 }

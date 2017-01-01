@@ -59,7 +59,7 @@ class Snippet
 
   def to_s
     md5 = Digest::MD5.hexdigest @lines
-    image_file = "#{md5}.#{@ext}"
+    image_file = "/tmp/#{md5}.#{@ext}"
     capture_output { compile md5 } unless File.exist? image_file
     "![#{@name}](#{image_file})#{@remaining}"
   end
@@ -68,7 +68,7 @@ class Snippet
     Tempfile.open(basename) do |f|
       f.write @lines
       f.close
-      image_file = "#{basename}.#{@ext}"
+      image_file = "/tmp/#{basename}.#{@ext}"
       shellout f.path, image_file
     end
   end
@@ -91,6 +91,7 @@ class Snippet
       seqdiag: BlockdiagSnippet, # simple sequence-diagram image generator
       actdiag: BlockdiagSnippet, # simple activity-diagram image generator
       nwdiag: BlockdiagSnippet, # simple network-diagram image generators
+      gnuplot: GNUPlotSnippet,
       dot: DotSnippet, # filter for drawing directed graphs
       neato: DotSnippet, # filter for drawing undirected graphs
       twopi: DotSnippet, # filter for radial layouts of graphs
@@ -102,6 +103,13 @@ class Snippet
     klass.new type, name, attrs, remaining if klass
   end
 
+end
+
+class GNUPlotSnippet < Snippet
+  def shellout input, output
+    args = @attrs.concat [ input ]
+    system @cmd, *args, STDOUT => output
+  end
 end
 
 class BlockdiagSnippet < Snippet
@@ -124,9 +132,9 @@ class DotSnippet < Snippet
     @ext = "pdf"
   end
   def shellout input, output
-    args = @attrs.concat %W[-Tsvg #{input} -o /tmp/#{output}]
+    args = @attrs.concat %W[-Tsvg #{input} -o #{output}.svg]
     system @cmd, *args
-    `cairosvg /tmp/#{output} -o #{output}`
+    `cairosvg #{output}.svg -o #{output}`
   end
 end
 

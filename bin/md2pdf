@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+name=${1/.md/}
+# [[ $2 ]] && output=$2/$name.pdf || output=./$name.pdf
+output=~/Desktop/$name.pdf
+pandoc_diagrams "$name.md" | \
+pandoc_transclusion | \
+pandoc --from=markdown+link_attributes \
+        --highlight-style tango \
+        -o $output \
+        --latex-engine=xelatex \
+        --template ~/.vim/templates/pandoc.tex
+open $output

@@ -1269,6 +1269,10 @@ command! Copy call s:copy()
 command! JSONPretty %!python -m json.tool
 "}}}
 " Easily changing between Windows and POSIX file paths
+" md2pdf {{{
+command! Pdf silent exe "!md2pdf ".shellescape(expand("%",1))." ~/Desktop"
+command! Mindmap :silent call s:mindmap()
+"}}}
 command! ToPosix :let tmp=@/<Bar>s:\\:/:ge<Bar>let @/=tmp<Bar>
 command! ToWindows :let tmp=@/<Bar>s:/:\\:ge<Bar>let @/=tmp<Bar>
 "}}}
@@ -1299,4 +1303,4 @@ endfunction
 "}}}
 "}}}
 
-set shell=bash
+set shell=zsh
