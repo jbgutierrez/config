@@ -6,3 +6,4 @@ vim/bundle
 vim/init.vim*
 vim/plugged/
 vim/tmp
+tmux/plugins
