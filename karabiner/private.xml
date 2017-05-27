@@ -4,6 +4,47 @@
   <item>
     <name>Custom settings</name>
     <item>
+      <modifierdef>HYPR</modifierdef>
+      <identifier>private.hypr_key</identifier>
+      <name>Hypr Key</name>
+      <autogen>__KeyToKey__ KeyCode::COMMAND_L, ModifierFlag::CONTROL_L | ModifierFlag::OPTION_L | ModifierFlag::SHIFT_L, KeyCode::VK_MODIFIER_HYPR</autogen>
+    </item>
+    <item>
+      <name>Application Shortcuts</name>
+      <identifier>private.shortcuts_layer</identifier>
+      <vkopenurldef>
+        <name>KeyCode::VK_OPEN_URL_APP_iTerm</name>
+        <url type="file">/Applications/iTerm.app</url>
+      </vkopenurldef>
+      <vkopenurldef>
+        <name>KeyCode::VK_OPEN_URL_APP_Chrome</name>
+        <url type="file">/Applications/Google Chrome.app</url>
+      </vkopenurldef>
+      <vkopenurldef>
+        <name>KeyCode::VK_OPEN_URL_APP_Outlook</name>
+        <url type="file">/Applications/Outlook.app</url>
+      </vkopenurldef>
+      <vkopenurldef>
+        <name>KeyCode::VK_OPEN_URL_APP_Lync</name>
+        <url type="file">/Applications/Lync.app</url>
+      </vkopenurldef>
+      <autogen> __KeyToKey__ KeyCode::4         , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::4         , ModifierFlag::SHIFT_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::A         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Activity_Monitor , </autogen>
+      <autogen> __KeyToKey__ KeyCode::B         , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , </autogen>
+      <autogen> __KeyToKey__ KeyCode::BACKSLASH , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::BACKSLASH , ModifierFlag::SHIFT_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::C         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Chrome           , </autogen>
+      <autogen> __KeyToKey__ KeyCode::D         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_FILE_Desktop         , </autogen>
+      <autogen> __KeyToKey__ KeyCode::F         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Finder           , </autogen>
+      <autogen> __KeyToKey__ KeyCode::I         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_iTerm            , </autogen>
+      <autogen> __KeyToKey__ KeyCode::L         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Lync             , </autogen>
+      <autogen> __KeyToKey__ KeyCode::M         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Outlook          , </autogen>
+      <autogen> __KeyToKey__ KeyCode::MINUS     , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::MINUS     , </autogen>
+      <autogen> __KeyToKey__ KeyCode::O         , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::O         , </autogen>
+      <autogen> __KeyToKey__ KeyCode::RETURN    , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::Z         , </autogen>
+      <autogen> __KeyToKey__ KeyCode::S         , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::S         , </autogen>
+      <autogen> __KeyToKey__ KeyCode::Z         , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::Z         , </autogen>
+    </item>
+    <item>
       <name>Use the correct shift keys.</name>
       <identifier>private.correct_shift_keys</identifier>
       <autogen>--KeyToKey-- KeyCode::Q,         ModifierFlag::SHIFT_L, KeyCode::VK_NONE</autogen>

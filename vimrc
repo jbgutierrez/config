@@ -487,7 +487,14 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 vnoremap <S-Tab> <gv
 vnoremap <Tab> >gv
 vnoremap <c-j> :m'>+<cr>gv=gv
+" nnoremap <c-j> :m+<cr> " incompatible with tmux_navigator
 vnoremap <c-k> :m-2<cr>gv=gv
+" nnoremap <c-k> :m-2<cr> "incompatible with tmux_navigator
+"}}}
+" tmux_navigator custom bindings {{{
+if has('nvim')
+  nmap <bs> :TmuxNavigateLeft<CR>
+endif
 "}}}
 " shortcuts for rails commands{{{
 " noremap <leader>m :rmodel
