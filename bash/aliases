@@ -1,5 +1,7 @@
 # Utility
 alias reload='source ~/.bash/aliases'
+alias gtypist='gtypist -b'
+alias launch_varnish='  /usr/local/sbin/varnishd -n /usr/local/var/varnish -f /usr/local/etc/varnish/default.vcl -s malloc,1G -T 127.0.0.1:2000 -a 0.0.0.0:8080 -F'
 alias vim='nvim'
 vim_debug_startup() {
   date=`date '+%Y%m%d.%H%M%S'`
