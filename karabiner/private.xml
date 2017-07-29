@@ -1,6 +1,15 @@
 <?xml version="1.0"?>
 <!-- https://github.com/tekezo/Karabiner/blob/master/src/bridge/generator/keycode/data/KeyCode.data -->
+<!--  https://pqrs.org/osx/karabiner/xml.html.en -->
 <root>
+  <appdef>
+    <appname>OUTLOOK</appname>
+    <equal>com.microsoft.Outlook</equal>
+  </appdef>
+  <appdef>
+    <appname>ITERM</appname>
+    <equal>com.googlecode.iterm2</equal>
+  </appdef>
   <item>
     <name>Custom settings</name>
     <item>
@@ -22,27 +31,52 @@
       </vkopenurldef>
       <vkopenurldef>
         <name>KeyCode::VK_OPEN_URL_APP_Outlook</name>
-        <url type="file">/Applications/Outlook.app</url>
+        <url type="file">/Applications/Microsoft Office 2011/Microsoft Outlook.app</url>
       </vkopenurldef>
       <vkopenurldef>
         <name>KeyCode::VK_OPEN_URL_APP_Lync</name>
-        <url type="file">/Applications/Lync.app</url>
+        <url type="file">/Applications/Microsoft Lync.app</url>
       </vkopenurldef>
-      <autogen> __KeyToKey__ KeyCode::4         , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::4         , ModifierFlag::SHIFT_L , </autogen>
-      <autogen> __KeyToKey__ KeyCode::A         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Activity_Monitor , </autogen>
-      <autogen> __KeyToKey__ KeyCode::B         , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , </autogen>
-      <autogen> __KeyToKey__ KeyCode::BACKSLASH , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::BACKSLASH , ModifierFlag::SHIFT_L , </autogen>
-      <autogen> __KeyToKey__ KeyCode::C         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Chrome           , </autogen>
-      <autogen> __KeyToKey__ KeyCode::D         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_FILE_Desktop         , </autogen>
-      <autogen> __KeyToKey__ KeyCode::F         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Finder           , </autogen>
-      <autogen> __KeyToKey__ KeyCode::I         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_iTerm            , </autogen>
-      <autogen> __KeyToKey__ KeyCode::L         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Lync             , </autogen>
-      <autogen> __KeyToKey__ KeyCode::M         , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Outlook          , </autogen>
-      <autogen> __KeyToKey__ KeyCode::MINUS     , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::MINUS     , </autogen>
-      <autogen> __KeyToKey__ KeyCode::O         , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::O         , </autogen>
-      <autogen> __KeyToKey__ KeyCode::RETURN    , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::Z         , </autogen>
-      <autogen> __KeyToKey__ KeyCode::S         , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::S         , </autogen>
-      <autogen> __KeyToKey__ KeyCode::Z         , ModifierFlag::HYPR , KeyCode::B       , ModifierFlag::CONTROL_L                   , KeyCode::Z         , </autogen>
+      <vkopenurldef>
+        <name>KeyCode::VK_OPEN_URL_APP_Teams</name>
+        <url type="file">/Applications/Microsoft Teams.app</url>
+      </vkopenurldef>
+      <autogen> __KeyToKey__ KeyCode::A , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Activity_Monitor , </autogen>
+      <autogen> __KeyToKey__ KeyCode::C , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Chrome           , </autogen>
+      <autogen> __KeyToKey__ KeyCode::D , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_FILE_Desktop         , </autogen>
+      <autogen> __KeyToKey__ KeyCode::F , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Finder           , </autogen>
+      <autogen> __KeyToKey__ KeyCode::I , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_iTerm            , </autogen>
+      <autogen> __KeyToKey__ KeyCode::L , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Lync             , </autogen>
+      <autogen> __KeyToKey__ KeyCode::M , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Outlook          , </autogen>
+      <autogen> __KeyToKey__ KeyCode::T , ModifierFlag::HYPR , KeyCode::VK_NONE , KeyCode::VK_OPEN_URL_APP_Teams            , </autogen>
+    </item>
+    <item>
+      <name>Enable in iTerm</name>
+      <identifier>private.shortcuts_layer_iterm</identifier>
+      <only>ITERM</only>
+      <autogen> __KeyToKey__ KeyCode::4         , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::4         , ModifierFlag::SHIFT_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::B         , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::BACKSLASH , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::BACKSLASH , ModifierFlag::SHIFT_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::M         , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::M         , </autogen>
+      <autogen> __KeyToKey__ KeyCode::MINUS     , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::MINUS     , </autogen>
+      <autogen> __KeyToKey__ KeyCode::O         , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::O         , </autogen>
+      <autogen> __KeyToKey__ KeyCode::R         , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::R         , ModifierFlag::SHIFT_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::RETURN    , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::Z         , </autogen>
+      <autogen> __KeyToKey__ KeyCode::S         , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::S         , </autogen>
+      <autogen> __KeyToKey__ KeyCode::W         , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::W         , </autogen>
+      <autogen> __KeyToKey__ KeyCode::X         , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::X         , ModifierFlag::SHIFT_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::Z         , ModifierFlag::HYPR , KeyCode::B , ModifierFlag::CONTROL_L , KeyCode::Z         , </autogen>
+    </item>
+    <item>
+      <name>Enable in Outlook</name>
+      <identifier>private.shortcuts_layer_outlook</identifier>
+      <only>OUTLOOK</only>
+      <autogen> __KeyToKey__ KeyCode::1 , ModifierFlag::HYPR , KeyCode::O , ModifierFlag::COMMAND_L | ModifierFlag::OPTION_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::2 , ModifierFlag::HYPR , KeyCode::O , ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::SLASH , ModifierFlag::HYPR , KeyCode::F , ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::SLASH , ModifierFlag::HYPR , KeyCode::F , ModifierFlag::COMMAND_L | ModifierFlag::SHIFT_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::2 , ModifierFlag::CONTROL_L , KeyCode::0 , ModifierFlag::CONTROL_L , </autogen>
+      <autogen> __KeyToKey__ KeyCode::3 , ModifierFlag::CONTROL_L , KeyCode::QUOTE , ModifierFlag::COMMAND_L | ModifierFlag::OPTION_L , </autogen>
     </item>
     <item>
       <name>Use the correct shift keys.</name>
@@ -78,7 +112,7 @@
       <autogen>--KeyToKey-- KeyCode::QUOTE,     ModifierFlag::SHIFT_R, KeyCode::VK_NONE</autogen>
     </item>
     <item>
-      <name>Swap § and ESC</name>
+      <name>Swap &#xA7; and ESC</name>
       <identifier>private.closer_esc</identifier>
       <autogen>--KeyToKey-- KeyCode::UK_SECTION, KeyCode::ESCAPE</autogen>
     </item>
