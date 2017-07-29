@@ -16,6 +16,7 @@ packages=(
   autoconf
   automake
   cloc
+  coreutils
   ctags
   direnv
   fzf
@@ -30,6 +31,7 @@ packages=(
   node
   openssl
   pandoc
+  pup
   rbenv
   rsync
   ruby-build

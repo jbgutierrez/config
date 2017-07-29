@@ -817,6 +817,22 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 " If you want :UltiSnipsEdit to split your window.
 " let g:UltiSnipsEditSplit="vertical"
 "}}}
+" Vimwiki {{{
+let wiki = {'path': '/Volumes/SanDisk/ownbox/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}
+let wiki.nested_syntaxes = {'python': 'python', 'c++': 'cpp', 'bash': 'sh', 'coffee': 'coffee', 'ruby': 'ruby', 'javascript': 'javascript'}
+let g:vimwiki_list = [wiki]
+au Syntax vimwiki
+let g:vimwiki_rxHeader = '^\s*\s*\(#\{1,6}\|title: \)\zs[^#].*\ze$'
+function! s:InlineLink()
+  let url = expand('<cWORD>')
+  let expr = 'curl -q -ks '.url.' | pup "title text{}"'
+  let title = system(expr)[:-2]
+  let repl = '['. title . '](' .url.')'
+  let newline = substitute(getline('.'), url, repl ,'g')
+  call setline('.', newline)
+endfunction
+command! InlineLink :silent call <SID>InlineLink()
+"}}}
 "}}}
 
 " custom utility commands {{{
