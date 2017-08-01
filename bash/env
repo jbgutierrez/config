@@ -32,10 +32,13 @@ export RUBY_GC_HEAP_FREE_SLOTS=200000
 # Ruby version manager
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
-# Node version manager
-export NVM_SYMLINK_CURRENT=1
-export NVM_DIR=~/.nvm
-[ -s $NVM_DIR/nvm.sh ] && . $NVM_DIR/nvm.sh
+nvm() {
+  # Node version manager
+  export NVM_SYMLINK_CURRENT=1
+  export NVM_DIR=~/.nvm
+  [ -s $NVM_DIR/nvm.sh ] && . $NVM_DIR/nvm.sh
+  nvm "$@"
+}
 
 # io.js REPL history
 NODE_REPL_HISTORY_FILE='~/.iojs_history'
