@@ -170,8 +170,10 @@ set fileformats+=mac
 " set enc=iso-8859-1"}}}
 " spell checking{{{
 set spell spelllang=en " Z= to show suggestions and zg to add words to the dictionary
-au BufRead,BufNewFile *.md,*.txt setlocal spell
-au FileType gitcommit setlocal spell
+augroup spell
+  au!
+  au FileType markdown,gitcommit,text,mail setlocal spell | setlocal spelllang=es  " spellcheck these files by default
+augroup END
 set spellsuggest=5"}}}
 " file backups{{{
 set nobackup      " Don't make a backup before overwriting a file.
@@ -283,14 +285,16 @@ endfunction
 "}}}
 " .vimrc{{{
 " When vimrc is edited, reload it
-au BufWritePost $MYVIMRC source %
-au BufRead,BufWritePost $MYVIMRC set foldmethod=marker
+augroup vimrc
+  au!
+  au BufWritePost $MYVIMRC source %
+  au BufRead,BufWritePost $MYVIMRC set foldmethod=marker
+augroup END
 " Open vim help for word under cursor
 au FileType vim setlocal keywordprg=:help
 "}}}
 " ruby{{{
 augroup RubyAuto
-  au!
   function! RubyFileType()
     let g:rubycomplete_buffer_loading = 1
     let g:rubycomplete_rails = 1
@@ -347,6 +351,8 @@ augroup RubyAuto
 
   endfunction
 
+  au!
+  au FileType ruby let g:surround_{char2nr("#")} = "#{\r}"
   au FileType ruby,eruby call RubyFileType()
 augroup END
 "}}}
@@ -354,40 +360,50 @@ augroup END
 au! BufWritePost *test.exs :!mix test
 "}}}
 " XML{{{
-au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
+au! FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 let g:xml_syntax_folding=1
 "}}}
 " Java{{{
-au FileType java setlocal foldmethod=syntax
+au! FileType java setlocal foldmethod=syntax
 "}}}
 " haml{{{
-au BufRead,BufNewFile *.haml set filetype=haml
+au! BufRead,BufNewFile *.haml set filetype=haml
 "}}}
 " css{{{
-au FileType css setlocal foldmethod=marker
-au FileType css setlocal foldmarker={,}
-au FileType css inoremap <buffer> :<space> : ;<left>
+augroup css
+  au!
+  au FileType css setlocal foldmethod=marker
+  au FileType css setlocal foldmarker={,}
+  au FileType css inoremap <buffer> :<space> : ;<left>
+augroup END
 " Sort CSS properties alphabetically
 com! SortCss :g#\({\n\)\@<=#.,/}/sort
 " au FileType css inoremap <buffer> <space><space>
 "}}}
-" js {{{
-au FileType javascript inoremap <buffer> :f : function(){<esc>o<cr>},<esc>ki<tab>
-au FileType javascript inoremap <buffer> :<space> : ,<left>
-au FileType javascript inoremap <buffer> f<tab> <esc>:AutoCloseOff<cr>afunction(){  }<left><esc>:AutoCloseOn<cr>i
-au FileType javascript inoremap <buffer> ;; <esc>ma$a;<esc>`aa
+" javascript {{{
+augroup javascript
+  au!
+  au FileType javascript let g:surround_{char2nr("$")} = "${\r}"
+  au FileType javascript inoremap <buffer> :f : function(){<esc>o<cr>},<esc>ki<tab>
+  au FileType javascript inoremap <buffer> :<space> : ,<left>
+  au FileType javascript inoremap <buffer> f<tab> <esc>:AutoCloseOff<cr>afunction(){  }<left><esc>:AutoCloseOn<cr>i
+  au FileType javascript inoremap <buffer> ;; <esc>ma$a;<esc>`aa
+augroup END
 "}}}
 " diff{{{
-au FileType diff setlocal fdm=expr
-au FileType diff setlocal fde=DiffFoldLevel()
-au FileType diff setlocal fdc=1
-au FileType diff setlocal foldlevel=0
-au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=gitcommit
+augroup diff
+  au!
+  au FileType diff setlocal fdm=expr
+  au FileType diff setlocal fde=DiffFoldLevel()
+  au FileType diff setlocal fdc=1
+  au FileType diff setlocal foldlevel=0
+  au BufReadPost {COMMIT_EDITMSG,*/COMMIT_EDITMSG} set ft=gitcommit
+augroup END
 "}}}
 " coffescript{{{
 let coffee_compile_on_save = 0
 augroup coffee
-  autocmd!
+  au!
   au FileType coffee let g:surround_{char2nr("#")} = "#{\r}"
   au FileType coffee nnoremap <buffer> <leader>l :normal ysiw#<cr>
   au FileType coffee vmap <buffer> <leader>l S#
@@ -402,23 +418,28 @@ augroup END
 ":[RANGE] CoffeeCompile [watch|unwatch] [vert[ical]] [WINDOW-SIZE]
 "}}}
 " json {{{
-au BufNewFile,BufReadPost *.json  set filetype=json | :NoMatchParen
-au FileType setl noshowmatch nohlsearch nocursorcolumn norelativenumber nocursorline nowrap synmaxcol=100
+augroup json
+  au!
+  au BufNewFile,BufReadPost *.json  set filetype=json | :NoMatchParen
+  au FileType setl noshowmatch nohlsearch nocursorcolumn norelativenumber nocursorline nowrap synmaxcol=100
+augroup END
 " foldmethod=syntax formatoptions=tcq2l
 "}}}
 " file types that require explicit tabs, and not spaces{{{
-au FileType make   setlocal noexpandtab
-au FileType python setlocal noexpandtab
+augroup TabbedFileTypes
+  au!
+  au FileType make   setlocal noexpandtab
+  au FileType python setlocal tabstop=8 shiftwidth=4 softtabstop=4 expandtab
+augroup END
 "}}}
 " load templates{{{
-au BufNewFile * silent! 0r $VIMHOME/templates/%:e.tpl
+au! BufNewFile * exe "silent! 0r $VIMHOME/templates/".&ft.".tpl"
 "}}}
 " jumps to the last known position in a file just after opening it, if the '" mark is set: > {{{
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+au! BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 "}}}
 " show extra whitespace as error {{{
 augroup WhitespaceMatch
-  " Remove ALL autocommands for the WhitespaceMatch group.
   au!
   hi ExtraWhitespace ctermbg=red guibg=red
   au BufWinEnter * let w:whitespace_match_number = matchadd('ExtraWhitespace', '\s\+$')
@@ -450,9 +471,13 @@ augroup END
 " operation pending motion for parenthesis{{{
 onoremap p :<c-u>normal! t)vi(<cr>
 "}}}
-" highlight current line {{{
-au WinEnter * setlocal cursorline
-au WinLeave * setlocal nocursorline"}}}
+" highlight current cursor position {{{
+augroup HighlightCursor
+  au!
+  au WinEnter * setlocal cursorline cursorcolumn
+  au WinLeave * setlocal nocursorline nocursorcolumn
+augroup END
+"}}}
 "}}}
 
 " Key mappings{{{
@@ -579,11 +604,6 @@ au FileType *
       \ for language in [ 'coffee', 'css', 'elixir', 'erlang', 'javaScript', 'java', 'javascript', 'less', 'python', 'ruby', 'sass' ] |
       \   exe "syn keyword ".language."Todo IDEA FIXME NOTE TODO OPTIMIZE HACK REVIEW REFACTOR XXX contained" |
       \ endfor
-"}}}
-" clear the search buffer when hitting return {{{
-nnoremap <cr> :set hlsearch! hlsearch?<cr>
-au CmdwinEnter * nnoremap <buffer> <cr> <cr>
-au FileType qf nnoremap <buffer> <cr> <cr>
 "}}}
 " search for selected text, forwards or backwards {{{
 vnoremap <silent> * :<C-U>
