@@ -825,8 +825,10 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 " Goyo {{{
 function! <sid>writer()
   :Goyo 60%
+  setlocal listchars-=eol:¬
   setlocal nocursorcolumn
-  setlocal nocursorline
+  setlocal spell
+  setlocal spelllang=es
   setlocal wrap
   setlocal showbreak=
   setlocal nolist
