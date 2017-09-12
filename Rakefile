@@ -35,6 +35,7 @@ task :install do
   download_submodules
   link_neovim_files
   link_sublime_folder
+  `ln -s /tmp ~/tmp`
 end
 
 def replace_file(file, hidden_file)
