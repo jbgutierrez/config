@@ -752,6 +752,10 @@ au FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 "}}}
 " Fugitive {{{
 au BufReadPost fugitive://* set bufhidden=delete
+nmap <leader>s :Gstatus<CR>
+nmap <leader>c :Gcommit<CR>
+nmap <leader>ca :Gcommit --amend --reuse-message=HEAD<CR>
+nmap <leader>l :Glog<CR>
 "}}}
 " Gitv {{{
 let g:Gitv_OpenHorizontal=1
