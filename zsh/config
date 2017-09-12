@@ -5,8 +5,24 @@ LISTMAX=0     # ask to complete if top of list would scroll off screen
 KEYTIMEOUT=1  # reduce delay between mode changes from 0.4 (default) to 0.1 seconds
 WORDCHARS=${WORDCHARS//[&=\/;\!#%\{]} # make CTRL-W delete after other chars, not just spaces
 
-# Path to your oh-my-zsh installation.
-ZSH_THEME="jbgutierrez"
+# Configuracion POWERLVEL9K
+POWERLEVEL9K_MODE='awesome-powerline'
+POWERLEVEL9K_MODE='awesome-fontconfig'
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+POWERLEVEL9K_SHORTEN_STRATEGY="truncate_middle"
+
+# Elementos de la barra
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history rbenv nvm virtualenv time vi_mode)
+POWERLEVEL9K_STATUS_VERBOSE=false
+
+# Vi-Mode
+POWERLEVEL9K_VI_MODE_INSERT_BACKGROUND='005'
+POWERLEVEL9K_VI_MODE_INSERT_FOREGROUND='236'
+POWERLEVEL9K_VI_MODE_NORMAL_BACKGROUND='245'
+POWERLEVEL9K_VI_MODE_NORMAL_FOREGROUND='236'
+
+ZSH_THEME="powerlevel9k/powerlevel9k"
 ZSH_CUSTOM=~/.zsh
 
 # wc -l **/*.zsh | sort -n | tail -c 3000
