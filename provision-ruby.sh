@@ -1,5 +1,8 @@
 #!/usr/bin/env bash -x
 
+rbenv install 2.4.1
+rbenv global 2.4.1
+
 packages=(
   activesupport
   awesome_print
@@ -13,15 +16,14 @@ packages=(
   pry
   redcarpet
   rerun
-  scss-lint
+  scss_lint
   sinatra
   sinatra-contrib
   sinatra-partial
   sinatra-reloader
+  tmuxinator
 )
 
-rbenv install 2.2.3
-rbenv global 2.2.3
 for package in "${packages[@]}"; do
   gem install $package;
 done

@@ -5,7 +5,6 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 taps=(
   homebrew/dupes
-  neovim/neovim
 )
 
 for tap in "${taps[@]}"; do
@@ -15,32 +14,45 @@ done
 packages=(
   autoconf
   automake
+  cairo
   cloc
   coreutils
   ctags
   direnv
+  dssim
+  editorconfig
+  ffmpeg
+  figlet
+  fortune
   fzf
   git
+  git-flow
   gnuplot
   graphviz
+  htop
   httperf
   imagemagick
+  irssi
+  jpegoptim
   jq
-  libcairo2-dev
+  lynx
   macvim
-  node
+  neovim
+  nginx
   openssl
   pandoc
   pup
   rbenv
   rsync
-  ruby-build
   shellcheck
   ssh-copy-id
   subversion
   the_silver_searcher
   tmux
   tree
+  unrar
+  vim
+  webp
   wget
   wordnet
   zsh-lovers
@@ -50,29 +62,51 @@ for package in "${packages[@]}"; do
   brew install $package;
 done
 
-brew install --HEAD neovim
-
+# Search casks at https://caskroom.github.io/search
 packages=(
   appdelete
   cheatsheet
   clipmenu
+  cloudapp
+  dash
   disk-inventory-x
+  docker
+  dropbox
   firefox
+  flux
   freemind
   google-chrome
   handbrake
-  handbrakecli
   iterm2
+  java
+  # karabiner
+  karabiner-elements
+  kitematic
   macdown
+  mactex
+  microsoft-teams
   pixelstick
+  qlcolorcode
+  qlimagesize
+  qlmarkdown
+  qlprettypatch
+  quicklook-json
+  slack
+  sourcetree
   spectacle
-  sublime-text
   unrarx
-  virtualbox
-  virtualbox-extension-pack
+  visual-studio-code
   wireshark
+  xmind
 )
 
 for package in "${packages[@]}"; do
-  brew cask install $package;
+  brew cask install $package --force;
 done
+
+read -p "Are you sure? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  rm -rf $(brew --cache)
+  brew cask cleanup
+fi
